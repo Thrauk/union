@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1066759154874",
+    "project_id": "union-app-50280",
+    "storage_bucket": "union-app-50280.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1066759154874:android:2df3814fc9a335cd05a683",
+        "android_client_info": {
+          "package_name": "com.devlink.union_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1066759154874-4gaa2kj7d9o39fnnuoe2hntqgu71ttk5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.devlink.union_app",
+            "certificate_hash": "94727be86456f19f9d8f80015fa789c557b5657d"
+          }
+        },
+        {
+          "client_id": "1066759154874-oqjr624ktqeear8u0eukta89ee1db880.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4L3VrXfeggKxIEPOh4sldgkFCrqVxBE8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1066759154874-oqjr624ktqeear8u0eukta89ee1db880.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
