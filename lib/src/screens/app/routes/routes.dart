@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:union_app/src/screens/home/home.dart';
-import 'package:union_app/src/screens/intro/view/intro_page_01.dart';
-import 'package:union_app/src/screens/login/login.dart';
+import 'package:union_app/src/screens/intro/view/intro_page.dart';
 
 import '../app.dart';
 
@@ -11,6 +10,6 @@ List<Page> onGenerateAppViewPages(AppStatus state, List<Page<dynamic>> pages) {
       return [HomePage.page()];
     case AppStatus.unauthenticated:
     default:
-      return [IntroPage01.page()];
+      return [IntroPage.page()];
   }
 }

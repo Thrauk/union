@@ -1,5 +1,4 @@
 class LogInWithEmailAndPasswordFailure implements Exception {
-  /// {@macro log_in_with_email_and_password_failure}
   const LogInWithEmailAndPasswordFailure([
     this.message = 'An unknown exception occurred.',
   ]);

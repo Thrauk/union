@@ -1,5 +1,4 @@
 class LogInWithGoogleFailure implements Exception {
-  /// {@macro log_in_with_google_failure}
   const LogInWithGoogleFailure([
     this.message = 'An unknown exception occurred.',
   ]);
