@@ -10,7 +10,7 @@ class ButtonsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget returnedWidget;
-    switch(currentPage) {
+    switch (currentPage) {
       case 0:
         returnedWidget = const ButtonsWidget01();
         break;
@@ -25,7 +25,5 @@ class ButtonsWidget extends StatelessWidget {
         break;
     }
     return returnedWidget;
-
   }
-
 }

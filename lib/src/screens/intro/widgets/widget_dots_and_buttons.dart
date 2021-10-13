@@ -6,11 +6,11 @@ import 'package:union_app/src/screens/intro/intro.dart';
 class DotsAndButtonsWidget extends StatelessWidget {
   const DotsAndButtonsWidget({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<IntroCubit, IntroState>(
-      buildWhen: (IntroState previous, IntroState current) => previous.currentPage != current.currentPage,
+      buildWhen: (IntroState previous, IntroState current) =>
+          previous.currentPage != current.currentPage,
       builder: (BuildContext context, IntroState state) {
         return Column(
           children: <Widget>[
@@ -34,8 +34,11 @@ class DotsAndButtonsWidget extends StatelessWidget {
               child: Container(
                 alignment: Alignment.center,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 20),
-                  child: ButtonsWidget(currentPage: state.currentPage,)
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                  child: ButtonsWidget(
+                    currentPage: state.currentPage,
+                  ),
                 ),
               ),
             ),
@@ -44,5 +47,4 @@ class DotsAndButtonsWidget extends StatelessWidget {
       },
     );
   }
-
 }

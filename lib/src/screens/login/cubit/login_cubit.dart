@@ -15,6 +15,8 @@ class LoginCubit extends Cubit<LoginState> {
     final Email email = Email.dirty(value);
     emit(state.copyWith(
       email: email,
+
+      // ignore: always_specify_types
       status: Formz.validate([email, state.password]),
     ));
   }
@@ -23,12 +25,14 @@ class LoginCubit extends Cubit<LoginState> {
     final Password password = Password.dirty(value);
     emit(state.copyWith(
       password: password,
+      // ignore: always_specify_types
       status: Formz.validate([state.email, password]),
     ));
   }
 
   Future<void> logInWithCredentials() async {
-    if (!state.status.isValidated) return;
+    if (!state.status.isValidated)
+      return;
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
       await _authenticationRepository.logInWithEmailAndPassword(

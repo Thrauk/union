@@ -1,4 +1,3 @@
-// ignore_for_file: always_specify_types, avoid_redundant_argument_values
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,18 +6,18 @@ import 'package:union_app/src/screens/intro/intro.dart';
 class IntroPage extends StatelessWidget {
   const IntroPage({Key? key}) : super(key: key);
 
-  static const List<String> descriptionList = [
+  static const List<String> descriptionList = <String>[
     'Find a team and start working\ntogether',
     'Write or discover thousands of\narticles',
     'Find tech events happening\nnear you'
   ];
   static const int maxPageNumber = 3;
 
-  static Route route() {
+  static Route<void> route() {
     return MaterialPageRoute<void>(builder: (_) => const IntroPage());
   }
 
-  static Page page() => const MaterialPage<void>(child: IntroPage());
+  static Page<void> page() => const MaterialPage<void>(child: IntroPage());
 
   @override
   Widget build(BuildContext context) {

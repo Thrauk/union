@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, always_specify_types
+// ignore_for_file: always_specify_types, avoid_print
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,4 +1,5 @@
-import '../../models/authentication/user.dart';
+
+import 'package:union_app/src/models/models.dart';
 
 abstract class AuthenticationRepository {
   Stream<User> get user;

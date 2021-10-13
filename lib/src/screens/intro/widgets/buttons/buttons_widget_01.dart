@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_redundant_argument_values, use_named_constants
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/intro/cubit/intro_cubit.dart';

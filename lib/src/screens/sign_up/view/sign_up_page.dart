@@ -7,7 +7,7 @@ import 'package:union_app/src/screens/sign_up/view/sign_up_form.dart';
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
-  static Route route() {
+  static Route<void> route() {
     return MaterialPageRoute<void>(builder: (_) => const SignUpPage());
   }
 

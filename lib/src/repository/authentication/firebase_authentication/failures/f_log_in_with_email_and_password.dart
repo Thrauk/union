@@ -10,17 +10,14 @@ class LogInWithEmailAndPasswordFailure implements Exception {
       'wrong-password'
     ];
 
-    if(failureCodesList.contains(code)) {
+    if (failureCodesList.contains(code)) {
       return const LogInWithEmailAndPasswordFailure(
         'Email or password is incorrect.',
       );
-    }
-    else {
+    } else {
       return const LogInWithEmailAndPasswordFailure();
     }
-
   }
 
   final String message;
-
 }

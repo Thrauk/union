@@ -12,14 +12,14 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc({required AuthenticationRepository authenticationRepository})
       : _authenticationRepository = authenticationRepository,
         super(
-        authenticationRepository.currentUser.isNotEmpty
-            ? AppState.authenticated(authenticationRepository.currentUser)
-            : const AppState.unauthenticated(),
-      ) {
+          authenticationRepository.currentUser.isNotEmpty
+              ? AppState.authenticated(authenticationRepository.currentUser)
+              : const AppState.unauthenticated(),
+        ) {
     on<AppUserChanged>(_onUserChanged);
     on<AppLogoutRequested>(_onLogoutRequested);
     _userSubscription = _authenticationRepository.user.listen(
-          (User user) => add(AppUserChanged(user)),
+      (User user) => add(AppUserChanged(user)),
     );
   }
 

@@ -49,6 +49,7 @@ class _IntroDescriptionText extends StatelessWidget {
   const _IntroDescriptionText({required this.currentPage});
 
   final int currentPage;
+
   @override
   Widget build(BuildContext context) {
     return Padding(

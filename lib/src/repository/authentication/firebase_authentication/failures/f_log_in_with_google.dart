@@ -3,8 +3,6 @@ class LogInWithGoogleFailure implements Exception {
     this.message = 'An unknown exception occurred.',
   ]);
 
-  /// Create an authentication message
-  /// from a firebase authentication exception code.
   factory LogInWithGoogleFailure.fromCode(String code) {
     switch (code) {
       case 'account-exists-with-different-credential':
@@ -14,10 +12,6 @@ class LogInWithGoogleFailure implements Exception {
       case 'invalid-credential':
         return const LogInWithGoogleFailure(
           'The credential received is malformed or has expired.',
-        );
-      case 'operation-not-allowed':
-        return const LogInWithGoogleFailure(
-          'Operation is not allowed.  Please contact support.',
         );
       case 'user-disabled':
         return const LogInWithGoogleFailure(
@@ -44,6 +38,5 @@ class LogInWithGoogleFailure implements Exception {
     }
   }
 
-  /// The associated error message.
   final String message;
 }

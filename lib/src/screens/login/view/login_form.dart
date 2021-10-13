@@ -11,7 +11,7 @@ class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
-      listener: (context, state) {
+      listener: (BuildContext context, LoginState state) {
         if (state.status.isSubmissionFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -27,8 +27,7 @@ class LoginForm extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
-
+            children: <Widget>[
               const SizedBox(height: 16),
               _EmailInput(),
               const SizedBox(height: 8),
@@ -51,11 +50,13 @@ class _EmailInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
-      buildWhen: (previous, current) => previous.email != current.email,
-      builder: (context, state) {
+      buildWhen: (LoginState previous, LoginState current) =>
+          previous.email != current.email,
+      builder: (BuildContext context, LoginState state) {
         return TextField(
           key: const Key('loginForm_emailInput_textField'),
-          onChanged: (email) => context.read<LoginCubit>().emailChanged(email),
+          onChanged: (String email) =>
+              context.read<LoginCubit>().emailChanged(email),
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             labelText: 'email',
@@ -72,11 +73,12 @@ class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
-      buildWhen: (previous, current) => previous.password != current.password,
-      builder: (context, state) {
+      buildWhen: (LoginState previous, LoginState current) =>
+          previous.password != current.password,
+      builder: (BuildContext context, LoginState state) {
         return TextField(
           key: const Key('loginForm_passwordInput_textField'),
-          onChanged: (password) =>
+          onChanged: (String password) =>
               context.read<LoginCubit>().passwordChanged(password),
           obscureText: true,
           decoration: InputDecoration(
@@ -94,23 +96,24 @@ class _LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
-      buildWhen: (previous, current) => previous.status != current.status,
-      builder: (context, state) {
+      buildWhen: (LoginState previous, LoginState current) =>
+          previous.status != current.status,
+      builder: (BuildContext context, LoginState state) {
         return state.status.isSubmissionInProgress
             ? const CircularProgressIndicator()
             : ElevatedButton(
-          key: const Key('loginForm_continue_raisedButton'),
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-            primary: const Color(0xFFFFD600),
-          ),
-          onPressed: state.status.isValidated
-              ? () => context.read<LoginCubit>().logInWithCredentials()
-              : null,
-          child: const Text('LOGIN'),
-        );
+                key: const Key('loginForm_continue_raisedButton'),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  primary: const Color(0xFFFFD600),
+                ),
+                onPressed: state.status.isValidated
+                    ? () => context.read<LoginCubit>().logInWithCredentials()
+                    : null,
+                child: const Text('LOGIN'),
+              );
       },
     );
   }
@@ -119,7 +122,7 @@ class _LoginButton extends StatelessWidget {
 class _GoogleLoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     return ElevatedButton.icon(
       key: const Key('loginForm_googleLogin_raisedButton'),
       label: const Text(
@@ -141,7 +144,7 @@ class _GoogleLoginButton extends StatelessWidget {
 class _SignUpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     return TextButton(
       key: const Key('loginForm_createAccount_flatButton'),
       onPressed: () => Navigator.of(context).push<void>(SignUpPage.route()),

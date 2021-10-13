@@ -6,8 +6,7 @@ class ButtonsWidget02 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-      },
+      onPressed: () {},
       style: ElevatedButton.styleFrom(
           primary: const Color.fromRGBO(169, 223, 216, 1),
           onSurface: Colors.transparent,
@@ -26,5 +25,4 @@ class ButtonsWidget02 extends StatelessWidget {
       ),
     );
   }
-
 }
