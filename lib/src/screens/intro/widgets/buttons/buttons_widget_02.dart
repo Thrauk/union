@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ButtonsWidget02 extends StatelessWidget {
+  const ButtonsWidget02({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -10,10 +12,10 @@ class ButtonsWidget02 extends StatelessWidget {
           primary: const Color.fromRGBO(169, 223, 216, 1),
           onSurface: Colors.transparent,
           shadowColor: Colors.transparent,
-          side: BorderSide(
-              width: 2.0, color: const Color.fromRGBO(169, 223, 216, 1)),
-          minimumSize: Size(double.infinity, double.infinity)),
-      child: Text(
+          side: const BorderSide(
+              width: 2.0, color: Color.fromRGBO(169, 223, 216, 1)),
+          minimumSize: const Size(double.infinity, double.infinity)),
+      child: const Text(
         'Get started',
         style: TextStyle(
           color: Color.fromRGBO(18, 18, 18, 1),

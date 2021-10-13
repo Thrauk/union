@@ -17,6 +17,5 @@ class AppState extends Equatable {
   final User user;
 
   @override
-  // TODO: implement props
-  List<Object> get props => [status, user];
+  List<Object> get props => <Object>[status, user];
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: always_specify_types, avoid_redundant_argument_values
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/intro/intro.dart';
@@ -8,7 +10,7 @@ class IntroPage extends StatelessWidget {
   static const List<String> descriptionList = [
     'Find a team and start working\ntogether',
     'Write or discover thousands of\narticles',
-    'Find tech events happening\near you'
+    'Find tech events happening\nnear you'
   ];
   static const int maxPageNumber = 3;
 
@@ -55,7 +57,7 @@ class _Intro extends StatelessWidget {
                       flex: 1,
                       child: Container(
                         alignment: Alignment.bottomCenter,
-                        child: Text(
+                        child: const Text(
                           'Union',
                           style: TextStyle(
                               fontFamily: 'LatoBlack',
@@ -64,7 +66,7 @@ class _Intro extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Expanded(
+                    const Expanded(
                       flex: 5,
                       child: ImageAndTextWidget(),
                     )
@@ -76,9 +78,9 @@ class _Intro extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Container(
-              color: Color.fromRGBO(18, 18, 18, 1),
+              color: const Color.fromRGBO(18, 18, 18, 1),
               width: double.infinity,
-              child: DotsAndButtonsWidget(),
+              child: const DotsAndButtonsWidget(),
             ),
           ),
         ],

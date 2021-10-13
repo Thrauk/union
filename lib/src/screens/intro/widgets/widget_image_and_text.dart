@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/intro/intro.dart';
 
 class ImageAndTextWidget extends StatelessWidget {
+  const ImageAndTextWidget({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<IntroCubit, IntroState>(
-      buildWhen: (previous, current) =>
+      buildWhen: (IntroState previous, IntroState current) =>
           previous.currentPage != current.currentPage,
-      builder: (context, state) {
+      builder: (BuildContext context, IntroState state) {
         return Column(
           children: <Widget>[
             Expanded(
@@ -55,7 +57,7 @@ class _IntroDescriptionText extends StatelessWidget {
         alignment: Alignment.topLeft,
         child: Text(
           IntroPage.descriptionList[currentPage],
-          style: TextStyle(
+          style: const TextStyle(
               fontFamily: 'LatoBold',
               fontWeight: FontWeight.w700,
               fontSize: 23),

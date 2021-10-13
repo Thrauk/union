@@ -1,3 +1,3 @@
-export 'view/intro_page.dart';
 export 'cubit/intro_cubit.dart';
+export 'view/view.dart';
 export 'widgets/widgets.dart';

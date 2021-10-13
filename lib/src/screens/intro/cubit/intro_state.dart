@@ -13,14 +13,14 @@ class IntroState extends Equatable {
   final int maxPageNumber;
 
   @override
-  List<Object> get props => [currentPage];
+  List<Object> get props => <Object>[currentPage];
 
   IntroState copyWith({
    int? currentPage,
   }) {
     return IntroState(
       currentPage: currentPage ?? this.currentPage,
-      maxPageNumber: this.maxPageNumber,
+      maxPageNumber: maxPageNumber,
     );
   }
 

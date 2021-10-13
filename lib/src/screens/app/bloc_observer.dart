@@ -1,5 +1,6 @@
-// ignore_for_file: avoid_print
-import 'package:bloc/bloc.dart';
+// ignore_for_file: avoid_print, always_specify_types
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override

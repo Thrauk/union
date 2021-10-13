@@ -1,3 +1,5 @@
+// ignore_for_file: always_specify_types
+
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
@@ -21,7 +23,7 @@ class User extends Equatable {
   final String? photo;
 
   /// Empty user which represents an unauthenticated user.
-  static const empty = User(id: '');
+  static const User empty = User(id: '');
 
   /// Convenience getter to determine whether the current user is empty.
   bool get isEmpty => this == User.empty;

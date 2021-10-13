@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:union_app/src/repository/authentication/authentication.dart';
-import 'package:union_app/src/models/models.dart';
 
+import '../../../models/models.dart';
+import '../authentication.dart';
 import 'failures/failures.dart';
 
 class FirebaseAuthRepository implements AuthenticationRepository {
@@ -20,6 +20,7 @@ class FirebaseAuthRepository implements AuthenticationRepository {
   @override
   Future<void> logOut() async {
     try {
+      // ignore: always_specify_types
       await Future.wait([
         _firebaseAuth.signOut(),
         _googleSignIn.signOut(),
@@ -62,14 +63,14 @@ class FirebaseAuthRepository implements AuthenticationRepository {
     try {
       late final firebase_auth.AuthCredential credential;
       if (isWeb) {
-        final googleProvider = firebase_auth.GoogleAuthProvider();
-        final userCredential = await _firebaseAuth.signInWithPopup(
+        final firebase_auth.GoogleAuthProvider googleProvider = firebase_auth.GoogleAuthProvider();
+        final firebase_auth.UserCredential userCredential = await _firebaseAuth.signInWithPopup(
           googleProvider,
         );
         credential = userCredential.credential!;
       } else {
-        final googleUser = await _googleSignIn.signIn();
-        final googleAuth = await googleUser!.authentication;
+        final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+        final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
         credential = firebase_auth.GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
@@ -100,16 +101,16 @@ class FirebaseAuthRepository implements AuthenticationRepository {
 
   @override
   Stream<User> get user {
-    return _firebaseAuth.authStateChanges().map((firebaseUser) {
-      final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
+    return _firebaseAuth.authStateChanges().map((firebase_auth.User? firebaseUser) {
+      final User user = firebaseUser == null ? User.empty : firebaseUser.toUser;
       return user;
     });
   }
 
   @override
   User get currentUser {
-    final firebaseUser = _firebaseAuth.currentUser;
-    final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
+    final firebase_auth.User? firebaseUser = _firebaseAuth.currentUser;
+    final User user = firebaseUser == null ? User.empty : firebaseUser.toUser;
     return user;
 }
 

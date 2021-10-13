@@ -1,3 +1,5 @@
+// ignore_for_file: always_specify_types
+
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
