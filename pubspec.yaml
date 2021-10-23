@@ -40,6 +40,7 @@ flutter:
   assets:
     - assets/
     - assets/intro_page/
+    - assets/icons/
   fonts:
     - family: Lato
       fonts:
