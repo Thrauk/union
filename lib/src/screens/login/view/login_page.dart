@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:union_app/src/repository/authentication/auth.dart';
 
 import '../login.dart';
@@ -19,7 +20,20 @@ class LoginPage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: BlocProvider<LoginCubit>(
         create: (_) => LoginCubit(context.read<AuthenticationRepository>()),
-        child: const _LoginPage(),
+        child: BlocListener<LoginCubit, LoginState>(
+            listener: (BuildContext context, LoginState state) {
+              if (state.status.isSubmissionFailure) {
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content:
+                          Text(state.errorMessage ?? 'Authentication Failure'),
+                    ),
+                  );
+              }
+            },
+            child: const _LoginPage()),
       ),
     );
   }

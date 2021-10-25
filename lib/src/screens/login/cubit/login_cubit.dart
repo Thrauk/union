@@ -15,7 +15,6 @@ class LoginCubit extends Cubit<LoginState> {
     final Email email = Email.dirty(value);
     emit(state.copyWith(
       email: email,
-
       // ignore: always_specify_types
       status: Formz.validate([email, state.password]),
     ));
