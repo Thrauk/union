@@ -12,7 +12,7 @@ class AppLogoutRequested extends AppEvent {}
 class AppUserChanged extends AppEvent {
   const AppUserChanged(this.user);
 
-  final User user;
+  final AppUser user;
 
   @override
   List<Object> get props => <Object>[user];

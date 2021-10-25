@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:union_app/src/models/models.dart';
@@ -46,14 +47,19 @@ class FirebaseAuthRepository implements AuthenticationRepository {
     }
   }
 
+
+
   @override
   Future<void> signUpWithEmailAndPassword(
       {required String email, required String password}) async {
+    UserCredential userCredential;
+
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);
     } catch (_) {
@@ -106,25 +112,25 @@ class FirebaseAuthRepository implements AuthenticationRepository {
   } */
 
   @override
-  Stream<User> get user {
+  Stream<AppUser> get user {
     return _firebaseAuth
         .authStateChanges()
         .map((firebase_auth.User? firebaseUser) {
-      final User user = firebaseUser == null ? User.empty : firebaseUser.toUser;
+      final AppUser user = firebaseUser == null ? AppUser.empty : firebaseUser.toUser;
       return user;
     });
   }
 
   @override
-  User get currentUser {
+  AppUser get currentUser {
     final firebase_auth.User? firebaseUser = _firebaseAuth.currentUser;
-    final User user = firebaseUser == null ? User.empty : firebaseUser.toUser;
+    final AppUser user = firebaseUser == null ? AppUser.empty : firebaseUser.toUser;
     return user;
   }
 }
 
 extension on firebase_auth.User {
-  User get toUser {
-    return User(id: uid, email: email, name: displayName, photo: photoURL);
+  AppUser get toUser {
+    return AppUser(id: uid, email: email, name: displayName, photo: photoURL);
   }
 }

@@ -2,9 +2,9 @@
 import 'package:union_app/src/models/models.dart';
 
 abstract class AuthenticationRepository {
-  Stream<User> get user;
+  Stream<AppUser> get user;
 
-  User get currentUser;
+  AppUser get currentUser;
 
   Future<void> logInWithGoogle();
 

@@ -19,12 +19,12 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<AppUserChanged>(_onUserChanged);
     on<AppLogoutRequested>(_onLogoutRequested);
     _userSubscription = _authenticationRepository.user.listen(
-      (User user) => add(AppUserChanged(user)),
+      (AppUser user) => add(AppUserChanged(user)),
     );
   }
 
   final AuthenticationRepository _authenticationRepository;
-  late final StreamSubscription<User> _userSubscription;
+  late final StreamSubscription<AppUser> _userSubscription;
 
   void _onUserChanged(AppUserChanged event, Emitter<AppState> emit) {
     emit(event.user.isNotEmpty
