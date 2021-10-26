@@ -13,12 +13,15 @@ class LoginButtonWidget extends StatelessWidget {
         context.read<LoginCubit>().logInWithCredentials();
       },
       style: ElevatedButton.styleFrom(
-          primary: const Color.fromRGBO(169, 223, 216, 1),
-          onSurface: Colors.transparent,
-          shadowColor: Colors.transparent,
-          side: const BorderSide(
-              width: 2.0, color: Color.fromRGBO(169, 223, 216, 1)),
-          minimumSize: const Size(double.infinity, 0)),
+        primary: const Color.fromRGBO(169, 223, 216, 1),
+        onSurface: Colors.transparent,
+        shadowColor: Colors.transparent,
+        side: const BorderSide(
+          width: 2.0,
+          color: Color.fromRGBO(169, 223, 216, 1),
+        ),
+        minimumSize: const Size(double.infinity, 0),
+      ),
       child: const Text(
         'Log In',
         style: TextStyle(

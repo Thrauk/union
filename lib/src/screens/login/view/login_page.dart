@@ -125,9 +125,9 @@ class _LoginPage extends StatelessWidget {
                         const Expanded(
                           child: PasswordInputWidget(),
                         ),
-                        Expanded(
+                        const Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            padding: EdgeInsets.symmetric(vertical: 14),
                             child: LoginButtonWidget(),
                           ),
                         ),

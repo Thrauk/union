@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/authentication/auth.dart';
+import 'package:union_app/src/repository/storage/firebase_storage/firebase_storage_repository.dart';
 
 import 'failures/failures.dart';
 
@@ -11,11 +12,14 @@ class FirebaseAuthRepository implements AuthenticationRepository {
   FirebaseAuthRepository({
     firebase_auth.FirebaseAuth? firebaseAuth,
     GoogleSignIn? googleSignIn,
+    required FirebaseStorageRepository storageRepository,
   })  : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
+        _googleSignIn = googleSignIn ?? GoogleSignIn.standard(),
+        _storageRepository = storageRepository;
 
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
+  final FirebaseStorageRepository _storageRepository;
   bool isWeb = kIsWeb;
 
   @override
@@ -47,12 +51,11 @@ class FirebaseAuthRepository implements AuthenticationRepository {
     }
   }
 
-
-
   @override
   Future<void> signUpWithEmailAndPassword(
       {required String email, required String password}) async {
     UserCredential userCredential;
+    AppUser appUser;
 
     try {
       userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
@@ -60,6 +63,13 @@ class FirebaseAuthRepository implements AuthenticationRepository {
         password: password,
       );
 
+      // TODO(implement): save user details
+      appUser = AppUser(
+          id: userCredential.user!.uid,
+          email: userCredential.user!.email,
+          name: userCredential.user!.displayName);
+
+      _storageRepository.userService.saveUserAuthDetails(appUser);
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);
     } catch (_) {
@@ -116,7 +126,8 @@ class FirebaseAuthRepository implements AuthenticationRepository {
     return _firebaseAuth
         .authStateChanges()
         .map((firebase_auth.User? firebaseUser) {
-      final AppUser user = firebaseUser == null ? AppUser.empty : firebaseUser.toUser;
+      final AppUser user =
+          firebaseUser == null ? AppUser.empty : firebaseUser.toUser;
       return user;
     });
   }
@@ -124,7 +135,8 @@ class FirebaseAuthRepository implements AuthenticationRepository {
   @override
   AppUser get currentUser {
     final firebase_auth.User? firebaseUser = _firebaseAuth.currentUser;
-    final AppUser user = firebaseUser == null ? AppUser.empty : firebaseUser.toUser;
+    final AppUser user =
+        firebaseUser == null ? AppUser.empty : firebaseUser.toUser;
     return user;
   }
 }
