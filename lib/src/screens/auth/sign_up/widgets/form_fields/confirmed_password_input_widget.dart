@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:union_app/src/screens/sign_up/cubit/sign_up_cubit.dart';
+import 'package:union_app/src/screens/auth/sign_up/sign_up.dart';
 
 class ConfirmPasswordInputWidget extends StatelessWidget {
   const ConfirmPasswordInputWidget({Key? key}) : super(key: key);
@@ -9,14 +9,17 @@ class ConfirmPasswordInputWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (SignUpState previous, SignUpState current) =>
-      previous.password != current.password ||
+          previous.password != current.password ||
           previous.confirmedPassword != current.confirmedPassword,
       builder: (BuildContext context, SignUpState state) {
         return TextField(
-          key: const Key('signUpForm_confirmedPasswordInput_textField'),
+          style: const TextStyle(
+            color: Color.fromRGBO(255, 255, 255, 0.8),
+          ),
           onChanged: (String confirmPassword) => context
               .read<SignUpCubit>()
               .confirmedPasswordChanged(confirmPassword),
+          cursorColor: const Color.fromRGBO(169, 223, 216, 1),
           obscureText: true,
           decoration: InputDecoration(
             labelText: 'Confirm password',

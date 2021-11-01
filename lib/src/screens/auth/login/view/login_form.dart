@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:formz/formz.dart';
-import 'package:union_app/src/screens/login/cubit/login_cubit.dart';
-import 'package:union_app/src/screens/sign_up/sign_up.dart';
+import 'package:union_app/src/screens/auth/login/login.dart';
+import 'package:union_app/src/screens/auth/sign_up/sign_up.dart';
+
 
 class LoginForm extends StatelessWidget {
   const LoginForm({Key? key}) : super(key: key);

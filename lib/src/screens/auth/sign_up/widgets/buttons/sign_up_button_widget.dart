@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:union_app/src/screens/sign_up/cubit/sign_up_cubit.dart';
+import 'package:union_app/src/screens/auth/sign_up/sign_up.dart';
 
 class SignUpButtonWidget extends StatelessWidget {
   const SignUpButtonWidget({Key? key}) : super(key: key);
@@ -15,17 +15,18 @@ class SignUpButtonWidget extends StatelessWidget {
         return state.status.isSubmissionInProgress
             ? const CircularProgressIndicator()
             : ElevatedButton(
-                key: const Key('signUpForm_continue_raisedButton'),
-                onPressed: state.status.isValidated
-                    ? () => context.read<SignUpCubit>().signUpFormSubmitted()
-                    : null,
+                onPressed: () =>
+                    context.read<SignUpCubit>().signUpFormSubmitted(),
                 style: ElevatedButton.styleFrom(
-                    primary: const Color.fromRGBO(169, 223, 216, 1),
-                    onSurface: Colors.transparent,
-                    shadowColor: Colors.transparent,
-                    side: const BorderSide(
-                        width: 2.0, color: Color.fromRGBO(169, 223, 216, 1)),
-                    minimumSize: const Size(double.infinity, 0)),
+                  primary: const Color.fromRGBO(169, 223, 216, 1),
+                  onSurface: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                  side: const BorderSide(
+                    width: 2.0,
+                    color: Color.fromRGBO(169, 223, 216, 1),
+                  ),
+                  minimumSize: const Size(double.infinity, 42),
+                ),
                 child: const Text(
                   'Sign Up',
                   style: TextStyle(

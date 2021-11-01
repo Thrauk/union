@@ -14,11 +14,11 @@ class PasswordInputWidget extends StatelessWidget {
       builder: (BuildContext context, LoginState state) {
         return TextField(
           style: const TextStyle(
-            color: Color.fromRGBO(169, 223, 216, 1),
+            color: Color.fromRGBO(255, 255, 255, 0.8),
           ),
           onChanged: (String password) =>
               context.read<LoginCubit>().passwordChanged(password),
-          cursorColor: Color.fromRGBO(169, 223, 216, 1),
+          cursorColor: const Color.fromRGBO(169, 223, 216, 1),
           obscureText: true,
           decoration: InputDecoration(
               labelText: 'Password',

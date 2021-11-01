@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:union_app/src/screens/login/cubit/login_cubit.dart';
+import 'package:union_app/src/screens/auth/login/login.dart';
 
 class LoginButtonWidget extends StatelessWidget {
   const LoginButtonWidget({Key? key}) : super(key: key);

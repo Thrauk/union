@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:union_app/src/repository/authentication/auth.dart';
+import 'package:union_app/src/screens/auth/login/widgets/form_fields/email_input_widget.dart';
+import 'package:union_app/src/screens/auth/login/widgets/form_fields/form_fields.dart';
+import 'package:union_app/src/screens/auth/sign_up/view/sign_up_page.dart';
+import 'package:union_app/src/screens/auth/widgets/auth_option/auth_options.dart';
+import 'package:union_app/src/screens/auth/widgets/design/design.dart';
 
 import '../login.dart';
 
@@ -94,8 +99,8 @@ class _LoginPage extends StatelessWidget {
                                 ),
                               ),
                               Row(
-                                children: const <Widget>[
-                                  Text(
+                                children: <Widget>[
+                                  const Text(
                                     " Don't have an account?",
                                     style: TextStyle(
                                       fontFamily: 'LatoBold',
@@ -103,12 +108,16 @@ class _LoginPage extends StatelessWidget {
                                       color: Color.fromRGBO(255, 255, 255, 0.7),
                                     ),
                                   ),
-                                  Text(
-                                    ' Sign Up',
-                                    style: TextStyle(
-                                      fontFamily: 'LatoBold',
-                                      fontSize: 16,
-                                      color: Color.fromRGBO(169, 223, 216, 1),
+                                  GestureDetector(
+                                    onTap: () => Navigator.of(context)
+                                        .push<void>(SignUpPage.route()),
+                                    child: const Text(
+                                      ' Sign Up',
+                                      style: TextStyle(
+                                        fontFamily: 'LatoBold',
+                                        fontSize: 16,
+                                        color: Color.fromRGBO(169, 223, 216, 1),
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -132,13 +141,14 @@ class _LoginPage extends StatelessWidget {
                           ),
                         ),
                         const Flexible(
-                            flex: 1,
-                            child: Text(
-                              'Forgot password?',
-                              style: TextStyle(
-                                color: Color.fromRGBO(255, 255, 255, 0.7),
-                              ),
-                            )),
+                          flex: 1,
+                          child: Text(
+                            'Forgot password?',
+                            style: TextStyle(
+                              color: Color.fromRGBO(255, 255, 255, 0.7),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -153,7 +163,7 @@ class _LoginPage extends StatelessWidget {
                 DividerWidget(),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.0),
-                  child: SocialLoginWidget(),
+                  child: SocialAuthWidget(type: SocialAuthType.Login),
                 ),
               ],
             ),

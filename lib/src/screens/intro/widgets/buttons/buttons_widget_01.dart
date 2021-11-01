@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:union_app/src/screens/auth/sign_up/view/view.dart';
 import 'package:union_app/src/screens/intro/cubit/intro_cubit.dart';
 
 class ButtonsWidget01 extends StatelessWidget {
@@ -13,7 +14,9 @@ class ButtonsWidget01 extends StatelessWidget {
         Expanded(
           flex: 1,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push<void>(SignUpPage.route());
+            },
             style: ElevatedButton.styleFrom(
                 primary: Colors.transparent,
                 onSurface: Colors.transparent,

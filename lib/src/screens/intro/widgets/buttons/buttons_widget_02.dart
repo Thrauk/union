@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:union_app/src/screens/login/login.dart';
-import 'package:union_app/src/screens/sign_up/sign_up.dart';
+import 'package:union_app/src/screens/auth/sign_up/sign_up.dart';
 
 class ButtonsWidget02 extends StatelessWidget {
   const ButtonsWidget02({Key? key}) : super(key: key);

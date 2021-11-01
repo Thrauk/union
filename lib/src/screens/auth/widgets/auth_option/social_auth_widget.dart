@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:union_app/src/screens/auth/login/cubit/login_cubit.dart';
 
-import '../../login.dart';
+enum SocialAuthType { SignUp, Login }
 
-class SocialLoginWidget extends StatelessWidget {
-  const SocialLoginWidget({Key? key}) : super(key: key);
+class SocialAuthWidget extends StatelessWidget {
+  const SocialAuthWidget({Key? key, required this.type}) : super(key: key);
+
+  final SocialAuthType type;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +16,11 @@ class SocialLoginWidget extends StatelessWidget {
       children: <Widget>[
         GestureDetector(
           onTap: () {
-            context.read<LoginCubit>().logInWithGoogle();
+            if (type == SocialAuthType.Login) {
+              context.read<LoginCubit>().logInWithGoogle();
+            } else if (type == SocialAuthType.SignUp) {
+              // TODO(SignUp): SignUp with Google.
+            }
           },
           child: const Image(
             image: AssetImage('assets/icons/google_icon.png'),
