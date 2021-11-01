@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:union_app/src/models/form_inputs/name.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/authentication/auth.dart';
 
@@ -20,8 +21,25 @@ class SignUpCubit extends Cubit<SignUpState> {
           // ignore: always_specify_types
           [
             email,
+            state.name,
             state.password,
-            state.confirmedPassword,
+          ],
+        ),
+      ),
+    );
+  }
+
+  void nameChanged(String value) {
+    final Name name = Name.dirty(value);
+    emit(
+      state.copyWith(
+        name: name,
+        status: Formz.validate(
+          // ignore: always_specify_types
+          [
+            state.email,
+            name,
+            state.password,
           ],
         ),
       ),
@@ -30,43 +48,23 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   void passwordChanged(String value) {
     final Password password = Password.dirty(value);
-    final ConfirmedPassword confirmedPassword = ConfirmedPassword.dirty(
-      password: password.value,
-      value: state.confirmedPassword.value,
-    );
     emit(
       state.copyWith(
         password: password,
-        confirmedPassword: confirmedPassword,
         status: Formz.validate(
           // ignore: always_specify_types
           [
             state.email,
             password,
-            confirmedPassword,
           ],
         ),
       ),
     );
   }
 
-  void confirmedPasswordChanged(String value) {
-    final ConfirmedPassword confirmedPassword = ConfirmedPassword.dirty(
-      password: state.password.value,
-      value: value,
-    );
+  void showPasswordChanged() {
     emit(
-      state.copyWith(
-        confirmedPassword: confirmedPassword,
-        status: Formz.validate(
-          // ignore: always_specify_types
-          [
-            state.email,
-            state.password,
-            confirmedPassword,
-          ],
-        ),
-      ),
+      state.copyWith(showPassword: !state.showPassword),
     );
   }
 
@@ -78,6 +76,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     try {
       await _authenticationRepository.signUpWithEmailAndPassword(
         email: state.email.value,
+        name: state.name.value,
         password: state.password.value,
       );
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
@@ -88,6 +87,21 @@ class SignUpCubit extends Cubit<SignUpState> {
           status: FormzStatus.submissionFailure,
         ),
       );
+    } catch (_) {
+      emit(state.copyWith(status: FormzStatus.submissionFailure));
+    }
+  }
+
+  Future<void> logInWithGoogle() async {
+    emit(state.copyWith(status: FormzStatus.submissionInProgress));
+    try {
+      await _authenticationRepository.logInWithGoogle();
+      emit(state.copyWith(status: FormzStatus.submissionSuccess));
+    } on LogInWithGoogleFailure catch (e) {
+      emit(state.copyWith(
+        errorMessage: e.message,
+        status: FormzStatus.submissionFailure,
+      ));
     } catch (_) {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
     }

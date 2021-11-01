@@ -13,7 +13,9 @@ class SignUpButtonWidget extends StatelessWidget {
           previous.status != current.status,
       builder: (BuildContext context, SignUpState state) {
         return state.status.isSubmissionInProgress
-            ? const CircularProgressIndicator()
+            ? const CircularProgressIndicator(
+                color: Color.fromRGBO(169, 223, 216, 1),
+              )
             : ElevatedButton(
                 onPressed: () =>
                     context.read<SignUpCubit>().signUpFormSubmitted(),
@@ -25,7 +27,7 @@ class SignUpButtonWidget extends StatelessWidget {
                     width: 2.0,
                     color: Color.fromRGBO(169, 223, 216, 1),
                   ),
-                  minimumSize: const Size(double.infinity, 42),
+                  minimumSize: const Size(double.infinity, 48),
                 ),
                 child: const Text(
                   'Sign Up',

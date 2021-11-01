@@ -9,6 +9,10 @@ import 'package:union_app/src/screens/home/widgets/widgets.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
+  static Route<void> route() {
+    return MaterialPageRoute<void>(builder: (_) => const HomePage());
+  }
+
   static Page page() => const MaterialPage<void>(child: HomePage());
 
   @override

@@ -8,7 +8,7 @@ abstract class AuthenticationRepository {
 
   Future<void> logInWithGoogle();
 
-  Future<void> signUpWithEmailAndPassword({required String email, required String password});
+  Future<void> signUpWithEmailAndPassword({required String email, required String password, required String name});
 
   Future<void> logInWithEmailAndPassword({required String email, required String password});
 

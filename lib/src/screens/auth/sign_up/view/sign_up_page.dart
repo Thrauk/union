@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:union_app/src/repository/authentication/auth.dart';
 import 'package:union_app/src/screens/auth/login/view/login_page.dart';
+import 'package:union_app/src/screens/auth/sign_up/sign_up.dart';
+import 'package:union_app/src/screens/auth/sign_up/widgets/form_fields/name_input_widget.dart';
 import 'package:union_app/src/screens/auth/widgets/auth_option/auth_options.dart';
 import 'package:union_app/src/screens/auth/widgets/design/design.dart';
+import 'package:union_app/src/screens/home/home.dart';
 
-import '../sign_up.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -23,7 +26,23 @@ class SignUpPage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: BlocProvider<SignUpCubit>(
         create: (_) => SignUpCubit(context.read<AuthenticationRepository>()),
-        child: const _SignUpPage(),
+        child: BlocListener<SignUpCubit, SignUpState>(
+            listener: (BuildContext context, SignUpState state) {
+              if (state.status.isSubmissionFailure) {
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content:
+                          Text(state.errorMessage ?? 'Authentication Failure'),
+                    ),
+                  );
+              } else if (state.status.isSubmissionSuccess) {
+                Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                    HomePage.route(), (Route<dynamic> route) => false);
+              }
+            },
+            child: const _SignUpPage()),
       ),
     );
   }
@@ -51,6 +70,7 @@ class _SignUpPage extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(height: 16),
             Column(
               children: <Widget>[
                 Column(
@@ -98,8 +118,10 @@ class _SignUpPage extends StatelessWidget {
                   height: 20,
                 ),
                 const EmailInputWidget(),
+                const SizedBox(height: 6),
+                const NameInputWidget(),
+                const SizedBox(height: 6),
                 const PasswordInputWidget(),
-                const ConfirmPasswordInputWidget(),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 14),
                   child: SignUpButtonWidget(),
@@ -107,14 +129,39 @@ class _SignUpPage extends StatelessWidget {
               ],
             ),
             Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const <Widget>[
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'By clicking register you agree with our',
+                    style: TextStyle(
+                        fontFamily: 'Lato',
+                        color: Colors.white70,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  'Terms and Conditions',
+                  style: TextStyle(
+                      fontFamily: 'Lato',
+                      color: Color.fromRGBO(169, 223, 216, 1),
+                      fontWeight: FontWeight.w700),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Column(
               children: const <Widget>[
                 DividerWidget(),
                 Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                    child: SocialAuthWidget(type: SocialAuthType.SignUp),
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  child: SocialAuthWidget(type: SocialAuthType.SignUp),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

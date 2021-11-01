@@ -9,7 +9,7 @@ class EmailInputWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (SignUpState previous, SignUpState current) =>
-      previous.email != current.email,
+          previous.email != current.email,
       builder: (BuildContext context, SignUpState state) {
         return TextField(
           style: const TextStyle(

@@ -20,7 +20,8 @@ class LoginButtonWidget extends StatelessWidget {
           width: 2.0,
           color: Color.fromRGBO(169, 223, 216, 1),
         ),
-        minimumSize: const Size(double.infinity, 0),
+        maximumSize: const Size(double.infinity, 48),
+        minimumSize: const Size(double.infinity, 48),
       ),
       child: const Text(
         'Log In',

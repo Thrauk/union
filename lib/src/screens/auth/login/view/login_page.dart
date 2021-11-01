@@ -7,6 +7,7 @@ import 'package:union_app/src/screens/auth/login/widgets/form_fields/form_fields
 import 'package:union_app/src/screens/auth/sign_up/view/sign_up_page.dart';
 import 'package:union_app/src/screens/auth/widgets/auth_option/auth_options.dart';
 import 'package:union_app/src/screens/auth/widgets/design/design.dart';
+import 'package:union_app/src/screens/home/home.dart';
 
 import '../login.dart';
 
@@ -36,6 +37,9 @@ class LoginPage extends StatelessWidget {
                           Text(state.errorMessage ?? 'Authentication Failure'),
                     ),
                   );
+              } else if (state.status.isSubmissionSuccess) {
+                Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                    HomePage.route(), (Route<dynamic> route) => false);
               }
             },
             child: const _LoginPage()),
@@ -131,6 +135,7 @@ class _LoginPage extends StatelessWidget {
                         const Expanded(
                           child: EmailInputWidget(),
                         ),
+                        const SizedBox(height: 6),
                         const Expanded(
                           child: PasswordInputWidget(),
                         ),

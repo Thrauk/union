@@ -53,7 +53,7 @@ class FirebaseAuthRepository implements AuthenticationRepository {
 
   @override
   Future<void> signUpWithEmailAndPassword(
-      {required String email, required String password}) async {
+      {required String email, required String password, required String name}) async {
     UserCredential userCredential;
     AppUser appUser;
 
@@ -67,7 +67,7 @@ class FirebaseAuthRepository implements AuthenticationRepository {
       appUser = AppUser(
           id: userCredential.user!.uid,
           email: userCredential.user!.email,
-          name: userCredential.user!.displayName);
+          name: name);
 
       _storageRepository.userService.saveUserAuthDetails(appUser);
     } on firebase_auth.FirebaseAuthException catch (e) {
