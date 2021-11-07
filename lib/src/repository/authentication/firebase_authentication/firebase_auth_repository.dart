@@ -63,7 +63,6 @@ class FirebaseAuthRepository implements AuthenticationRepository {
         password: password,
       );
 
-      // TODO(implement): save user details
       appUser = AppUser(
           id: userCredential.user!.uid,
           email: userCredential.user!.email,

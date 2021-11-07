@@ -12,10 +12,9 @@ class Avatar extends StatelessWidget {
     final String? photo = this.photo;
     return CircleAvatar(
       radius: _avatarSize,
+      backgroundColor: Theme.of(context).primaryColor,
       backgroundImage: photo != null ? NetworkImage(photo) : null,
-      child: photo == null
-          ? const Icon(Icons.person_outline, size: _avatarSize)
-          : null,
+      child: photo == null ? const Icon(Icons.person, size: _avatarSize) : null,
     );
   }
 }

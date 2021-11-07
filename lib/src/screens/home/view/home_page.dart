@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/authentication/app_user.dart';
 import 'package:union_app/src/screens/app/bloc/app_bloc.dart';
 import 'package:union_app/src/screens/home/widgets/widgets.dart';
+import 'package:union_app/src/screens/widgets/app_drawer.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,6 +21,7 @@ class HomePage extends StatelessWidget {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final AppUser user = context.select((AppBloc bloc) => bloc.state.user);
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(
         title: const Text('Home'),
         actions: <Widget>[
