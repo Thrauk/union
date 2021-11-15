@@ -1,10 +1,8 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/authentication/auth.dart';
-import 'package:union_app/src/screens/auth/sign_up/sign_up.dart';
 
 part 'login_state.dart';
 
@@ -32,8 +30,7 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> logInWithCredentials() async {
-    if (!state.status.isValidated)
-      return;
+    if (!state.status.isValidated) return;
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
       await _authenticationRepository.logInWithEmailAndPassword(
@@ -64,5 +61,11 @@ class LoginCubit extends Cubit<LoginState> {
     } catch (_) {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
     }
+  }
+
+  void hidePasswordChanged() {
+    emit(
+      state.copyWith(showPassword: !state.hidePassword),
+    );
   }
 }

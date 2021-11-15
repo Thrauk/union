@@ -1,7 +1,5 @@
 part of 'sign_up_cubit.dart';
 
-enum ConfirmPasswordValidationError { invalid }
-
 class SignUpState extends Equatable {
   const SignUpState({
     this.email = const Email.pure(),
@@ -9,7 +7,7 @@ class SignUpState extends Equatable {
     this.password = const Password.pure(),
     this.status = FormzStatus.pure,
     this.errorMessage,
-    this.showPassword = false,
+    this.hidePassword = true,
   });
 
   final Email email;
@@ -17,17 +15,16 @@ class SignUpState extends Equatable {
   final Password password;
   final FormzStatus status;
   final String? errorMessage;
-  final bool showPassword;
+  final bool hidePassword;
 
   @override
   List<Object> get props =>
-      <Object>[email, name, password, status, showPassword];
+      <Object>[email, name, password, status, hidePassword];
 
   SignUpState copyWith({
     Email? email,
     Name? name,
     Password? password,
-    ConfirmedPassword? confirmedPassword,
     FormzStatus? status,
     String? errorMessage,
     bool? showPassword,
@@ -38,6 +35,6 @@ class SignUpState extends Equatable {
         password: password ?? this.password,
         status: status ?? this.status,
         errorMessage: errorMessage ?? this.errorMessage,
-        showPassword: showPassword ?? this.showPassword);
+        hidePassword: showPassword ?? this.hidePassword);
   }
 }

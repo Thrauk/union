@@ -5,20 +5,20 @@ class AppUser extends Equatable {
   const AppUser({
     required this.id,
     this.email,
-    this.name,
+    this.displayName,
     this.photo,
   });
 
   AppUser.fromJson(Map<String, dynamic> json)
       : photo = json['photo'] as String?,
         id = json['id'] as String,
-        name = json['name'] as String,
+        displayName = json['displayName'] as String,
         email = json['email'] as String;
 
   Map<String, dynamic> toJson() => {
     'id' : id,
     'email': email,
-    'name': name,
+    'displayName': displayName,
     'photo' : photo,
   };
 
@@ -26,7 +26,7 @@ class AppUser extends Equatable {
 
   final String id;
 
-  final String? name;
+  final String? displayName;
 
   final String? photo;
 
@@ -37,5 +37,5 @@ class AppUser extends Equatable {
   bool get isNotEmpty => this != AppUser.empty;
 
   @override
-  List<Object?> get props => <Object?>[email, id, name, photo];
+  List<Object?> get props => <Object?>[email, id, displayName, photo];
 }

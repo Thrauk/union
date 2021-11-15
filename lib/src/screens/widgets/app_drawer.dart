@@ -18,7 +18,7 @@ class AppDrawer extends StatelessWidget {
             currentAccountPictureSize: const Size(100, 100),
             currentAccountPicture: Avatar(photo: user.photo),
             accountName: context.select(
-              (AppBloc bloc) => Text(user.name ?? ''),
+              (AppBloc bloc) => Text(user.displayName ?? ''),
             ),
             accountEmail: context.select(
               (AppBloc bloc) => Text(user.email ?? ''),

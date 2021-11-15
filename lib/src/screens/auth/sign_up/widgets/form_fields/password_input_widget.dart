@@ -10,7 +10,7 @@ class PasswordInputWidget extends StatelessWidget {
     return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (SignUpState previous, SignUpState current) =>
           (previous.password != current.password) ||
-          (previous.showPassword != current.showPassword),
+          (previous.hidePassword != current.hidePassword),
       builder: (BuildContext context, SignUpState state) {
         return TextField(
           style: const TextStyle(
@@ -19,7 +19,7 @@ class PasswordInputWidget extends StatelessWidget {
           onChanged: (String password) =>
               context.read<SignUpCubit>().passwordChanged(password),
           cursorColor: const Color.fromRGBO(169, 223, 216, 1),
-          obscureText: state.showPassword,
+          obscureText: state.hidePassword,
           decoration: InputDecoration(
             suffixIcon: IconButton(
               icon: const Icon(
@@ -27,7 +27,7 @@ class PasswordInputWidget extends StatelessWidget {
                 color: Color.fromRGBO(255, 255, 255, 0.8),
               ),
               onPressed: () {
-                context.read<SignUpCubit>().showPasswordChanged();
+                context.read<SignUpCubit>().hidePasswordChanged();
               },
             ),
             labelText: 'Password',

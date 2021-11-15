@@ -62,9 +62,9 @@ class SignUpCubit extends Cubit<SignUpState> {
     );
   }
 
-  void showPasswordChanged() {
+  void hidePasswordChanged() {
     emit(
-      state.copyWith(showPassword: !state.showPassword),
+      state.copyWith(showPassword: !state.hidePassword),
     );
   }
 
