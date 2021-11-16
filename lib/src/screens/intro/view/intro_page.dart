@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/intro/intro.dart';
+import 'package:union_app/src/theme.dart';
 
 class IntroPage extends StatelessWidget {
   const IntroPage({Key? key}) : super(key: key);
@@ -32,7 +33,7 @@ class _Intro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(169, 223, 216, 1),
+      backgroundColor: AppColors.primaryColor,
       body: Column(
         children: <Widget>[
           Expanded(

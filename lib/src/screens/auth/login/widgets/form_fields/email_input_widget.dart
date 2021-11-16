@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:union_app/src/screens/auth/login/login.dart';
+import 'package:union_app/src/theme.dart';
 
-import '../../login.dart';
 
 class EmailInputWidget extends StatelessWidget {
   const EmailInputWidget({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class EmailInputWidget extends StatelessWidget {
           ),
           onChanged: (String email) =>
               context.read<LoginCubit>().emailChanged(email),
-          cursorColor: const Color.fromRGBO(169, 223, 216, 1),
+          cursorColor: AppColors.primaryColor,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             labelText: 'E-mail',

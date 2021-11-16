@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:union_app/src/screens/auth/sign_up/sign_up.dart';
+import 'package:union_app/src/theme.dart';
 
 class ButtonsWidget02 extends StatelessWidget {
   const ButtonsWidget02({Key? key}) : super(key: key);
@@ -9,11 +10,12 @@ class ButtonsWidget02 extends StatelessWidget {
     return ElevatedButton(
       onPressed: () => Navigator.of(context).push<void>(SignUpPage.route()),
       style: ElevatedButton.styleFrom(
-          primary: const Color.fromRGBO(169, 223, 216, 1),
+          primary: AppColors.primaryColor,
           onSurface: Colors.transparent,
           shadowColor: Colors.transparent,
           side: const BorderSide(
-              width: 2.0, color: Color.fromRGBO(169, 223, 216, 1),
+            width: 2.0,
+            color: AppColors.primaryColor,
           ),
           minimumSize: const Size(double.infinity, double.infinity)),
       child: const Text(

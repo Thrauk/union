@@ -21,10 +21,10 @@ final ThemeData theme = ThemeData(
         fontFamily: 'Lato'
     ),
   ),
-  canvasColor: const Color.fromRGBO(18, 18, 18, 1),
+  canvasColor: const Color.fromRGBO(66, 33, 33, 1),
   inputDecorationTheme: InputDecorationTheme(
     labelStyle: const TextStyle(
-      color: Color.fromRGBO(169, 223, 216, 1),
+      color: AppColors.primaryColor,
     ),
     hintStyle: const TextStyle(
       color: Color.fromRGBO(255, 255, 255, 0.7)
@@ -44,3 +44,12 @@ final ThemeData theme = ThemeData(
     ),
   ),
 );
+
+class AppColors {
+  static const Color primaryColor = Color.fromRGBO(169, 223, 216, 1);
+  static const Color accentColor = Color.fromRGBO(215, 223, 113, 1);
+  static const Color backgroundLight = Color.fromRGBO(33, 33, 33, 1);
+  static const Color backgroundDark = Color.fromRGBO(18, 18, 18, 1);
+
+  static const Color white07 = Color.fromRGBO(255, 255, 255, 0.7);
+}

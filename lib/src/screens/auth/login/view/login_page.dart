@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:union_app/src/repository/authentication/auth.dart';
+import 'package:union_app/src/screens/auth/login/login.dart';
 import 'package:union_app/src/screens/auth/login/widgets/form_fields/email_input_widget.dart';
 import 'package:union_app/src/screens/auth/login/widgets/form_fields/form_fields.dart';
 import 'package:union_app/src/screens/auth/sign_up/view/sign_up_page.dart';
 import 'package:union_app/src/screens/auth/widgets/auth_option/auth_options.dart';
 import 'package:union_app/src/screens/auth/widgets/design/design.dart';
 import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/theme.dart';
 
-import '../login.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -71,7 +72,7 @@ class _LoginPage extends StatelessWidget {
                         fontFamily: 'LatoBlack',
                         fontWeight: FontWeight.w900,
                         fontSize: 26,
-                        color: Color.fromRGBO(169, 223, 216, 1),
+                        color: AppColors.primaryColor,
                       ),
                     ),
                   ),
@@ -120,7 +121,7 @@ class _LoginPage extends StatelessWidget {
                                       style: TextStyle(
                                         fontFamily: 'LatoBold',
                                         fontSize: 16,
-                                        color: Color.fromRGBO(169, 223, 216, 1),
+                                        color: AppColors.primaryColor,
                                       ),
                                     ),
                                   ),

@@ -9,6 +9,7 @@ import 'package:union_app/src/screens/auth/sign_up/widgets/form_fields/name_inpu
 import 'package:union_app/src/screens/auth/widgets/auth_option/auth_options.dart';
 import 'package:union_app/src/screens/auth/widgets/design/design.dart';
 import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/theme.dart';
 
 
 class SignUpPage extends StatelessWidget {
@@ -66,7 +67,7 @@ class _SignUpPage extends StatelessWidget {
                   fontFamily: 'LatoBlack',
                   fontWeight: FontWeight.w900,
                   fontSize: 26,
-                  color: Color.fromRGBO(169, 223, 216, 1),
+                  color: AppColors.primaryColor,
                 ),
               ),
             ),
@@ -106,7 +107,7 @@ class _SignUpPage extends StatelessWidget {
                             style: TextStyle(
                               fontFamily: 'LatoBold',
                               fontSize: 16,
-                              color: Color.fromRGBO(169, 223, 216, 1),
+                              color: AppColors.primaryColor,
                             ),
                           ),
                         ),
@@ -147,7 +148,7 @@ class _SignUpPage extends StatelessWidget {
                   'Terms and Conditions',
                   style: TextStyle(
                       fontFamily: 'Lato',
-                      color: Color.fromRGBO(169, 223, 216, 1),
+                      color: AppColors.primaryColor,
                       fontWeight: FontWeight.w700),
                 ),
               ],

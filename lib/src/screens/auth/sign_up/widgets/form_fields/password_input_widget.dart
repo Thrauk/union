@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/auth/sign_up/sign_up.dart';
+import 'package:union_app/src/theme.dart';
 
 class PasswordInputWidget extends StatelessWidget {
   const PasswordInputWidget({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class PasswordInputWidget extends StatelessWidget {
           ),
           onChanged: (String password) =>
               context.read<SignUpCubit>().passwordChanged(password),
-          cursorColor: const Color.fromRGBO(169, 223, 216, 1),
+          cursorColor: AppColors.primaryColor,
           obscureText: state.hidePassword,
           decoration: InputDecoration(
             suffixIcon: IconButton(
