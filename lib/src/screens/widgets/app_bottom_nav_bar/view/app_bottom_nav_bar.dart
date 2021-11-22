@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:union_app/src/screens/project/create_project/create_project.dart';
 import 'package:union_app/src/screens/widgets/app_bottom_nav_bar/app_bottom_nav_bar.dart';
 import 'package:union_app/src/theme.dart';
 
@@ -43,7 +44,10 @@ class _AppBottomNavBar extends StatelessWidget {
             BottomNavigationBarItem(
               label: 'Add',
               icon: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  // for test
+                  Navigator.of(context).push(CreateProjectPage.route());
+                },
                 style: ElevatedButton.styleFrom(
                     primary: AppColors.primaryColor,
                     shape: const CircleBorder()),
