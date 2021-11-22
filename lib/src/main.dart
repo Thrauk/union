@@ -7,7 +7,6 @@ import 'repository/authentication/auth.dart';
 import 'screens/app/app.dart';
 
 Future<void> main() async {
-  Bloc.observer = AppBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 

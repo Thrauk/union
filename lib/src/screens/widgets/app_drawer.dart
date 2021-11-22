@@ -52,12 +52,15 @@ class AppDrawer extends StatelessWidget {
             ),
             title: Text('Settings'),
           ),
-          const ListTile(
-            leading: Icon(
-              Icons.logout,
-              color: Colors.white70,
+          GestureDetector(
+            onTap: () => context.read<AppBloc>().add(AppLogoutRequested()),
+            child: const ListTile(
+              leading: Icon(
+                Icons.logout,
+                color: Colors.white70,
+              ),
+              title: Text('Log Out'),
             ),
-            title: Text('Log Out'),
           ),
         ],
       ),

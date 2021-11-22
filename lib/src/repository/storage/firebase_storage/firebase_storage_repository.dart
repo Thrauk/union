@@ -1,5 +1,5 @@
-import 'package:union_app/src/repository/storage/firebase_storage/user_service.dart';
+import 'package:union_app/src/repository/storage/storage.dart';
 
 class FirebaseStorageRepository {
-  final UserService userService = UserService();
+  final FirebaseUserServiceRepository userService = FirebaseUserServiceRepository();
 }

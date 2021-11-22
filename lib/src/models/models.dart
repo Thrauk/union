@@ -2,3 +2,4 @@ library models;
 
 export 'authentication/authentication.dart';
 export 'form_inputs/form_inputs.dart';
+export 'user_models/user_models.dart';
