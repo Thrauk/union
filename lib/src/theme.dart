@@ -21,7 +21,7 @@ final ThemeData theme = ThemeData(
         fontFamily: 'Lato'
     ),
   ),
-  canvasColor: const Color.fromRGBO(66, 33, 33, 1),
+  canvasColor: const Color.fromRGBO(18, 18, 18, 1),
   inputDecorationTheme: InputDecorationTheme(
     labelStyle: const TextStyle(
       color: AppColors.primaryColor,

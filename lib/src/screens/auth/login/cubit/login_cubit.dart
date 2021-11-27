@@ -65,7 +65,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   void hidePasswordChanged() {
     emit(
-      state.copyWith(showPassword: !state.hidePassword),
+      state.copyWith(hidePassword: !state.hidePassword),
     );
   }
 }

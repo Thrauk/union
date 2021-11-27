@@ -1,4 +1,3 @@
-
 import 'package:union_app/src/models/models.dart';
 
 abstract class AuthenticationRepository {
@@ -8,10 +7,11 @@ abstract class AuthenticationRepository {
 
   Future<void> logInWithGoogle();
 
-  Future<void> signUpWithEmailAndPassword({required String email, required String password, required String name});
+  Future<void> signUpWithEmailAndPassword(
+      {required String email, required String password, required String name});
 
-  Future<void> logInWithEmailAndPassword({required String email, required String password});
+  Future<void> logInWithEmailAndPassword(
+      {required String email, required String password});
 
   Future<void> logOut();
-
 }

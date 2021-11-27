@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:union_app/src/screens/project/project.dart';
 import 'package:union_app/src/theme.dart';
 
 class TitleInputWidget extends StatelessWidget {
@@ -6,16 +8,24 @@ class TitleInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const TextField(
-      style: TextStyle(
-        color: Color.fromRGBO(255, 255, 255, 0.8),
-      ),
-      cursorColor: AppColors.primaryColor,
-      decoration: InputDecoration(
-        labelText: 'Title *',
-        helperText: '',
-        errorText: null,
-      ),
+    return BlocBuilder<CreateProjectCubit, CreateProjectState>(
+      buildWhen: (CreateProjectState previous, CreateProjectState current) =>
+          previous.title != current.title,
+      builder: (BuildContext context, CreateProjectState state) {
+        return TextField(
+          onChanged: (String title) =>
+              context.read<CreateProjectCubit>().titleChanged(title),
+          style: const TextStyle(
+            color: Color.fromRGBO(255, 255, 255, 0.8),
+          ),
+          cursorColor: AppColors.primaryColor,
+          decoration: InputDecoration(
+            labelText: 'Title *',
+            helperText: '',
+            errorText: state.title.invalid ? 'Invalid title' : null,
+          ),
+        );
+      },
     );
   }
 }

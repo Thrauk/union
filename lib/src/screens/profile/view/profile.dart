@@ -5,6 +5,7 @@ import 'package:union_app/src/repository/storage/firebase_user_service/firebase_
 import 'package:union_app/src/screens/app/bloc/app_bloc.dart';
 import 'package:union_app/src/screens/home/widgets/widgets.dart';
 import 'package:union_app/src/screens/profile/profile.dart';
+import 'package:union_app/src/screens/widgets/app_bottom_nav_bar/app_bottom_nav_bar.dart';
 import 'package:union_app/src/screens/widgets/app_drawer.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -26,11 +27,12 @@ class ProfilePage extends StatelessWidget {
     final AppUser user = context.select((AppBloc bloc) => bloc.state.user);
     String uid = context.select((AppBloc bloc) => bloc.state.user.id);
     return Scaffold(
+      bottomNavigationBar: const AppBottomNavBar(),
       drawer: const AppDrawer(),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
-        leading: SizedBox(width: 25),
+        leading: const SizedBox(width: 25),
         title: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Container(

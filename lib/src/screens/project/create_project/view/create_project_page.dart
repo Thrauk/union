@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/project/create_project/create_project.dart';
 
 class CreateProjectPage extends StatelessWidget {
@@ -11,22 +12,29 @@ class CreateProjectPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: const <Widget>[
-            SizedBox(height: 48),
-            GithubButtonWidget(),
-            SizedBox(height: 24),
-            TitleInputWidget(),
-            SizedBox(height: 8),
-            ShortDescriptionInputWidget(),
-            SizedBox(height: 8),
-            DetailsInputWidget(),
-            SizedBox(height: 16),
-            CreateButtonWidget(),
-          ],
+    return BlocProvider<CreateProjectCubit>(
+      create: (BuildContext context) => CreateProjectCubit(),
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: const <Widget>[
+                SizedBox(height: 48),
+                GithubButtonWidget(),
+                SizedBox(height: 24),
+                TitleInputWidget(),
+                SizedBox(height: 8),
+                ShortDescriptionInputWidget(),
+                SizedBox(height: 8),
+                DetailsInputWidget(),
+                SizedBox(height: 8),
+                TagsContainer(),
+                SizedBox(height: 16),
+                CreateButtonWidget(),
+              ],
+            ),
+          ),
         ),
       ),
     );

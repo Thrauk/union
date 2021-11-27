@@ -23,14 +23,14 @@ class LoginState extends Equatable {
     Password? password,
     FormzStatus? status,
     String? errorMessage,
-    bool? showPassword
+    bool? hidePassword
   }) {
     return LoginState(
       email: email ?? this.email,
       password: password ?? this.password,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
-      hidePassword: showPassword ?? this.hidePassword,
+      hidePassword: hidePassword ?? this.hidePassword,
     );
   }
 }
