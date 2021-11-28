@@ -8,13 +8,13 @@ class TitleInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateProjectCubit, CreateProjectState>(
+    return BlocBuilder<CreateProjectBloc, CreateProjectState>(
       buildWhen: (CreateProjectState previous, CreateProjectState current) =>
           previous.title != current.title,
       builder: (BuildContext context, CreateProjectState state) {
         return TextField(
           onChanged: (String title) =>
-              context.read<CreateProjectCubit>().titleChanged(title),
+              context.read<CreateProjectBloc>().add(TitleChanged(title)),
           style: const TextStyle(
             color: Color.fromRGBO(255, 255, 255, 0.8),
           ),

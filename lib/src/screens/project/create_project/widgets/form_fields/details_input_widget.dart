@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:union_app/src/screens/project/create_project/create_project.dart';
+import 'package:union_app/src/screens/project/create_project/bloc/bloc.dart';
 import 'package:union_app/src/theme.dart';
 
 class DetailsInputWidget extends StatelessWidget {
@@ -8,7 +8,7 @@ class DetailsInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateProjectCubit, CreateProjectState>(
+    return BlocBuilder<CreateProjectBloc, CreateProjectState>(
       buildWhen: (CreateProjectState previous, CreateProjectState current) =>
           previous.details != current.details,
       builder: (BuildContext context, CreateProjectState state) {
@@ -20,7 +20,7 @@ class DetailsInputWidget extends StatelessWidget {
             color: AppColors.white07,
           ),
           onChanged: (String details) =>
-              context.read<CreateProjectCubit>().detailsChanged(details),
+              context.read<CreateProjectBloc>().add(DetailsChanged(details)),
           cursorColor: AppColors.primaryColor,
           decoration: InputDecoration(
             labelText: 'Details *',

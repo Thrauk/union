@@ -8,7 +8,7 @@ class ShortDescriptionInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateProjectCubit, CreateProjectState>(
+    return BlocBuilder<CreateProjectBloc, CreateProjectState>(
       buildWhen: (CreateProjectState previous, CreateProjectState current) =>
           previous.shortDescription != current.shortDescription,
       builder: (BuildContext context, CreateProjectState state) {
@@ -19,8 +19,8 @@ class ShortDescriptionInputWidget extends StatelessWidget {
             color: AppColors.white07,
           ),
           onChanged: (String shortDescription) => context
-              .read<CreateProjectCubit>()
-              .shortDescriptionChanged(shortDescription),
+              .read<CreateProjectBloc>()
+              .add(ShortDescriptionChanged(shortDescription)),
           cursorColor: AppColors.primaryColor,
           decoration: InputDecoration(
             labelText: 'Short description *',

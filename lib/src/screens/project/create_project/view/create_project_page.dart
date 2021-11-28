@@ -12,8 +12,8 @@ class CreateProjectPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<CreateProjectCubit>(
-      create: (BuildContext context) => CreateProjectCubit(),
+    return BlocProvider<CreateProjectBloc>(
+      create: (BuildContext context) => CreateProjectBloc(),
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.all(16.0),

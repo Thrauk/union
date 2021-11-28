@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/form_inputs/tag_name.dart';
-import 'package:union_app/src/screens/project/create_project/create_project.dart';
+import 'package:union_app/src/screens/project/create_project/bloc/create_project_bloc.dart';
 import 'package:union_app/src/theme.dart';
 
 class TagsContainer extends StatelessWidget {
@@ -9,32 +9,43 @@ class TagsContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _currentTag = '';
+    String _currentTag = '';
+    String? _errorText;
+    final TextEditingController _controller = TextEditingController();
 
-    return BlocBuilder<CreateProjectCubit, CreateProjectState>(
+    return BlocBuilder<CreateProjectBloc, CreateProjectState>(
       buildWhen: (CreateProjectState previous, CreateProjectState current) =>
-          previous.tagItems != current.tagItems,
+          (previous.tagItems.length != current.tagItems.length) ||
+          (previous.tag != current.tag),
       builder: (BuildContext context, CreateProjectState state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             TextField(
+              controller: _controller,
               style: const TextStyle(
                 color: AppColors.white07,
               ),
-              onChanged: (String val) => _currentTag = val,
+              onChanged: (String val) => {
+                _currentTag = val,
+                _errorText = state.tagItems.contains(TagName.dirty(_currentTag))
+                    ? 'Tag already added'
+                    : (TagName.dirty(_currentTag).invalid ? 'Invalid tag' : null),
+                // context.read<CreateProjectBloc>().add(TagChanged(val)),
+              },
               cursorColor: AppColors.primaryColor,
               decoration: InputDecoration(
                 labelText: 'Tag',
-                errorText:
-                    // TODO add valid condition
-                    state.tagItems.any((TagName element) => element.invalid)
-                        ? 'Invalid tag name'
-                        : null,
+                errorText: _errorText,
                 suffixIcon: GestureDetector(
-                  onTap: () => context
-                      .read<CreateProjectCubit>()
-                      .addTagPressed(_currentTag),
+                  onTap: () {
+                    _controller.clear();
+                    _errorText = null;
+                    context
+                        .read<CreateProjectBloc>()
+                        .add(AddTagButtonPressed(_currentTag));
+                    _errorText = null;
+                  },
                   child: const Icon(
                     Icons.add,
                     color: AppColors.primaryColor,
@@ -47,29 +58,10 @@ class TagsContainer extends StatelessWidget {
               spacing: 4,
               children: state.tagItems
                   .map(
-                    (TagName tag) => Chip(
-                      label: Text(
-                        tag.value,
-                        style: const TextStyle(
-                            color: AppColors.backgroundDark, fontWeight: FontWeight.w600),
-                      ),
-                      labelPadding: const EdgeInsets.symmetric(vertical: 1, horizontal: 4),
-                      avatar: GestureDetector(
-                        onTap: () => {
-                          print("E aicea"),
-                          context.read<CreateProjectCubit>().removeTagPressed(tag.value)},
-                        child: const CircleAvatar(
-                          backgroundColor: AppColors.backgroundLight,
-                          child: Icon(
-                            Icons.clear,
-                            color: AppColors.white07,
-                          ),
-                        ),
-                      ),
-                      backgroundColor: AppColors.primaryColor,
-                    ),
+                    (TagName tag) => TagItemWidget(label: tag.value),
                   )
-                  .toList(),
+                  .toList()
+                  .cast<Widget>(),
             ),
           ],
         );
@@ -91,19 +83,9 @@ class TagItemWidget extends StatelessWidget {
         style: const TextStyle(
             color: AppColors.backgroundDark, fontWeight: FontWeight.w600),
       ),
-      labelPadding: const EdgeInsets.symmetric(vertical: 1, horizontal: 4),
-      avatar: GestureDetector(
-        onTap: () => {
-          print("E aicea"),
-          context.read<CreateProjectCubit>().removeTagPressed(label)},
-        child: const CircleAvatar(
-          backgroundColor: AppColors.backgroundLight,
-          child: Icon(
-            Icons.clear,
-            color: AppColors.white07,
-          ),
-        ),
-      ),
+      labelPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+      onDeleted: () =>
+          context.read<CreateProjectBloc>().add(RemoveTagButtonPressed(label)),
       backgroundColor: AppColors.primaryColor,
     );
   }
