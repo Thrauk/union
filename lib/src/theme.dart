@@ -25,6 +25,7 @@ final ThemeData theme = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
     labelStyle: const TextStyle(
       color: AppColors.primaryColor,
+
     ),
     hintStyle: const TextStyle(
       color: Color.fromRGBO(255, 255, 255, 0.7)

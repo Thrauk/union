@@ -24,6 +24,9 @@ class FullUser extends Equatable {
         'email': email,
         'displayName': displayName,
         'photo': photo,
+        'description' : description,
+        'location' : location,
+        'jobTitle' : jobTitle,
       };
 
   final String? email;

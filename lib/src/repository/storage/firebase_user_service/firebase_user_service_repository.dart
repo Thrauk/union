@@ -31,4 +31,9 @@ class FirebaseUserServiceRepository {
       return const FullUser(id: '');
     }
   }
+
+  Future<void> updateUserDetails(FullUser user) async {
+    firestoreInstance.doc(user.id).update(user.toJson());
+  }
+
 }

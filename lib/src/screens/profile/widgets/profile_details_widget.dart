@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/profile/bloc/profile_bloc.dart';
+import 'package:union_app/src/screens/edit_profile/view/edit_profile.dart';
 
 class ProfileDetailsWidget extends StatelessWidget {
   const ProfileDetailsWidget({Key? key}) : super(key: key);
@@ -74,9 +75,14 @@ class ProfileDetailsWidget extends StatelessWidget {
             ),
             Align(
               alignment: Alignment.topRight,
-              child: Icon(
-                Icons.edit,
-                color: Color.fromRGBO(255, 255, 255, 0.7),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push<void>(EditProfilePage.route());
+                },
+                child: Icon(
+                  Icons.edit,
+                  color: Color.fromRGBO(255, 255, 255, 0.7),
+                ),
               ),
             ),
           ],
