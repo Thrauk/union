@@ -5,20 +5,26 @@ import 'package:meta/meta.dart';
 import 'package:union_app/src/models/form_inputs/project_body.dart';
 import 'package:union_app/src/models/form_inputs/project_title.dart';
 import 'package:union_app/src/models/form_inputs/tag_name.dart';
+import 'package:union_app/src/models/models.dart';
+import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
 
 part 'create_project_event.dart';
 
 part 'create_project_state.dart';
 
 class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
-  CreateProjectBloc() : super(const CreateProjectState()) {
+  CreateProjectBloc(this._projectRepository)
+      : super(const CreateProjectState()) {
     on<TitleChanged>(_titleChanged);
     on<DetailsChanged>(_detailsChanged);
     on<ShortDescriptionChanged>(_shortDescriptionChanged);
     // on<TagChanged>(_tagChanged);
     on<AddTagButtonPressed>(_addTagPressed);
     on<RemoveTagButtonPressed>(_removeTagPressed);
+    on<CreateButtonPressed>(_createButtonPressed);
   }
+
+  final FirebaseProjectRepository _projectRepository;
 
   void _titleChanged(TitleChanged event, Emitter<CreateProjectState> emit) {
     final ProjectTitle title = ProjectTitle.dirty(event.value);
@@ -58,11 +64,30 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
 
   void _removeTagPressed(
       RemoveTagButtonPressed event, Emitter<CreateProjectState> emit) {
-    print('e aicea');
-    print(state.tagItems.toList());
     final List<TagName> tagList = List.from(state.tagItems);
     tagList.removeWhere((TagName element) => element.value == event.value);
     emit(state.copyWith(tagItems: tagList));
-    print(state.tagItems.toList());
+  }
+
+  void _createButtonPressed(
+      CreateButtonPressed event, Emitter<CreateProjectState> emit) {
+    if (state.status.isValid) {
+      final List<String> tags =
+          state.tagItems.map((TagName e) => e.value).toList();
+      try {
+        final Project project = Project(
+            title: state.title.value,
+            shortDescription: state.shortDescription.value,
+            details: state.details.value,
+            tags: tags,
+            ownerId: event.ownerId);
+        _projectRepository.createProject(project);
+        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+        print(state.status);
+      } catch (_) {
+        // TODO display on screen it's submission failure
+        emit(state.copyWith(status: FormzStatus.submissionFailure));
+      }
+    }
   }
 }

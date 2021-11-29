@@ -35,5 +35,5 @@ class CreateProjectState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [title, shortDescription, details, tagItems, tag];
+  List<Object?> get props => [title, shortDescription, details, tagItems, tag, status];
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
 import 'package:union_app/src/screens/project/create_project/create_project.dart';
 
 class CreateProjectPage extends StatelessWidget {
@@ -13,7 +14,7 @@ class CreateProjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CreateProjectBloc>(
-      create: (BuildContext context) => CreateProjectBloc(),
+      create: (BuildContext context) => CreateProjectBloc(FirebaseProjectRepository()),
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.all(16.0),
