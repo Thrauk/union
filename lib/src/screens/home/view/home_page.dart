@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final AppUser user = context.select((AppBloc bloc) => bloc.state.user);
     return Scaffold(
-      bottomNavigationBar: const AppBottomNavBar(),
+      bottomNavigationBar: const CustomNavBar(),
       drawer: const AppDrawer(),
       appBar: AppBar(
         title: const Text('Home'),
