@@ -32,8 +32,17 @@ class FirebaseUserServiceRepository {
     }
   }
 
+  Future<FullUser> getFullUserByUid(String uid) async{
+    final Map<String, dynamic>? json = (await firestoreInstance.doc(uid).get()).data();
+    if(json != null) {
+      return FullUser.fromJson(json);
+    } else {
+      return const FullUser(id: '');
+    }
+  }
+
   Future<void> updateUserDetails(FullUser user) async {
-    firestoreInstance.doc(user.id).update(user.toJson());
+    await firestoreInstance.doc(user.id).update(user.toJson());
   }
 
 }

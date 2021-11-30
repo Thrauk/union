@@ -7,4 +7,42 @@ abstract class EditProfileEvent extends Equatable {
   List<Object> get props => <Object>[];
 }
 
+class LoadProfile extends EditProfileEvent{}
 
+class DisplayNameChanged extends EditProfileEvent {
+  const DisplayNameChanged({required this.value});
+
+  final String value;
+
+  @override
+  List<Object> get props => <Object>[value];
+}
+
+class JobTitleChanged extends EditProfileEvent {
+  const JobTitleChanged({required this.value});
+
+  final String value;
+
+  @override
+  List<Object> get props => <Object>[value];
+}
+
+class LocationChanged extends EditProfileEvent {
+  const LocationChanged({required this.value});
+
+  final String value;
+
+  @override
+  List<Object> get props => <Object>[value];
+}
+
+class DescriptionChanged extends EditProfileEvent {
+  const DescriptionChanged({required this.value});
+
+  final String value;
+
+  @override
+  List<Object> get props => <Object>[value];
+}
+
+class UpdateProfile extends EditProfileEvent {}

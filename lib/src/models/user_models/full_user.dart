@@ -19,15 +19,38 @@ class FullUser extends Equatable {
         location = json['location'] as String?,
         jobTitle = json['jobTitle'] as String?;
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'email': email,
-        'displayName': displayName,
-        'photo': photo,
-        'description' : description,
-        'location' : location,
-        'jobTitle' : jobTitle,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> retJson = {
+      'id': id,
+      'email': email,
+      'displayName': displayName,
+      'photo': photo,
+      'description': description,
+      'location': location,
+      'jobTitle': jobTitle,
+    };
+    return retJson;
+  }
+
+  FullUser copyWith({
+    String? id,
+    String? email,
+    String? displayName,
+    String? photo,
+    String? description,
+    String? location,
+    String? jobTitle,
+  }) {
+    return FullUser(
+      id: id ?? this.id,
+      email: email ?? this.email,
+      displayName: displayName ?? this.displayName,
+      photo: photo ?? this.photo,
+      description: description ?? this.description,
+      location: location ?? this.location,
+      jobTitle: jobTitle ?? this.jobTitle,
+    );
+  }
 
   final String? email;
 
