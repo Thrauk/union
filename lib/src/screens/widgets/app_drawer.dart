@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/screens/app/bloc/app_bloc.dart';
 import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/screens/project/user_projects/user_projects.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -24,12 +25,19 @@ class AppDrawer extends StatelessWidget {
               (AppBloc bloc) => Text(user.email ?? ''),
             ),
           ),
-          const ListTile(
-            leading: Icon(
+          ListTile(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => UserProjectsPage(
+                          uid: context.read<AppBloc>().state.user.id)));
+            },
+            leading: const Icon(
               Icons.analytics,
               color: Colors.white70,
             ),
-            title: Text('Projects'),
+            title: const Text('Projects'),
           ),
           const ListTile(
             leading: Icon(

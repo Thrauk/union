@@ -40,7 +40,8 @@ class RemoveTagButtonPressed extends CreateProjectEvent {
 }
 
 class CreateButtonPressed extends CreateProjectEvent {
-  CreateButtonPressed(this.ownerId);
+  CreateButtonPressed(this.ownerId, this.ownerDisplayName);
 
   final String ownerId;
+  final String ownerDisplayName;
 }

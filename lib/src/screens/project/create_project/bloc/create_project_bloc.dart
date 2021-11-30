@@ -80,7 +80,8 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
             shortDescription: state.shortDescription.value,
             details: state.details.value,
             tags: tags,
-            ownerId: event.ownerId);
+            ownerId: event.ownerId,
+            );
         _projectRepository.createProject(project);
         emit(state.copyWith(status: FormzStatus.submissionSuccess));
         print(state.status);

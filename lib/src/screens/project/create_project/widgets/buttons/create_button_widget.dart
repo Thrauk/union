@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:provider/src/provider.dart';
+import 'package:union_app/src/models/authentication/app_user.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/profile/profile.dart';
 import 'package:union_app/src/screens/project/create_project/bloc/bloc.dart';
@@ -13,7 +14,7 @@ class CreateButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String userId = context.read<AppBloc>().state.user.id;
+    final AppUser user = context.read<AppBloc>().state.user;
     return BlocConsumer<CreateProjectBloc, CreateProjectState>(
       listener: (BuildContext context, CreateProjectState state) {
         if (state.status.isSubmissionSuccess) {
@@ -23,7 +24,7 @@ class CreateButtonWidget extends StatelessWidget {
       builder: (BuildContext context, CreateProjectState state) {
         return ElevatedButton(
           onPressed: () {
-            context.read<CreateProjectBloc>().add(CreateButtonPressed(userId));
+            context.read<CreateProjectBloc>().add(CreateButtonPressed(user.id, user.displayName ?? ''));
           },
           style: ElevatedButton.styleFrom(
             primary: AppColors.primaryColor,
