@@ -28,10 +28,12 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => UserProjectsPage(
-                          uid: context.read<AppBloc>().state.user.id)));
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => UserProjectsPage(
+                      uid: context.read<AppBloc>().state.user.id),
+                ),
+              );
             },
             leading: const Icon(
               Icons.analytics,

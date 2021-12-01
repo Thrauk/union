@@ -19,8 +19,7 @@ class FullUser extends Equatable {
         description = json['description'] as String?,
         location = json['location'] as String?,
         jobTitle = json['jobTitle'] as String?,
-        projectsIds = json['projects_ids']
-            as List<dynamic>;
+        projectsIds = json['projects_ids'] as List<dynamic>;
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -55,16 +54,15 @@ class FullUser extends Equatable {
 
   bool get isNotEmpty => this != FullUser.empty;
 
-  FullUser copyWith({
-    String? id,
-    String? email,
-    String? displayName,
-    String? photo,
-    String? description,
-    String? location,
-    String? jobTitle,
-    List<dynamic>? projectsIds
-  }) {
+  FullUser copyWith(
+      {String? id,
+      String? email,
+      String? displayName,
+      String? photo,
+      String? description,
+      String? location,
+      String? jobTitle,
+      List<dynamic>? projectsIds}) {
     return FullUser(
       id: id ?? this.id,
       email: email ?? this.email,
@@ -74,7 +72,6 @@ class FullUser extends Equatable {
       location: location ?? this.location,
       jobTitle: jobTitle ?? this.jobTitle,
       projectsIds: projectsIds ?? this.projectsIds,
-
     );
   }
 

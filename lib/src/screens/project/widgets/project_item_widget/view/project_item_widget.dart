@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
 import 'package:union_app/src/screens/app/app.dart';
+import 'package:union_app/src/screens/project/project_details/project_details.dart';
 import 'package:union_app/src/screens/project/widgets/project_item_widget/bloc/project_item_widget_bloc.dart';
 import 'package:union_app/src/theme.dart';
 
@@ -37,66 +38,77 @@ class _ProjectItemWidget extends StatelessWidget {
             (previous.ownerPhotoUrl != current.ownerPhotoUrl);
       },
       builder: (BuildContext context, ProjectItemWidgetState state) {
-        return Card(
-          color: AppColors.backgroundLight,
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: state.ownerPhotoUrl != ''
-                                ? NetworkImage(state.ownerPhotoUrl!)
-                                : const AssetImage('assets/icons/user.png')
-                                    as ImageProvider),
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => ProjectDetailsPage(
+                  project: project,
+                ),
+              ),
+            );
+          },
+          child: Card(
+            color: AppColors.backgroundLight,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                              fit: BoxFit.fill,
+                              image: state.ownerPhotoUrl != ''
+                                  ? NetworkImage(state.ownerPhotoUrl!)
+                                  : const AssetImage('assets/icons/user.png')
+                                      as ImageProvider),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      state.ownerDisplayName!,
-                      style: const TextStyle(
-                        fontFamily: 'Lato',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.white09,
+                      const SizedBox(width: 10),
+                      Text(
+                        state.ownerDisplayName!,
+                        style: const TextStyle(
+                          fontFamily: 'Lato',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.white09,
+                        ),
                       ),
+                      const Spacer(),
+                      const Image(
+                          image: AssetImage('assets/icons/three_dots.png'))
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    project.title!,
+                    style: const TextStyle(
+                      fontFamily: 'Lato',
+                      fontSize: 14,
+                      color: AppColors.white09,
                     ),
-                    const Spacer(),
-                    const Image(image: AssetImage('assets/icons/three_dots.png'))
-                  ],
-                ),
-                const SizedBox(
-                  height: 12
-                ),
-                Text(
-                  project.title!,
-                  style: const TextStyle(
-                    fontFamily: 'Lato',
-                    fontSize: 14,
-                    color: AppColors.white09,
                   ),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Text(
-                  project.shortDescription,
-                  style: const TextStyle(
-                    fontFamily: 'Lato',
-                    fontSize: 14,
-                    color: AppColors.white07,
+                  const SizedBox(
+                    height: 8,
                   ),
-                ),
-              ],
+                  Text(
+                    project.shortDescription,
+                    style: const TextStyle(
+                      fontFamily: 'Lato',
+                      fontSize: 14,
+                      color: AppColors.white07,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );

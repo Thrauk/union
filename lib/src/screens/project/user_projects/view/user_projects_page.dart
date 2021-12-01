@@ -7,6 +7,7 @@ import 'package:union_app/src/repository/storage/firebase_project_repository/fir
 import 'package:union_app/src/screens/project/user_projects/bloc/user_projects_page_bloc.dart';
 import 'package:union_app/src/screens/project/widgets/project_item_widget/view/project_item_widget.dart';
 import 'package:union_app/src/screens/widgets/widgets.dart';
+import 'package:union_app/src/theme.dart';
 
 class UserProjectsPage extends StatelessWidget {
   const UserProjectsPage({Key? key, required this.uid}) : super(key: key);
@@ -40,19 +41,45 @@ class _UserProjectsPage extends StatelessWidget {
       builder: (BuildContext context, UserProjectsPageState state) {
         return Column(
           children: <Widget>[
-            const SizedBox(height: 6,),
-            state.status == PageStatus.loading
-                ? const CircularProgressIndicator()
+            const SizedBox(
+              height: 6,
+            ),
+            state.status == PageStatus.loading || state.status == PageStatus.initial
+                ? const Center(child: CircularProgressIndicator(
+              color: AppColors.primaryColor,
+            ))
                 : Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: false,
-                      itemCount: state.projects.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ProjectItemWidget(
-                          project: state.projects[index],
-                        );
-                      },
-                    ),
+                    child: state.projects.isEmpty
+                        ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 34),
+                                child: Image(
+                                  image: AssetImage('assets/icons/empty.png'),
+                                ),
+                              ),
+                              SizedBox(height: 32),
+                              Text(
+                                "You haven\'t created any projects yet!",
+                                style: TextStyle(
+                                  fontFamily: 'Lato',
+                                  color: AppColors.white07,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          )
+                        : ListView.builder(
+                            shrinkWrap: false,
+                            itemCount: state.projects.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ProjectItemWidget(
+                                project: state.projects[index],
+                              );
+                            },
+                          ),
                   ),
           ],
         );

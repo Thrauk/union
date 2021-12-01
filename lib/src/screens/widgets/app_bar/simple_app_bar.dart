@@ -15,7 +15,7 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(title, style: const TextStyle(
         fontFamily: 'Lato',
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w500,
       ),),
       backgroundColor: AppColors.backgroundLight,
       elevation: 8,

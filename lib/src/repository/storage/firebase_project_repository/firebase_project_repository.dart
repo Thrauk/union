@@ -24,8 +24,10 @@ class FirebaseProjectRepository {
     try {
       var data = (await firestoreUserInstance.doc(ownerId).get()).data();
 
-      final String ownerName = data!['displayName'] != null ? data['displayName'] as String : '';
-      final String ownerPhoto = data['ownerPhoto'] != null?  data['ownerPhoto'] as String : '';
+      final String ownerName =
+          data!['displayName'] != null ? data['displayName'] as String : '';
+      final String ownerPhoto =
+          data['photo'] != null ? data['photo'] as String : '';
       print('Ownername $ownerName');
       return <String, String>{
         'owner_name': ownerName,

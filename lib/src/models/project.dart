@@ -2,12 +2,12 @@ import 'package:equatable/equatable.dart';
 
 class Project extends Equatable {
   const Project(
-      {required this.ownerId,
-      this.title,
-      required this.shortDescription,
-      required this.details,
-      this.tags,
-      this.id});
+      {this.ownerId = '',
+      this.title = '',
+      this.shortDescription = '',
+      this.details = '',
+      this.tags = const <String>[],
+      this.id = ''});
 
   Project.fromJson(Map<String, dynamic> json)
       : ownerId = json['owner_id'] as String,
@@ -32,6 +32,10 @@ class Project extends Equatable {
   final String shortDescription;
   final String details;
   final List<dynamic>? tags;
+
+  static const Project empty = Project();
+
+  bool get isEmpty => this == Project.empty;
 
   Project copyWith(
       {String? id,
