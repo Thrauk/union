@@ -13,14 +13,25 @@ class ProjectDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          PopupMenuButton<String>(
-            itemBuilder: (BuildContext context) {
-              return Choices.choices.map(
-                (String choice) {
-                  return PopupMenuItem(value: choice, child: Text(choice));
-                },
-              ).toList();
-            },
+          Theme(
+            data: Theme.of(context).copyWith(
+                cardColor: AppColors.backgroundLight1,
+                iconTheme: const IconThemeData(color: AppColors.white09),
+            ),
+            child: PopupMenuButton<String>(
+              itemBuilder: (BuildContext context) {
+                return Choices.choices.map(
+                  (String choice) {
+                    return PopupMenuItem<String>(
+                        value: choice,
+                        child: Text(
+                          choice,
+                          style: const TextStyle(color: AppColors.white09),
+                        ));
+                  },
+                ).toList();
+              },
+            ),
           )
         ],
         backgroundColor: AppColors.backgroundLight,
