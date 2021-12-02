@@ -20,6 +20,17 @@ class FirebaseProjectRepository {
     firestoreProjectsDocument.set(projectToSave.toJson());
   }
 
+  void deleteProject(Project project) {
+    try {
+      firestoreProjectsCollection.doc(project.id).delete();
+      firestoreProjectsCollection.doc(project.ownerId).update({
+        'projects_ids': FieldValue.arrayRemove([project.id])
+      });
+    } catch (e) {
+      print('deleteProject $e');
+    }
+  }
+
   Future<Map<String, String>?> getProjectUserDetails(String ownerId) async {
     try {
       var data = (await firestoreUserInstance.doc(ownerId).get()).data();

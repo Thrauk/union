@@ -15,19 +15,21 @@ class ProjectDetailsPage extends StatelessWidget {
         actions: [
           Theme(
             data: Theme.of(context).copyWith(
-                cardColor: AppColors.backgroundLight1,
-                iconTheme: const IconThemeData(color: AppColors.white09),
+              cardColor: AppColors.backgroundLight1,
+              iconTheme: const IconThemeData(color: AppColors.white09),
             ),
             child: PopupMenuButton<String>(
+              onSelected: (String choice) => manageChoices(choice, context),
               itemBuilder: (BuildContext context) {
                 return Choices.choices.map(
                   (String choice) {
                     return PopupMenuItem<String>(
-                        value: choice,
-                        child: Text(
-                          choice,
-                          style: const TextStyle(color: AppColors.white09),
-                        ));
+                      value: choice,
+                      child: Text(
+                        choice,
+                        style: const TextStyle(color: AppColors.white09),
+                      ),
+                    );
                   },
                 ).toList();
               },
@@ -100,6 +102,56 @@ class TagWidget extends StatelessWidget {
       backgroundColor: AppColors.primaryColor,
     );
   }
+}
+
+void manageChoices(String choice, BuildContext context) {
+  if (choice == Choices.delete) {
+    showDeleteDialog(context);
+  }
+}
+
+void showDeleteDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) => Center(
+      child: AlertDialog(
+        elevation: 20,
+        actionsPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        actions: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+
+              primary: AppColors.primaryColor,
+            ),
+            onPressed: () {},
+            child: Text(
+              'Yes',
+              style: AppStyles.textStyleBody.merge(
+                const TextStyle(
+                    color: AppColors.backgroundLight,
+                    fontWeight: FontWeight.w700),
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+          GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Text(
+              'No',
+              style: AppStyles.textStyleBody.merge(
+                const TextStyle(color: AppColors.redLight),
+              ),
+            ),
+          ),
+        ],
+        backgroundColor: AppColors.backgroundLight,
+        title: const Text('Hold on!', style: AppStyles.textStyleHeading1),
+        content: const Text('Are you sure you want to delete this project?',
+            style: AppStyles.textStyleBody),
+      ),
+    ),
+  );
 }
 
 class Choices {
