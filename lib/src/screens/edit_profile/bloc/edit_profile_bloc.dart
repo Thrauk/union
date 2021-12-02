@@ -28,7 +28,6 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
   final String _uid;
 
   Future<void> _onLoadProfile(LoadProfile event, Emitter<EditProfileState> emit) async {
-    print("load profile");
     final FullUser fullUser = await _userServiceRepository.getFullUserByUid(_uid);
     emit(state.copyWith(
       fullUser: fullUser,
@@ -41,10 +40,10 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
   }
 
   void _onDisplayNameChanged(DisplayNameChanged event, Emitter<EditProfileState> emit) {
-    print("changed name");
     final DisplayName displayName = DisplayName.dirty(event.value);
     emit(state.copyWith(
       displayName: displayName,
+      status: Formz.validate([displayName, state.jobTitle, state.location, state.description]),
     ));
   }
 
@@ -52,6 +51,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     final ShortText jobTitle = ShortText.dirty(event.value);
     emit(state.copyWith(
       jobTitle: jobTitle,
+      status: Formz.validate([state.displayName, jobTitle, state.location, state.description]),
     ));
   }
 
@@ -59,6 +59,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     final ShortText location = ShortText.dirty(event.value);
     emit(state.copyWith(
       location: location,
+      status: Formz.validate([state.displayName, state.jobTitle, location, state.description]),
     ));
   }
 
@@ -66,19 +67,26 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     final LongText description = LongText.dirty(event.value);
     emit(state.copyWith(
       description: description,
+      status: Formz.validate([state.displayName, state.jobTitle, state.location, description]),
     ));
   }
 
   Future<void> _onUpdateProfile(UpdateProfile event, Emitter<EditProfileState> emit) async {
-    print("update profile");
-    await _userServiceRepository.updateUserDetails(state.fullUser.copyWith(
-      displayName: state.displayName.value,
-      jobTitle: state.jobTitle.value,
-      location: state.location.value,
-      description: state.description.value,
-    ));
-  }
+    if(state.status.isValidated) {
+      try {
+        await _userServiceRepository.updateUserDetails(state.fullUser.copyWith(
+          displayName: state.displayName.value,
+          jobTitle: state.jobTitle.value,
+          location: state.location.value,
+          description: state.description.value,
+        ));
+        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+      } catch(_) {
+        emit(state.copyWith(status: FormzStatus.submissionFailure));
+      }
 
+    }
+  }
 
 
   @override

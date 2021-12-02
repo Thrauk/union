@@ -46,3 +46,5 @@ class DescriptionChanged extends EditProfileEvent {
 }
 
 class UpdateProfile extends EditProfileEvent {}
+
+class UpdateProfileSuccess extends EditProfileEvent {}

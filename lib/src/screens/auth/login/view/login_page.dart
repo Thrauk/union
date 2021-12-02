@@ -11,7 +11,6 @@ import 'package:union_app/src/screens/auth/widgets/design/design.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/theme.dart';
 
-
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -28,22 +27,23 @@ class LoginPage extends StatelessWidget {
       body: BlocProvider<LoginCubit>(
         create: (_) => LoginCubit(context.read<AuthenticationRepository>()),
         child: BlocListener<LoginCubit, LoginState>(
-            listener: (BuildContext context, LoginState state) {
-              if (state.status.isSubmissionFailure) {
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(
-                      content:
-                          Text(state.errorMessage ?? 'Authentication Failure'),
-                    ),
-                  );
-              } else if (state.status.isSubmissionSuccess) {
-                Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-                    HomePage.route(), (Route<dynamic> route) => false);
-              }
-            },
-            child: const _LoginPage()),
+          listener: (BuildContext context, LoginState state) {
+            if (state.status.isSubmissionFailure) {
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content:
+                        Text(state.errorMessage ?? 'Authentication Failure'),
+                  ),
+                );
+            } else if (state.status.isSubmissionSuccess) {
+              Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                  HomePage.route(), (Route<dynamic> route) => false);
+            }
+          },
+          child: const _LoginPage(),
+        ),
       ),
     );
   }
