@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:union_app/src/models/models.dart';
+import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
+import 'package:union_app/src/screens/profile/profile.dart';
 import 'package:union_app/src/theme.dart';
 
 class ProjectDetailsPage extends StatelessWidget {
@@ -19,7 +21,8 @@ class ProjectDetailsPage extends StatelessWidget {
               iconTheme: const IconThemeData(color: AppColors.white09),
             ),
             child: PopupMenuButton<String>(
-              onSelected: (String choice) => manageChoices(choice, context),
+              onSelected: (String choice) =>
+                  manageChoices(choice, context, project),
               itemBuilder: (BuildContext context) {
                 return Choices.choices.map(
                   (String choice) {
@@ -104,27 +107,33 @@ class TagWidget extends StatelessWidget {
   }
 }
 
-void manageChoices(String choice, BuildContext context) {
+void manageChoices(String choice, BuildContext context, Project project) {
   if (choice == Choices.delete) {
-    showDeleteDialog(context);
+    showDeleteDialog(context, project);
   }
 }
 
-void showDeleteDialog(BuildContext context) {
+void showDeleteDialog(BuildContext context, Project project) {
   showDialog(
     context: context,
     builder: (BuildContext context) => Center(
       child: AlertDialog(
         elevation: 20,
-        actionsPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         actions: [
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-
               primary: AppColors.primaryColor,
             ),
-            onPressed: () {},
+            onPressed: () {
+              try {
+                FirebaseProjectRepository().deleteProject(project);
+                Navigator.of(context).pushAndRemoveUntil(
+                    ProfilePage.route(), (Route<dynamic> route) => false);
+              } catch (e) {
+                print('showDeleteDialog $e');
+              }
+            },
             child: Text(
               'Yes',
               style: AppStyles.textStyleBody.merge(

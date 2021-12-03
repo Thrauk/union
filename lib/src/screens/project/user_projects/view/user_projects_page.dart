@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
+import 'package:union_app/src/screens/project/create_project/create_project.dart';
 import 'package:union_app/src/screens/project/user_projects/bloc/user_projects_page_bloc.dart';
 import 'package:union_app/src/screens/project/widgets/project_item_widget/view/project_item_widget.dart';
 import 'package:union_app/src/screens/widgets/widgets.dart';
@@ -44,24 +45,26 @@ class _UserProjectsPage extends StatelessWidget {
             const SizedBox(
               height: 6,
             ),
-            state.status == PageStatus.loading || state.status == PageStatus.initial
-                ? const Center(child: CircularProgressIndicator(
-              color: AppColors.primaryColor,
-            ))
+            state.status == PageStatus.loading ||
+                    state.status == PageStatus.initial
+                ? const Center(
+                    child: CircularProgressIndicator(
+                    color: AppColors.primaryColor,
+                  ))
                 : Expanded(
                     child: state.projects.isEmpty
                         ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Padding(
+                            children: <Widget>[
+                              const Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 34),
                                 child: Image(
                                   image: AssetImage('assets/icons/empty.png'),
                                 ),
                               ),
-                              SizedBox(height: 32),
-                              Text(
+                              const SizedBox(height: 32),
+                              const Text(
                                 "You haven\'t created any projects yet!",
                                 style: TextStyle(
                                   fontFamily: 'Lato',
@@ -69,6 +72,28 @@ class _UserProjectsPage extends StatelessWidget {
                                   fontSize: 18,
                                 ),
                               ),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context, CreateProjectPage.route());
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: AppColors.primaryColor,
+                                  onSurface: Colors.transparent,
+                                  shadowColor: Colors.transparent,
+                                  side: const BorderSide(
+                                    width: 2.0,
+                                    color: AppColors.primaryColor,
+                                  ),
+                                  minimumSize:
+                                      const Size(double.minPositive, 48),
+                                ),
+                                child: const Text(
+                                  'Create a new project',
+                                  style: AppStyles.buttonTextStyle,
+                                ),
+                              )
                             ],
                           )
                         : ListView.builder(

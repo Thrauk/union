@@ -51,6 +51,13 @@ class AppStyles {
     color: AppColors.white08,
     fontSize: 16,
   );
+
+  static const TextStyle buttonTextStyle = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.w700,
+    color: AppColors.backgroundLight,
+    fontSize: 16,
+  );
 }
 
 class AppColors {
