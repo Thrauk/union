@@ -56,7 +56,7 @@ class AppStyles {
     fontFamily: 'Lato',
     fontWeight: FontWeight.w700,
     color: AppColors.backgroundLight,
-    fontSize: 16,
+    fontSize: 18,
   );
 }
 
