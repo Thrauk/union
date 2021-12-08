@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
 import 'package:union_app/src/screens/profile/profile.dart';
+import 'package:union_app/src/screens/project/edit_project/edit_project.dart';
 import 'package:union_app/src/theme.dart';
 
 class ProjectDetailsPage extends StatelessWidget {
@@ -108,8 +109,20 @@ class TagWidget extends StatelessWidget {
 }
 
 void manageChoices(String choice, BuildContext context, Project project) {
-  if (choice == Choices.delete) {
-    showDeleteDialog(context, project);
+  switch (choice) {
+    case Choices.delete:
+      showDeleteDialog(context, project);
+      break;
+    case Choices.edit:
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => EditProjectPage(
+            project: project,
+          ),
+        ),
+      );
+      break;
   }
 }
 

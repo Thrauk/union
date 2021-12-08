@@ -8,48 +8,57 @@ import 'package:union_app/src/models/form_inputs/tag_name.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
 
-part 'create_project_event.dart';
+part 'edit_project_event.dart';
 
-part 'create_project_state.dart';
+part 'edit_project_state.dart';
 
-class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
-  CreateProjectBloc(this._projectRepository)
-      : super(const CreateProjectState()) {
+class EditProjectBloc extends Bloc<EditProjectEvent, EditProjectState> {
+  EditProjectBloc(Project project, this._projectRepository)
+      : super(EditProjectState(project: project)) {
     on<TitleChanged>(_titleChanged);
     on<DetailsChanged>(_detailsChanged);
     on<ShortDescriptionChanged>(_shortDescriptionChanged);
     on<AddTagButtonPressed>(_addTagPressed);
     on<RemoveTagButtonPressed>(_removeTagPressed);
-    on<CreateButtonPressed>(_createButtonPressed);
+    on<SaveButtonPressed>(_saveButtonPressed);
   }
 
   final FirebaseProjectRepository _projectRepository;
 
-  void _titleChanged(TitleChanged event, Emitter<CreateProjectState> emit) {
+  void _titleChanged(TitleChanged event, Emitter<EditProjectState> emit) {
     final ProjectTitle title = ProjectTitle.dirty(event.value);
-    emit(state.copyWith(title: title, status: Formz.validate([title])));
+    emit(state.copyWith(
+        project: state.project.copyWith(title: event.value),
+        status: Formz.validate([title])));
   }
 
   void _shortDescriptionChanged(
-      ShortDescriptionChanged event, Emitter<CreateProjectState> emit) {
+      ShortDescriptionChanged event, Emitter<EditProjectState> emit) {
     final ProjectBody shortDescription = ProjectBody.dirty(event.value);
     emit(state.copyWith(
-        shortDescription: shortDescription,
+        project: state.project.copyWith(shortDescription: event.value),
         status: Formz.validate([shortDescription])));
   }
 
-  void _detailsChanged(DetailsChanged event, Emitter<CreateProjectState> emit) {
+  void _detailsChanged(DetailsChanged event, Emitter<EditProjectState> emit) {
     final ProjectBody details = ProjectBody.dirty(event.value);
-    emit(state.copyWith(details: details, status: Formz.validate([details])));
+    emit(state.copyWith(
+        project: state.project.copyWith(details: event.value),
+        status: Formz.validate([details])));
   }
 
   void _addTagPressed(
-      AddTagButtonPressed event, Emitter<CreateProjectState> emit) {
+      AddTagButtonPressed event, Emitter<EditProjectState> emit) {
     final TagName tag = TagName.dirty(event.value);
-    if (!Formz.validate([tag]).isInvalid && !state.tagItems.contains(tag)) {
-      final List<TagName> tagList = state.tagItems + [tag];
+    if (!Formz.validate([tag]).isInvalid &&
+        !state.project.tags!.contains(tag)) {
+      final List<TagName> tagList = state.project.tags != null
+          ? state.project.tags! + <TagName>[tag] as List<TagName>
+          : <TagName>[tag];
       emit(state.copyWith(
-          tagItems: tagList, tag: tag, status: Formz.validate([tag])));
+          project: state.project.copyWith(tags: tagList),
+          tag: tag,
+          status: Formz.validate([tag])));
     } else {
       emit(state.copyWith(tag: tag, status: Formz.validate([tag])));
     }
@@ -62,26 +71,17 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
   // }
 
   void _removeTagPressed(
-      RemoveTagButtonPressed event, Emitter<CreateProjectState> emit) {
-    final List<TagName> tagList = List.from(state.tagItems);
+      RemoveTagButtonPressed event, Emitter<EditProjectState> emit) {
+    final List<TagName> tagList = state.project.tags != null ? List.from(state.project.tags!.toList()) : List.from([]);
     tagList.removeWhere((TagName element) => element.value == event.value);
-    emit(state.copyWith(tagItems: tagList));
+    emit(state.copyWith(project: state.project.copyWith(tags: tagList)));
   }
 
-  void _createButtonPressed(
-      CreateButtonPressed event, Emitter<CreateProjectState> emit) {
+  void _saveButtonPressed(
+      SaveButtonPressed event, Emitter<EditProjectState> emit) {
     if (state.status.isValid) {
-      final List<String> tags =
-          state.tagItems.map((TagName e) => e.value).toList();
       try {
-        final Project project = Project(
-            title: state.title.value,
-            shortDescription: state.shortDescription.value,
-            details: state.details.value,
-            tags: tags,
-            ownerId: event.ownerId,
-            );
-        _projectRepository.createProject(project);
+        _projectRepository.updateProject(state.project);
         emit(state.copyWith(status: FormzStatus.submissionSuccess));
         print(state.status);
       } catch (_) {
