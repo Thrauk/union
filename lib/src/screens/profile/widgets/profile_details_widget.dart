@@ -18,7 +18,7 @@ class ProfileDetailsWidget extends StatelessWidget {
             Column(
               children: <Widget>[
                 Avatar(
-                  photo: null,
+                  photo: state.fullUser.photo,
                 ),
                 SizedBox(
                   height: 4,

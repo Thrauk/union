@@ -5,6 +5,7 @@ import 'package:union_app/src/repository/storage/firebase_user_service/firebase_
 import 'package:union_app/src/screens/app/bloc/app_bloc.dart';
 import 'package:union_app/src/screens/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:union_app/src/screens/edit_profile/widgets/buttons/buttons.dart';
+import 'package:union_app/src/screens/edit_profile/widgets/editable_avatar.dart';
 import 'package:union_app/src/screens/edit_profile/widgets/form_fields/form_fields.dart';
 import 'package:union_app/src/screens/home/widgets/widgets.dart';
 import 'package:union_app/src/screens/widgets/app_drawer.dart';
@@ -59,9 +60,14 @@ class _EditProfilePage extends StatelessWidget {
           builder: (BuildContext context, EditProfileState state) {
             return state.profileLoaded == true
                   ? Column(
-                      children: const <Widget>[
-                        Avatar(
-                          photo: null,
+                      children:  <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            context.read<EditProfileBloc>().add(SelectImage());
+                          },
+                          child: EditableAvatarWidget(
+                            photoUrl: state.photoUrl,
+                          ),
                         ),
                         SizedBox(height: 15),
                         DisplayNameInputWidget(),
