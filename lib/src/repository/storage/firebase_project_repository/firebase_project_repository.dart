@@ -19,6 +19,7 @@ class FirebaseProjectRepository {
     });
     firestoreProjectsDocument.set(projectToSave.toJson());
   }
+
   void updateProject(Project project) {
     firestoreProjectsCollection.doc(project.id).update(project.toJson());
   }
