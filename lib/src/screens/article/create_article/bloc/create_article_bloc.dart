@@ -55,6 +55,7 @@ class CreateArticleBloc extends Bloc<CreateArticleEvent, CreateArticleState> {
           body: state.body.value,
           tags: tags,
           ownerId: event.ownerId,
+          date: DateTime.now().microsecondsSinceEpoch
         );
         _articleRepository.createArticle(article);
         emit(state.copyWith(status: FormzStatus.submissionSuccess));

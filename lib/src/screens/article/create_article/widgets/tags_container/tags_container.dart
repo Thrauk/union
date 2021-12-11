@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/form_inputs/tag_name.dart';
-import 'package:union_app/src/screens/article/bloc/bloc.dart';
+import 'package:union_app/src/screens/article/create_article/bloc/bloc.dart';
 import 'package:union_app/src/theme.dart';
 
 class TagsContainer extends StatelessWidget {

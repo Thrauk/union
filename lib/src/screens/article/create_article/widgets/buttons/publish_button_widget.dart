@@ -5,7 +5,7 @@ import 'package:formz/formz.dart';
 import 'package:provider/src/provider.dart';
 import 'package:union_app/src/models/authentication/app_user.dart';
 import 'package:union_app/src/screens/app/app.dart';
-import 'package:union_app/src/screens/article/bloc/bloc.dart';
+import 'package:union_app/src/screens/article/create_article/bloc/bloc.dart';
 import 'package:union_app/src/screens/profile/profile.dart';
 import 'package:union_app/src/theme.dart';
 
