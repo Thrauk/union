@@ -4,6 +4,7 @@ import 'package:union_app/src/models/authentication/app_user.dart';
 import 'package:union_app/src/repository/storage/firebase_user/firebase_user.dart';
 import 'package:union_app/src/screens/app/bloc/app_bloc.dart';
 import 'package:union_app/src/screens/profile/profile.dart';
+import 'package:union_app/src/screens/widgets/app_bar/app_bar_with_search_bar.dart';
 import 'package:union_app/src/screens/widgets/app_bottom_nav_bar/view/custom_nav_bar.dart';
 import 'package:union_app/src/screens/widgets/app_drawer.dart';
 
@@ -28,9 +29,10 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       // floatingActionButton: const PlusButton(),
       // floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
-      bottomNavigationBar: CustomNavBar(),
+      bottomNavigationBar: const CustomNavBar(),
       drawer: const AppDrawer(),
-      appBar: AppBar(
+      appBar: const AppBarWithSearchBar(),
+      /*AppBar(
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
         leading: const SizedBox(width: 25),
@@ -50,7 +52,7 @@ class ProfilePage extends StatelessWidget {
           ),
         ),
 
-      ),
+      ),*/
       body: BlocProvider<ProfileBloc>(
         create: (_) => ProfileBloc(uid: uid, userServiceRepository: FirebaseUserRepository()),
         child: SingleChildScrollView(

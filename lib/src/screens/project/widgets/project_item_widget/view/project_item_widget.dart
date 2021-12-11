@@ -35,7 +35,8 @@ class _ProjectItemWidget extends StatelessWidget {
       buildWhen:
           (ProjectItemWidgetState previous, ProjectItemWidgetState current) {
         return (previous.ownerDisplayName != current.ownerDisplayName) ||
-            (previous.ownerPhotoUrl != current.ownerPhotoUrl);
+            (previous.ownerPhotoUrl != current.ownerPhotoUrl ||
+                previous.isExpanded != current.isExpanded);
       },
       builder: (BuildContext context, ProjectItemWidgetState state) {
         return GestureDetector(
@@ -75,6 +76,7 @@ class _ProjectItemWidget extends StatelessWidget {
                       const SizedBox(width: 10),
                       Text(
                         state.ownerDisplayName!,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontFamily: 'Lato',
                           fontSize: 16,
@@ -90,6 +92,7 @@ class _ProjectItemWidget extends StatelessWidget {
                   const SizedBox(height: 12),
                   Text(
                     project.title!,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontFamily: 'Lato',
                       fontSize: 14,
@@ -99,14 +102,27 @@ class _ProjectItemWidget extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  Text(
-                    project.shortDescription,
-                    style: const TextStyle(
-                      fontFamily: 'Lato',
-                      fontSize: 14,
-                      color: AppColors.white07,
+                  Wrap(children: [
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        minHeight: 14,
+                        maxHeight: 14 * 3,
+                      ),
+                      child: GestureDetector(
+                        child: Text(
+                          project.shortDescription,
+                          overflow: state.isExpanded == false
+                              ? TextOverflow.ellipsis
+                              : TextOverflow.visible,
+                          style: const TextStyle(
+                            fontFamily: 'Lato',
+                            fontSize: 14,
+                            color: AppColors.white07,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                  ]),
                 ],
               ),
             ),

@@ -14,3 +14,6 @@ class SetOwnerId extends ProjectItemWidgetEvent {
   final String ownerId;
 }
 
+class OnTextPressed extends ProjectItemWidgetEvent {
+  OnTextPressed();
+}

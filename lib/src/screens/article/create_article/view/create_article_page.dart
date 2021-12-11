@@ -2,10 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
-import 'package:union_app/src/screens/article/bloc/bloc.dart';
-import 'package:union_app/src/screens/article/widgets/buttons/publish_button_widget.dart';
-import 'package:union_app/src/screens/article/widgets/form_fields/body_input_widget.dart';
-import 'package:union_app/src/screens/article/widgets/tags_container/tags_container.dart';
+import 'package:union_app/src/screens/article/create_article/bloc/bloc.dart';
+import 'package:union_app/src/screens/article/create_article/widgets/widgets.dart';
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
 
 class CreateArticlePage extends StatelessWidget {
