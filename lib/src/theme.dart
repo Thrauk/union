@@ -58,6 +58,14 @@ class AppStyles {
     color: AppColors.backgroundLight,
     fontSize: 18,
   );
+
+  static const TextStyle buttonTextStylePrimaryColor = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.normal,
+    color: AppColors.primaryColor,
+    fontSize: 18,
+  );
+
 }
 
 class AppColors {

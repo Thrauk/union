@@ -15,6 +15,8 @@ class LoadProfile extends ProfileEvent {
   List<Object> get props => <Object>[uid];
 }
 
+class OwnedProfile extends ProfileEvent {}
+
 class ProfileChanged extends ProfileEvent {
   const ProfileChanged(this.user);
   final FullUser user;

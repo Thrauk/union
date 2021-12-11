@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/authentication/app_user.dart';
+import 'package:union_app/src/repository/authentication/auth.dart';
 import 'package:union_app/src/repository/storage/firebase_user/firebase_user.dart';
 import 'package:union_app/src/screens/app/bloc/app_bloc.dart';
 import 'package:union_app/src/screens/profile/profile.dart';
+import 'package:union_app/src/screens/profile/widgets/stats/profile_statistics_widget.dart';
 import 'package:union_app/src/screens/widgets/app_bottom_nav_bar/view/custom_nav_bar.dart';
 import 'package:union_app/src/screens/widgets/app_drawer.dart';
 
@@ -52,11 +54,13 @@ class ProfilePage extends StatelessWidget {
 
       ),
       body: BlocProvider<ProfileBloc>(
-        create: (_) => ProfileBloc(uid: uid, userServiceRepository: FirebaseUserRepository()),
+        create: (_) => ProfileBloc(uid: uid, userRepository: FirebaseUserRepository(), firebaseAuthRepository: context.read<AuthenticationRepository>()),
         child: SingleChildScrollView(
-          child: Align(
-            alignment: const Alignment(0, -1 / 3),
-            child: ProfileDetailsWidget(),
+          child: Column(
+            children: <Widget>[
+              ProfileDetailsWidget(),
+              ProfileStatisticsWidget(),
+            ],
           ),
         ),
       ),
