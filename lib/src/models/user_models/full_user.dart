@@ -19,7 +19,7 @@ class FullUser extends Equatable {
         description = json['description'] as String?,
         location = json['location'] as String?,
         jobTitle = json['jobTitle'] as String?,
-        projectsIds = json['projects_ids'] as List<dynamic>;
+        projectsIds = json['projects_ids'] as List<dynamic>?;
 
   Map<String, dynamic> toJson() => {
         'id': id,

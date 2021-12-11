@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
+import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/profile/profile.dart';
 import 'package:union_app/src/screens/project/edit_project/edit_project.dart';
 import 'package:union_app/src/theme.dart';
@@ -142,7 +143,7 @@ void showDeleteDialog(BuildContext context, Project project) {
               try {
                 FirebaseProjectRepository().deleteProject(project);
                 Navigator.of(context).pushAndRemoveUntil(
-                    ProfilePage.route(), (Route<dynamic> route) => false);
+                    HomePage.route(), (Route<dynamic> route) => false);
               } catch (e) {
                 print('showDeleteDialog $e');
               }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/screens/app/bloc/app_bloc.dart';
 import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/screens/profile/profile.dart';
 import 'package:union_app/src/screens/project/user_projects/user_projects.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -15,14 +16,24 @@ class AppDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          UserAccountsDrawerHeader(
-            currentAccountPictureSize: const Size(100, 100),
-            currentAccountPicture: Avatar(photo: user.photo),
-            accountName: context.select(
-              (AppBloc bloc) => Text(user.displayName ?? ''),
-            ),
-            accountEmail: context.select(
-              (AppBloc bloc) => Text(user.email ?? ''),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => ProfilePage(uid: user.id),
+                ),
+              );
+            },
+            child: UserAccountsDrawerHeader(
+              currentAccountPictureSize: const Size(100, 100),
+              currentAccountPicture: Avatar(photo: user.photo),
+              accountName: context.select(
+                (AppBloc bloc) => Text(user.displayName ?? ''),
+              ),
+              accountEmail: context.select(
+                (AppBloc bloc) => Text(user.email ?? ''),
+              ),
             ),
           ),
           ListTile(
@@ -30,8 +41,7 @@ class AppDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => UserProjectsPage(
-                      uid: context.read<AppBloc>().state.user.id),
+                  builder: (BuildContext context) => UserProjectsPage(uid: context.read<AppBloc>().state.user.id),
                 ),
               );
             },

@@ -44,7 +44,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   void _onOwnedProfile(OwnedProfile event, Emitter<ProfileState> emit) {
-    emit(state.copyWith(editable: true));
+    emit(state.copyWith(ownProfile: true));
   }
 
 

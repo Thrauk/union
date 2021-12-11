@@ -3,15 +3,15 @@ part of 'profile_bloc.dart';
 enum ProfileType { myProfile, otherProfile }
 
 class ProfileState extends Equatable {
-  const ProfileState({this.fullUser = FullUser.empty, this.editable = false});
+  const ProfileState({this.fullUser = FullUser.empty, this.ownProfile = false});
 
   final FullUser fullUser;
-  final bool editable;
+  final bool ownProfile;
 
-  ProfileState copyWith({FullUser? fullUser, bool? editable}) {
+  ProfileState copyWith({FullUser? fullUser, bool? ownProfile}) {
     return ProfileState(
       fullUser: fullUser ?? this.fullUser,
-      editable: editable ?? this.editable,
+      ownProfile: ownProfile ?? this.ownProfile,
     );
   }
 

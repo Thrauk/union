@@ -74,7 +74,7 @@ class ProfileDetailsWidget extends StatelessWidget {
                 )
               ],
             ),
-            if (state.editable) Align(
+            if (state.ownProfile) Align(
               alignment: Alignment.topRight,
               child: GestureDetector(
                 onTap: () {
