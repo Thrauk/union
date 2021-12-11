@@ -10,7 +10,7 @@ part 'profile_event.dart';
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  ProfileBloc({required FirebaseUserServiceRepository userServiceRepository,
+  ProfileBloc({required FirebaseUserRepository userServiceRepository,
   required String uid})
       : _userServiceRepository = userServiceRepository,
         _uid = uid,
@@ -22,7 +22,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     );
   }
 
-  final FirebaseUserServiceRepository _userServiceRepository;
+  final FirebaseUserRepository _userServiceRepository;
   final String _uid;
   late final StreamSubscription<FullUser> _userSubscription;
 

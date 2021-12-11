@@ -6,7 +6,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:union_app/src/models/authentication/app_user.dart';
 import 'package:union_app/src/models/models.dart';
 
-class FirebaseUserServiceRepository {
+class FirebaseUserRepository {
+
+  factory FirebaseUserRepository() {
+    return _singleton;
+  }
+
+  FirebaseUserRepository._internal();
+
+  static final FirebaseUserRepository _singleton = FirebaseUserRepository._internal();
+
+
   final CollectionReference<Map<String, dynamic>> firestoreInstance = FirebaseFirestore.instance.collection('users');
 
   final Reference storageReference = FirebaseStorage.instance.ref().child('users');

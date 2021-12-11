@@ -6,13 +6,13 @@ import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/storage/firebase_user_service/firebase_user_service.dart';
+import 'package:union_app/src/repository/storage/firebase_user/firebase_user.dart';
 
 part 'edit_profile_event.dart';
 part 'edit_profile_state.dart';
 
 class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
-  EditProfileBloc({required FirebaseUserServiceRepository userServiceRepository,
+  EditProfileBloc({required FirebaseUserRepository userServiceRepository,
     required String uid})
       : _userServiceRepository = userServiceRepository,
         _uid = uid,
@@ -27,7 +27,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     add(LoadProfile());
   }
 
-  final FirebaseUserServiceRepository _userServiceRepository;
+  final FirebaseUserRepository _userServiceRepository;
   final String _uid;
 
   Future<void> _onLoadProfile(LoadProfile event, Emitter<EditProfileState> emit) async {
