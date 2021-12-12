@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:union_app/src/models/authentication/app_user.dart';
 import 'package:union_app/src/models/models.dart';
+import 'package:union_app/src/repository/storage/firebase_user/services/follow_service.dart';
 
 class FirebaseUserRepository {
 
@@ -16,6 +17,7 @@ class FirebaseUserRepository {
 
   static final FirebaseUserRepository _singleton = FirebaseUserRepository._internal();
 
+  late final FollowService followService = FollowService();
 
   final CollectionReference<Map<String, dynamic>> firestoreInstance = FirebaseFirestore.instance.collection('users');
 

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/profile/bloc/profile_bloc.dart';
 import 'package:union_app/src/screens/edit_profile/view/edit_profile.dart';
+import 'package:union_app/src/screens/profile/widgets/follow_buttons_widget.dart';
 import 'package:union_app/src/theme.dart';
 
 class ProfileDetailsWidget extends StatelessWidget {
@@ -10,8 +11,7 @@ class ProfileDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileBloc, ProfileState>(
-        builder: (BuildContext context, ProfileState state) {
+    return BlocBuilder<ProfileBloc, ProfileState>(builder: (BuildContext context, ProfileState state) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: Stack(
@@ -37,7 +37,6 @@ class ProfileDetailsWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-
                     Text(
                       state.fullUser.location ?? 'No location',
                       style: const TextStyle(
@@ -53,7 +52,7 @@ class ProfileDetailsWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                        state.fullUser.jobTitle ?? 'No job :(',
+                      state.fullUser.jobTitle ?? 'No job :(',
                       style: const TextStyle(
                         color: AppColors.white08,
                         fontSize: 16,
@@ -74,18 +73,24 @@ class ProfileDetailsWidget extends StatelessWidget {
                 )
               ],
             ),
-            if (state.ownProfile) Align(
-              alignment: Alignment.topRight,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push<void>(EditProfilePage.route());
-                },
-                child: const Icon(
-                  Icons.edit,
-                  color: AppColors.white07,
+            if (state.ownProfile)
+              Align(
+                alignment: Alignment.topRight,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push<void>(EditProfilePage.route());
+                  },
+                  child: const Icon(
+                    Icons.edit,
+                    color: AppColors.white07,
+                  ),
                 ),
+              )
+            else
+              const Align(
+                alignment: Alignment.topRight,
+                child: FollowButtonsWidget(),
               ),
-            ),
           ],
         ),
       );

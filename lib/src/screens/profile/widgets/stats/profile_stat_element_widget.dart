@@ -41,7 +41,7 @@ class ProfileStatElementWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            data ?? '',
+            data ?? '0',
             style: AppStyles.buttonTextStylePrimaryColor,
           ),
           Text(

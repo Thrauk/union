@@ -36,7 +36,7 @@ class ProfilePage extends StatelessWidget {
             children: <Widget>[
               ProfileDetailsWidget(),
               ProfileStatisticsWidget(),
-              InteractionMenuWidget(),
+              //InteractionMenuWidget(),
               TestingProfileWidget(),
             ],
           ),

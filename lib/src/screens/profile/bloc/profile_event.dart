@@ -6,16 +6,11 @@ abstract class ProfileEvent extends Equatable {
   List<Object> get props => <Object>[];
 }
 
-class LoadProfile extends ProfileEvent {
-  const LoadProfile(this.uid);
-
-  final String uid;
-
-  @override
-  List<Object> get props => <Object>[uid];
-}
+class LoadProfile extends ProfileEvent {}
 
 class OwnedProfile extends ProfileEvent {}
+
+class FollowOrUnfollow extends ProfileEvent {}
 
 class ProfileChanged extends ProfileEvent {
   const ProfileChanged(this.user);
