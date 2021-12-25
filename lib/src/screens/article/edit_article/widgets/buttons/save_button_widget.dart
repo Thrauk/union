@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:provider/src/provider.dart';
+import 'package:union_app/src/screens/article/edit_article/bloc/edit_article_bloc.dart';
 import 'package:union_app/src/screens/home/home.dart';
-import 'package:union_app/src/screens/project/edit_project/bloc/edit_project_bloc.dart';
 import 'package:union_app/src/theme.dart';
 
 class SaveButtonWidget extends StatelessWidget {
@@ -12,16 +10,16 @@ class SaveButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<EditProjectBloc, EditProjectState>(
-      listener: (BuildContext context, EditProjectState state) {
+    return BlocConsumer<EditArticleBloc, EditArticleState>(
+      listener: (BuildContext context, EditArticleState state) {
         if (state.status.isSubmissionSuccess) {
           Navigator.of(context).push(HomePage.route());
         }
       },
-      builder: (BuildContext context, EditProjectState state) {
+      builder: (BuildContext context, EditArticleState state) {
         return ElevatedButton(
           onPressed: () {
-            context.read<EditProjectBloc>().add(SaveButtonPressed());
+            context.read<EditArticleBloc>().add(SaveButtonPressed());
           },
           style: ElevatedButton.styleFrom(
             primary: AppColors.primaryColor,

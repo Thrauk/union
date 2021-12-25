@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
 import 'package:union_app/src/screens/home/home.dart';
-import 'package:union_app/src/screens/profile/profile.dart';
 import 'package:union_app/src/screens/project/edit_project/edit_project.dart';
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
 import 'package:union_app/src/theme.dart';

@@ -21,6 +21,7 @@ class EditProjectBloc extends Bloc<EditProjectEvent, EditProjectState> {
     on<AddTagButtonPressed>(_addTagPressed);
     on<RemoveTagButtonPressed>(_removeTagPressed);
     on<SaveButtonPressed>(_saveButtonPressed);
+    on<TagChanged>(_tagChanged);
   }
 
   final FirebaseProjectRepository _projectRepository;
@@ -51,10 +52,10 @@ class EditProjectBloc extends Bloc<EditProjectEvent, EditProjectState> {
       AddTagButtonPressed event, Emitter<EditProjectState> emit) {
     final TagName tag = TagName.dirty(event.value);
     if (!Formz.validate([tag]).isInvalid &&
-        !state.project.tags!.contains(tag)) {
-      final List<TagName> tagList = state.project.tags != null
-          ? state.project.tags! + <TagName>[tag] as List<TagName>
-          : <TagName>[tag];
+        !state.project.tags!.contains(tag.value)) {
+      final List tagList = state.project.tags != null
+          ? state.project.tags! + [tag.value]
+          : [tag.value];
       emit(state.copyWith(
           project: state.project.copyWith(tags: tagList),
           tag: tag,
@@ -64,16 +65,17 @@ class EditProjectBloc extends Bloc<EditProjectEvent, EditProjectState> {
     }
   }
 
-  // void _tagChanged(TagChanged event, Emitter<CreateProjectState> emit) {
-  //   final TagName tag = TagName.dirty(event.value);
-  //   // tag.list = state.tagItems;
-  //   emit(state.copyWith(tag: tag, status: Formz.validate([tag])));
-  // }
+  void _tagChanged(TagChanged event, Emitter<EditProjectState> emit) {
+    final TagName tag = TagName.dirty(event.value);
+    emit(state.copyWith(tag: tag, status: Formz.validate([tag])));
+  }
 
   void _removeTagPressed(
       RemoveTagButtonPressed event, Emitter<EditProjectState> emit) {
-    final List<TagName> tagList = state.project.tags != null ? List.from(state.project.tags!.toList()) : List.from([]);
-    tagList.removeWhere((TagName element) => element.value == event.value);
+    final List tagList = state.project.tags != null
+        ? List.from(state.project.tags!.toList())
+        : List.from([]);
+    tagList.removeWhere((element) => element== event.value);
     emit(state.copyWith(project: state.project.copyWith(tags: tagList)));
   }
 

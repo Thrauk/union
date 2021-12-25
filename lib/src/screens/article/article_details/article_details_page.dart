@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
+import 'package:union_app/src/screens/article/edit_article/view/edit_article_page.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/theme.dart';
 
@@ -88,6 +89,14 @@ void manageChoices(String choice, BuildContext context, Article article) {
       showDeleteDialog(context, article);
       break;
     case Choices.edit:
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => EditArticlePage(
+            article: article,
+          ),
+        ),
+      );
       break;
   }
 }

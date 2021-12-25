@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/form_inputs/tag_name.dart';
-import 'package:union_app/src/screens/project/edit_project/bloc/edit_project_bloc.dart';
+import 'package:union_app/src/screens/article/edit_article/bloc/edit_article_bloc.dart';
 import 'package:union_app/src/theme.dart';
 
 class TagsContainer extends StatelessWidget {
@@ -13,11 +13,11 @@ class TagsContainer extends StatelessWidget {
     String? _errorText;
     final TextEditingController _controller = TextEditingController();
 
-    return BlocBuilder<EditProjectBloc, EditProjectState>(
-      buildWhen: (EditProjectState previous, EditProjectState current) =>
-          (previous.project.tags!.length != current.project.tags!.length) ||
+    return BlocBuilder<EditArticleBloc, EditArticleState>(
+      buildWhen: (EditArticleState previous, EditArticleState current) =>
+          (previous.article.tags!.length != current.article.tags!.length) ||
           (previous.tag != current.tag),
-      builder: (BuildContext context, EditProjectState state) {
+      builder: (BuildContext context, EditArticleState state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -27,15 +27,16 @@ class TagsContainer extends StatelessWidget {
                 color: AppColors.white07,
               ),
               onChanged: (String val) => {
-                context.read<EditProjectBloc>().add(
+                context.read<EditArticleBloc>().add(
                       TagChanged(_currentTag),
                     ),
                 _currentTag = val,
-                _errorText = state.project.tags!.contains(_currentTag)
+                _errorText = state.article.tags!.contains(_currentTag)
                     ? 'Tag already added'
                     : (TagName.dirty(_currentTag).invalid
                         ? 'Invalid tag'
                         : null),
+                // context.read<CreateProjectBloc>().add(TagChanged(val)),
               },
               cursorColor: AppColors.primaryColor,
               decoration: InputDecoration(
@@ -46,7 +47,7 @@ class TagsContainer extends StatelessWidget {
                     _controller.clear();
                     _errorText = null;
                     context
-                        .read<EditProjectBloc>()
+                        .read<EditArticleBloc>()
                         .add(AddTagButtonPressed(_currentTag));
                     _errorText = null;
                   },
@@ -60,8 +61,10 @@ class TagsContainer extends StatelessWidget {
             const SizedBox(height: 8),
             Wrap(
               spacing: 4,
-              children: state.project.tags!
-                  .map((e) => TagItemWidget(label: e as String))
+              children: state.article.tags!
+                  .map(
+                    (tag) => TagItemWidget(label: tag as String),
+                  )
                   .toList()
                   .cast<Widget>(),
             ),
@@ -87,7 +90,7 @@ class TagItemWidget extends StatelessWidget {
       ),
       labelPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
       onDeleted: () =>
-          context.read<EditProjectBloc>().add(RemoveTagButtonPressed(label)),
+          context.read<EditArticleBloc>().add(RemoveTagButtonPressed(label)),
       backgroundColor: AppColors.primaryColor,
     );
   }
