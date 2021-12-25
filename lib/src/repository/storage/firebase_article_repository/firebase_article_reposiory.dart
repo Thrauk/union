@@ -74,4 +74,19 @@ class FirebaseArticleRepository {
     }
     return articles;
   }
+
+  void deleteArticle(Article article) {
+    try {
+      firestoreArticleCollection.doc(article.id).delete();
+      firestoreUserInstance.doc(article.ownerId).update({
+        'articles_ids': FieldValue.arrayRemove([article.id])
+      });
+    } catch (e) {
+      print('deleteArticle $e');
+    }
+  }
+
+  void updateArticle(Article article) {
+    firestoreArticleCollection.doc(article.id).update(article.toJson());
+  }
 }

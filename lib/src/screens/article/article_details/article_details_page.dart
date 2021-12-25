@@ -1,15 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
+import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
 import 'package:union_app/src/screens/home/home.dart';
-import 'package:union_app/src/screens/project/edit_project/edit_project.dart';
 import 'package:union_app/src/theme.dart';
 
-class ProjectDetailsPage extends StatelessWidget {
-  const ProjectDetailsPage({Key? key, required this.project}) : super(key: key);
+class ArticleDetailsPage extends StatelessWidget {
+  ArticleDetailsPage({Key? key, required this.article}) : super(key: key);
 
-  final Project project;
+  Article article;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class ProjectDetailsPage extends StatelessWidget {
             ),
             child: PopupMenuButton<String>(
               onSelected: (String choice) =>
-                  manageChoices(choice, context, project),
+                  manageChoices(choice, context, article),
               itemBuilder: (BuildContext context) {
                 return Choices.choices.map(
                   (String choice) {
@@ -41,51 +40,55 @@ class ProjectDetailsPage extends StatelessWidget {
           )
         ],
         backgroundColor: AppColors.backgroundLight,
-        title: Text(project.title ?? ''),
+        title: const Text('Article'),
       ),
-      body: _ProjectDetailsPage(project: project),
+      body: _ArticleDetailsPage(article: article),
     );
   }
 }
 
-class _ProjectDetailsPage extends StatelessWidget {
-  const _ProjectDetailsPage({Key? key, required this.project})
+class _ArticleDetailsPage extends StatelessWidget {
+  const _ArticleDetailsPage({Key? key, required this.article})
       : super(key: key);
 
-  final Project project;
+  final Article article;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          const SizedBox(height: 16),
-          const Text('Short Description', style: AppStyles.textStyleHeading1),
-          const SizedBox(height: 16),
-          Text(project.shortDescription, style: AppStyles.textStyleBody),
-          const SizedBox(height: 24),
-          const Text('Details', style: AppStyles.textStyleHeading1),
-          const SizedBox(height: 16),
-          Text(project.details, style: AppStyles.textStyleBody),
-          const SizedBox(height: 16),
-          if (project.tags!.isNotEmpty)
-            Wrap(
-              spacing: 4,
-              children: project.tags!
-                  .map(
-                    (dynamic tag) => TagWidget(label: tag as String),
-                  )
-                  .toList()
-                  .cast<Widget>(),
-            )
-          else
-            const Text(''),
-        ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(article.body ?? '', style: AppStyles.textStyleBody),
+            if (article.tags!.isNotEmpty)
+              Wrap(
+                spacing: 4,
+                children: article.tags!
+                    .map(
+                      (dynamic tag) => TagWidget(label: tag as String),
+                )
+                    .toList()
+                    .cast<Widget>(),
+              )
+            else
+              const Text(''),
+          ],
+        ),
       ),
     );
+  }
+}
+
+void manageChoices(String choice, BuildContext context, Article article) {
+  switch (choice) {
+    case Choices.delete:
+      showDeleteDialog(context, article);
+      break;
+    case Choices.edit:
+      break;
   }
 }
 
@@ -108,25 +111,8 @@ class TagWidget extends StatelessWidget {
   }
 }
 
-void manageChoices(String choice, BuildContext context, Project project) {
-  switch (choice) {
-    case Choices.delete:
-      showDeleteDialog(context, project);
-      break;
-    case Choices.edit:
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => EditProjectPage(
-            project: project,
-          ),
-        ),
-      );
-      break;
-  }
-}
 
-void showDeleteDialog(BuildContext context, Project project) {
+void showDeleteDialog(BuildContext context, Article article) {
   showDialog(
     context: context,
     builder: (BuildContext context) => Center(
@@ -140,7 +126,7 @@ void showDeleteDialog(BuildContext context, Project project) {
             ),
             onPressed: () {
               try {
-                FirebaseProjectRepository().deleteProject(project);
+                FirebaseArticleRepository().deleteArticle(article);
                 Navigator.of(context).pushAndRemoveUntil(
                     HomePage.route(), (Route<dynamic> route) => false);
               } catch (e) {
@@ -169,7 +155,7 @@ void showDeleteDialog(BuildContext context, Project project) {
         ],
         backgroundColor: AppColors.backgroundLight,
         title: const Text('Hold on!', style: AppStyles.textStyleHeading1),
-        content: const Text('Are you sure you want to delete this project?',
+        content: const Text('Are you sure you want to delete this article?',
             style: AppStyles.textStyleBody),
       ),
     ),
