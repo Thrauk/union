@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/screens/app/bloc/app_bloc.dart';
+import 'package:union_app/src/screens/article/user_articles/view/user_articles_page.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/profile/profile.dart';
 import 'package:union_app/src/screens/project/user_projects/user_projects.dart';
@@ -51,8 +52,16 @@ class AppDrawer extends StatelessWidget {
             ),
             title: const Text('Projects'),
           ),
-          const ListTile(
-            leading: Icon(
+          ListTile(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => UserArticlesPage(uid: context.read<AppBloc>().state.user.id),
+                ),
+              );
+            },
+            leading: const Icon(
               Icons.article,
               color: Colors.white70,
             ),

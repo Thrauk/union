@@ -23,6 +23,7 @@ class Article extends Equatable {
         'body': body,
         'date': date,
         'tags': tags,
+        'likes_user_ids' : likesUsersIds,
       };
 
   final String? id;

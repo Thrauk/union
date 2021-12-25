@@ -102,27 +102,29 @@ class _ProjectItemWidget extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  Wrap(children: [
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        minHeight: 14,
-                        maxHeight: 14 * 3,
-                      ),
-                      child: GestureDetector(
-                        child: Text(
-                          project.shortDescription,
-                          overflow: state.isExpanded == false
-                              ? TextOverflow.ellipsis
-                              : TextOverflow.visible,
-                          style: const TextStyle(
-                            fontFamily: 'Lato',
-                            fontSize: 14,
-                            color: AppColors.white07,
+                  Wrap(
+                    children: [
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          minHeight: 14,
+                          maxHeight: 14 * 3,
+                        ),
+                        child: GestureDetector(
+                          child: Text(
+                            project.shortDescription,
+                            overflow: state.isExpanded == false
+                                ? TextOverflow.ellipsis
+                                : TextOverflow.visible,
+                            style: const TextStyle(
+                              fontFamily: 'Lato',
+                              fontSize: 14,
+                              color: AppColors.white07,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ]),
+                    ],
+                  ),
                 ],
               ),
             ),
