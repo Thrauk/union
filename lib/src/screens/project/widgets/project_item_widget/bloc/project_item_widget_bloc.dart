@@ -12,6 +12,7 @@ class ProjectItemWidgetBloc
   ProjectItemWidgetBloc(this._projectRepository) : super(const ProjectItemWidgetState()) {
     on<GetDetails>(_getDetails);
     on<SetOwnerId>(_setOwnerId);
+    on<OnTextPressed>(_modifyIsExpanded);
   }
 
   final FirebaseProjectRepository _projectRepository;
@@ -25,6 +26,11 @@ class ProjectItemWidgetBloc
     print("SetownerID");
     emit(state.copyWith(ownerId: event.ownerId));
     add(GetDetails(state.ownerId!));
+  }
+
+  Future<void> _modifyIsExpanded(OnTextPressed event, Emitter<ProjectItemWidgetState> emit) async {
+    final bool isExpanded = state.isExpanded == true ? false : true;
+    emit(state.copyWith(isExpanded: isExpanded));
   }
 
 }

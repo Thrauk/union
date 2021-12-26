@@ -1,16 +1,18 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/storage/firebase_user_service/firebase_user_service.dart';
+import 'package:union_app/src/repository/storage/firebase_user/firebase_user.dart';
 
 part 'edit_profile_event.dart';
 part 'edit_profile_state.dart';
 
 class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
-  EditProfileBloc({required FirebaseUserServiceRepository userServiceRepository,
+  EditProfileBloc({required FirebaseUserRepository userServiceRepository,
     required String uid})
       : _userServiceRepository = userServiceRepository,
         _uid = uid,
@@ -20,11 +22,12 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     on<JobTitleChanged>(_onJobTitleChanged);
     on<LocationChanged>(_onLocationChanged);
     on<DescriptionChanged>(_onDescriptionChanged);
+    on<SelectImage>(_onSelectImage);
     on<UpdateProfile>(_onUpdateProfile);
     add(LoadProfile());
   }
 
-  final FirebaseUserServiceRepository _userServiceRepository;
+  final FirebaseUserRepository _userServiceRepository;
   final String _uid;
 
   Future<void> _onLoadProfile(LoadProfile event, Emitter<EditProfileState> emit) async {
@@ -36,6 +39,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
       location: ShortText.dirty(fullUser.location ?? ''),
       description: LongText.dirty(fullUser.description ?? ''),
       profileLoaded: true,
+      photoUrl: fullUser.photo,
     ));
   }
 
@@ -85,6 +89,15 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }
 
+    }
+  }
+
+  Future<void> _onSelectImage(SelectImage event, Emitter<EditProfileState> emit) async {
+    final ImagePicker imagePicker = ImagePicker();
+    XFile? selectedImage = await imagePicker.pickImage(source: ImageSource.gallery);
+    if(selectedImage != null) {
+      String url = await _userServiceRepository.updateUserImage(state.fullUser, File(selectedImage.path));
+      emit(state.copyWith(photoUrl: url));
     }
   }
 

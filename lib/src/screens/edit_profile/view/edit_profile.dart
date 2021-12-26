@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:union_app/src/repository/storage/firebase_user_service/firebase_user_service.dart';
+import 'package:union_app/src/repository/storage/firebase_user/firebase_user.dart';
 import 'package:union_app/src/screens/app/bloc/app_bloc.dart';
 import 'package:union_app/src/screens/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:union_app/src/screens/edit_profile/widgets/buttons/buttons.dart';
@@ -30,7 +30,7 @@ class EditProfilePage extends StatelessWidget {
       body: BlocProvider<EditProfileBloc>(
         create: (_) => EditProfileBloc(
           uid: uid,
-          userServiceRepository: FirebaseUserServiceRepository(),
+          userServiceRepository: FirebaseUserRepository(),
         ),
         child: BlocListener<EditProfileBloc, EditProfileState>(
           listener: (BuildContext context, EditProfileState state) {

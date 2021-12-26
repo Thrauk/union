@@ -15,15 +15,20 @@ class FirebaseProjectRepository {
     final Project projectToSave =
         project.copyWith(id: firestoreProjectsDocument.id);
     firestoreUserInstance.doc(project.ownerId).update({
-      'projects_ids': FieldValue.arrayUnion([project.id])
+      'projects_ids': FieldValue.arrayUnion([projectToSave.id])
     });
     firestoreProjectsDocument.set(projectToSave.toJson());
   }
 
+  void updateProject(Project project) {
+    firestoreProjectsCollection.doc(project.id).update(project.toJson());
+  }
+
+
   void deleteProject(Project project) {
     try {
       firestoreProjectsCollection.doc(project.id).delete();
-      firestoreProjectsCollection.doc(project.ownerId).update({
+      firestoreUserInstance.doc(project.ownerId).update({
         'projects_ids': FieldValue.arrayRemove([project.id])
       });
     } catch (e) {

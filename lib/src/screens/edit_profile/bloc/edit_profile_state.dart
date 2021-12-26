@@ -9,6 +9,7 @@ class EditProfileState extends Equatable {
     this.description = const LongText.pure(),
     this.status = FormzStatus.pure,
     this.profileLoaded = false,
+    this.photoUrl,
   });
 
   final FullUser fullUser;
@@ -18,6 +19,7 @@ class EditProfileState extends Equatable {
   final LongText description;
   final FormzStatus status;
   final bool profileLoaded;
+  final String? photoUrl;
 
   EditProfileState copyWith({
     FullUser? fullUser,
@@ -27,6 +29,7 @@ class EditProfileState extends Equatable {
     LongText? description,
     FormzStatus? status,
     bool? profileLoaded,
+    String? photoUrl,
   }) {
     return EditProfileState(
       fullUser: fullUser ?? this.fullUser,
@@ -36,9 +39,10 @@ class EditProfileState extends Equatable {
       description: description ?? this.description,
       status: status ?? this.status,
       profileLoaded: profileLoaded ?? this.profileLoaded,
+      photoUrl: photoUrl ?? this.photoUrl,
     );
   }
 
   @override
-  List<Object> get props => <Object>[fullUser, displayName, jobTitle, location, description, status, profileLoaded];
+  List<Object?> get props => <Object?>[fullUser, displayName, jobTitle, location, description, status, profileLoaded, photoUrl];
 }

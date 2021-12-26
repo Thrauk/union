@@ -3,88 +3,94 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/profile/bloc/profile_bloc.dart';
 import 'package:union_app/src/screens/edit_profile/view/edit_profile.dart';
+import 'package:union_app/src/screens/profile/widgets/follow_buttons_widget.dart';
+import 'package:union_app/src/theme.dart';
 
 class ProfileDetailsWidget extends StatelessWidget {
   const ProfileDetailsWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileBloc, ProfileState>(
-        builder: (BuildContext context, ProfileState state) {
+    return BlocBuilder<ProfileBloc, ProfileState>(builder: (BuildContext context, ProfileState state) {
       return Padding(
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: Stack(
-          children: [
+          children: <Widget>[
             Column(
               children: <Widget>[
                 Avatar(
-                  photo: null,
+                  photo: state.fullUser.photo,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 4,
                 ),
                 Text(
                   state.fullUser.displayName ?? 'John Doe',
-                  style: TextStyle(
-                    color: Color.fromRGBO(255, 255, 255, 1),
+                  style: const TextStyle(
+                    color: Colors.white,
                     fontSize: 20,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-
                     Text(
                       state.fullUser.location ?? 'No location',
-                      style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 0.8),
+                      style: const TextStyle(
+                        color: AppColors.white08,
                         fontSize: 16,
                       ),
                     ),
                     const Text(
                       ' • ',
                       style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 0.8),
+                        color: AppColors.white08,
                         fontSize: 16,
                       ),
                     ),
                     Text(
-                        state.fullUser.jobTitle ?? 'No job :(',
-                      style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 0.8),
+                      state.fullUser.jobTitle ?? 'No job :(',
+                      style: const TextStyle(
+                        color: AppColors.white08,
                         fontSize: 16,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
                 Text(
                   state.fullUser.description ?? 'No description',
-                  style: TextStyle(
-                    color: Color.fromRGBO(255, 255, 255, 0.85),
+                  style: const TextStyle(
+                    color: AppColors.white08,
                     fontSize: 18,
                   ),
                   textAlign: TextAlign.center,
                 )
               ],
             ),
-            Align(
-              alignment: Alignment.topRight,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push<void>(EditProfilePage.route());
-                },
-                child: Icon(
-                  Icons.edit,
-                  color: Color.fromRGBO(255, 255, 255, 0.7),
+            if (state.ownProfile)
+              Align(
+                alignment: Alignment.topRight,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push<void>(EditProfilePage.route());
+                  },
+                  child: const Icon(
+                    Icons.edit,
+                    color: AppColors.white07,
+                  ),
                 ),
+              )
+            else
+              const Align(
+                alignment: Alignment.topRight,
+                child: FollowButtonsWidget(),
               ),
-            ),
           ],
         ),
       );

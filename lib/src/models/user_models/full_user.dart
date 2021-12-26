@@ -9,7 +9,9 @@ class FullUser extends Equatable {
       this.description,
       this.location,
       this.jobTitle,
-      this.projectsIds});
+      this.projectsIds,
+      this.followers,
+      this.following});
 
   FullUser.fromJson(Map<String, dynamic> json)
       : photo = json['photo'] as String?,
@@ -19,7 +21,9 @@ class FullUser extends Equatable {
         description = json['description'] as String?,
         location = json['location'] as String?,
         jobTitle = json['jobTitle'] as String?,
-        projectsIds = json['projects_ids'] as List<dynamic>;
+        projectsIds = json['projects_ids'] as List<dynamic>?,
+        followers = json['followers'] as List<dynamic>?,
+        following = json['following'] as List<dynamic>?;
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -30,6 +34,8 @@ class FullUser extends Equatable {
         'location': location,
         'jobTitle': jobTitle,
         'projects_ids': projectsIds,
+        'following' : following,
+        'followers' : followers,
       };
 
   final String? email;
@@ -48,6 +54,9 @@ class FullUser extends Equatable {
 
   final List<dynamic>? projectsIds;
 
+  final List<dynamic>? followers;
+  final List<dynamic>? following;
+
   static const FullUser empty = FullUser(id: '');
 
   bool get isEmpty => this == FullUser.empty;
@@ -62,7 +71,9 @@ class FullUser extends Equatable {
       String? description,
       String? location,
       String? jobTitle,
-      List<dynamic>? projectsIds}) {
+      List<dynamic>? projectsIds,
+      List<dynamic>? followers,
+      List<dynamic>? following,}) {
     return FullUser(
       id: id ?? this.id,
       email: email ?? this.email,
@@ -72,18 +83,12 @@ class FullUser extends Equatable {
       location: location ?? this.location,
       jobTitle: jobTitle ?? this.jobTitle,
       projectsIds: projectsIds ?? this.projectsIds,
+      followers: followers ?? this.followers,
+      following: following ?? this.following
     );
   }
 
+
   @override
-  List<Object?> get props => <Object?>[
-        email,
-        id,
-        displayName,
-        photo,
-        description,
-        location,
-        jobTitle,
-        projectsIds
-      ];
+  List<Object?> get props => <Object?>[email, id, displayName, photo, description, location, jobTitle, projectsIds, following, followers];
 }

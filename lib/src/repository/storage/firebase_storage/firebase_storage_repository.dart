@@ -2,6 +2,6 @@ import 'package:union_app/src/repository/storage/firebase_project_repository/fir
 import 'package:union_app/src/repository/storage/storage.dart';
 
 class FirebaseStorageRepository {
-  final FirebaseUserServiceRepository userService = FirebaseUserServiceRepository();
+  final FirebaseUserRepository userService = FirebaseUserRepository();
   final FirebaseProjectRepository projectRepository = FirebaseProjectRepository();
 }

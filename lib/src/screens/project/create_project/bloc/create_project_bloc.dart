@@ -18,7 +18,6 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
     on<TitleChanged>(_titleChanged);
     on<DetailsChanged>(_detailsChanged);
     on<ShortDescriptionChanged>(_shortDescriptionChanged);
-    // on<TagChanged>(_tagChanged);
     on<AddTagButtonPressed>(_addTagPressed);
     on<RemoveTagButtonPressed>(_removeTagPressed);
     on<CreateButtonPressed>(_createButtonPressed);

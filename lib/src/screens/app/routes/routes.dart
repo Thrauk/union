@@ -7,7 +7,7 @@ import 'package:union_app/src/screens/profile/profile.dart';
 List<Page<void>> onGenerateAppViewPages(AppStatus state, List<Page<dynamic>> pages) {
   switch (state) {
     case AppStatus.authenticated:
-      return <Page<void>>[ProfilePage.page()];
+      return <Page<void>>[HomePage.page()];
     case AppStatus.unauthenticated:
       return <Page<void>>[IntroPage.page()];
   }

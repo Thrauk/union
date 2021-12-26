@@ -45,6 +45,8 @@ class DescriptionChanged extends EditProfileEvent {
   List<Object> get props => <Object>[value];
 }
 
+class SelectImage extends EditProfileEvent {}
+
 class UpdateProfile extends EditProfileEvent {}
 
 class UpdateProfileSuccess extends EditProfileEvent {}
