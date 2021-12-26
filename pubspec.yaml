@@ -20,7 +20,7 @@ dependencies:
   google_sign_in: ^5.1.0
   formz: ^0.4.0
   font_awesome_flutter: ^9.1.0
-  flow_builder: ^0.0.4
+  flow_builder: ^0.0.6
   dots_indicator: ^2.0.0
   cloud_firestore: ^2.5.4
   firebase_storage: ^10.0.6

@@ -38,8 +38,7 @@ class LoginPage extends StatelessWidget {
                   ),
                 );
             } else if (state.status.isSubmissionSuccess) {
-              Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-                  HomePage.route(), (Route<dynamic> route) => false);
+
             }
           },
           child: const _LoginPage(),

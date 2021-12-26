@@ -11,7 +11,6 @@ import 'package:union_app/src/screens/auth/widgets/design/design.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/theme.dart';
 
-
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
@@ -39,8 +38,7 @@ class SignUpPage extends StatelessWidget {
                     ),
                   );
               } else if (state.status.isSubmissionSuccess) {
-                Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-                    HomePage.route(), (Route<dynamic> route) => false);
+
               }
             },
             child: const _SignUpPage()),
