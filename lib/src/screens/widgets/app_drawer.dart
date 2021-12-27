@@ -42,7 +42,8 @@ class AppDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => UserProjectsPage(uid: context.read<AppBloc>().state.user.id),
+                  builder: (BuildContext context) => UserProjectsPage(
+                      uid: context.read<AppBloc>().state.user.id),
                 ),
               );
             },
@@ -57,7 +58,8 @@ class AppDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => UserArticlesPage(uid: context.read<AppBloc>().state.user.id),
+                  builder: (BuildContext context) => UserArticlesPage(
+                      uid: context.read<AppBloc>().state.user.id),
                 ),
               );
             },
@@ -82,7 +84,11 @@ class AppDrawer extends StatelessWidget {
             title: Text('Settings'),
           ),
           GestureDetector(
-            onTap: () => context.read<AppBloc>().add(AppLogoutRequested()),
+            onTap: () {
+              context.read<AppBloc>().add(AppLogoutRequested());
+              Navigator.of(context)
+                  .popUntil((Route<void> route) => false);
+            },
             child: const ListTile(
               leading: Icon(
                 Icons.logout,

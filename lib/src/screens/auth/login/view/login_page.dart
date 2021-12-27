@@ -38,7 +38,7 @@ class LoginPage extends StatelessWidget {
                   ),
                 );
             } else if (state.status.isSubmissionSuccess) {
-
+              Navigator.of(context).popUntil((Route<void> route) => false);
             }
           },
           child: const _LoginPage(),
