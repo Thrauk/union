@@ -7,6 +7,7 @@ class Project extends Equatable {
       this.shortDescription = '',
       this.details = '',
       this.tags = const <String>[],
+      this.openRoles = const <dynamic>[],
       this.id = ''});
 
   Project.fromJson(Map<String, dynamic> json)
@@ -15,6 +16,7 @@ class Project extends Equatable {
         details = json['details'] as String,
         shortDescription = json['short_description'] as String,
         tags = json['tags'] as List<dynamic>,
+        openRoles = json['open_roles'] as List<dynamic>,
         title = json['title'] as String;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -23,7 +25,8 @@ class Project extends Equatable {
         'title': title,
         'details': details,
         'short_description': shortDescription,
-        'tags': tags
+        'tags': tags,
+        'open_roles': openRoles
       };
 
   final String? title;
@@ -32,6 +35,7 @@ class Project extends Equatable {
   final String shortDescription;
   final String details;
   final List<dynamic>? tags;
+  final List<dynamic>? openRoles;
 
   static const Project empty = Project();
 
@@ -43,6 +47,7 @@ class Project extends Equatable {
       String? title,
       String? shortDescription,
       String? details,
+      List<dynamic>? openRoles,
       List<dynamic>? tags}) {
     return Project(
       id: id ?? this.id,
@@ -50,6 +55,7 @@ class Project extends Equatable {
       title: title ?? this.title,
       shortDescription: shortDescription ?? this.shortDescription,
       details: details ?? this.details,
+      openRoles: openRoles ?? this.openRoles,
       tags: tags ?? this.tags,
     );
   }
@@ -62,5 +68,6 @@ class Project extends Equatable {
         tags,
         ownerId,
         id,
+        openRoles,
       ];
 }

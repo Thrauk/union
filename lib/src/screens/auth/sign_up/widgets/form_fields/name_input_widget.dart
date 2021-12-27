@@ -22,7 +22,6 @@ class NameInputWidget extends StatelessWidget {
           keyboardType: TextInputType.name,
           decoration: InputDecoration(
             labelText: 'Name',
-            helperText: '',
             errorText: state.name.invalid ? 'Invalid Name' : null,
           ),
         );

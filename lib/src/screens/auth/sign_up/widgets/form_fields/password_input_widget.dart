@@ -32,7 +32,6 @@ class PasswordInputWidget extends StatelessWidget {
               },
             ),
             labelText: 'Password',
-            helperText: '',
             errorText: state.password.invalid ? 'Invalid password' : null,
           ),
         );

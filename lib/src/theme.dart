@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 final ThemeData theme = ThemeData(
+  unselectedWidgetColor: AppColors.white07,
   hintColor: const Color.fromRGBO(255, 255, 255, 0.7),
   primaryColorDark: const Color.fromRGBO(18, 18, 18, 1),
   primaryColorLight: const Color.fromRGBO(215, 223, 113, 1),
@@ -41,7 +42,7 @@ class AppStyles {
   static const TextStyle textStyleHeading1 = TextStyle(
     fontFamily: 'Lato',
     color: AppColors.primaryColor,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w500,
     fontSize: 18,
   );
 
@@ -50,6 +51,20 @@ class AppStyles {
     fontWeight: FontWeight.normal,
     color: AppColors.white08,
     fontSize: 16,
+  );
+
+  static const TextStyle textStyleBodyBig = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.normal,
+    color: AppColors.white08,
+    fontSize: 18,
+  );
+
+  static const TextStyle textStyleBodySmall = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.normal,
+    color: AppColors.white05,
+    fontSize: 14,
   );
 
   static const TextStyle buttonTextStyle = TextStyle(
@@ -75,6 +90,8 @@ class AppColors {
   static const Color backgroundLight1 = Color.fromRGBO(51, 51, 51, 1);
   static const Color backgroundDark = Color.fromRGBO(18, 18, 18, 1);
 
+  static const Color white02 = Color.fromRGBO(255, 255, 255, 0.2);
+  static const Color white05 = Color.fromRGBO(255, 255, 255, 0.5);
   static const Color white07 = Color.fromRGBO(255, 255, 255, 0.7);
   static const Color white08 = Color.fromRGBO(255, 255, 255, 0.8);
   static const Color white09 = Color.fromRGBO(255, 255, 255, 0.9);

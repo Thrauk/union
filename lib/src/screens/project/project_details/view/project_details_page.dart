@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
 import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/screens/open_roles/add_open_role/view/add_open_role_page.dart';
 import 'package:union_app/src/screens/project/edit_project/edit_project.dart';
 import 'package:union_app/src/theme.dart';
 
@@ -123,6 +124,14 @@ void manageChoices(String choice, BuildContext context, Project project) {
         ),
       );
       break;
+    case Choices.add_open_role:
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) =>
+              AddOpenRolePage(projectId: project.id!),
+        ),
+      );
   }
 }
 
@@ -179,6 +188,7 @@ void showDeleteDialog(BuildContext context, Project project) {
 class Choices {
   static const String edit = 'Edit';
   static const String delete = 'Delete';
+  static const String add_open_role = 'Add an open role';
 
-  static const List<String> choices = <String>[edit, delete];
+  static const List<String> choices = <String>[edit, delete, add_open_role];
 }

@@ -21,7 +21,6 @@ class TitleInputWidget extends StatelessWidget {
           cursorColor: AppColors.primaryColor,
           decoration: InputDecoration(
             labelText: 'Title *',
-            helperText: '',
             errorText: state.title.invalid ? 'Invalid title' : null,
           ),
         );

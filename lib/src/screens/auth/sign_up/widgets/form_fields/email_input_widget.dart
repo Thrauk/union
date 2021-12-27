@@ -21,8 +21,7 @@ class EmailInputWidget extends StatelessWidget {
           cursorColor: AppColors.primaryColor,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
-            labelText: 'Email',
-            helperText: '',
+            labelText: 'E-mail',
             errorText: state.email.invalid ? 'Invalid E-mail' : null,
           ),
         );

@@ -23,7 +23,6 @@ class EmailInputWidget extends StatelessWidget {
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             labelText: 'E-mail',
-            helperText: '',
             errorText: state.email.invalid ? 'Invalid E-mail' : null,
           ),
         );

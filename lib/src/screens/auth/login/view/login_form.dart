@@ -60,9 +60,8 @@ class _EmailInput extends StatelessWidget {
               context.read<LoginCubit>().emailChanged(email),
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
-            labelText: 'email',
-            helperText: '',
-            errorText: state.email.invalid ? 'invalid email' : null,
+            labelText: 'E-mail',
+            errorText: state.email.invalid ? 'Invalid E-mail' : null,
           ),
         );
       },
@@ -83,9 +82,8 @@ class _PasswordInput extends StatelessWidget {
               context.read<LoginCubit>().passwordChanged(password),
           obscureText: true,
           decoration: InputDecoration(
-            labelText: 'password',
-            helperText: '',
-            errorText: state.password.invalid ? 'invalid password' : null,
+            labelText: 'Password',
+            errorText: state.password.invalid ? 'Invalid password' : null,
           ),
         );
       },

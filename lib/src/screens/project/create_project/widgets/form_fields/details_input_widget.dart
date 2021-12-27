@@ -24,7 +24,6 @@ class DetailsInputWidget extends StatelessWidget {
           cursorColor: AppColors.primaryColor,
           decoration: InputDecoration(
             labelText: 'Details *',
-            helperText: '',
             errorText: state.details.invalid ? 'Invalid details' : null,
           ),
         );

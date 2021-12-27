@@ -24,7 +24,6 @@ class ShortDescriptionInputWidget extends StatelessWidget {
           cursorColor: AppColors.primaryColor,
           decoration: InputDecoration(
             labelText: 'Short description *',
-            helperText: '',
             errorText: state.shortDescription.invalid
                 ? 'Invalid short description'
                 : null,

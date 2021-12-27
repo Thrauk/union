@@ -3,28 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:provider/src/provider.dart';
-import 'package:union_app/src/models/authentication/app_user.dart';
-import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/home/home.dart';
-import 'package:union_app/src/screens/project/create_project/bloc/bloc.dart';
+import 'package:union_app/src/screens/open_roles/add_open_role/bloc/add_open_role_bloc.dart';
 import 'package:union_app/src/theme.dart';
 
-class CreateButtonWidget extends StatelessWidget {
-  const CreateButtonWidget({Key? key}) : super(key: key);
+class PostButtonWidget extends StatelessWidget {
+  const PostButtonWidget({Key? key, required this.projectId}) : super(key: key);
 
+  final String projectId;
   @override
   Widget build(BuildContext context) {
-    final AppUser user = context.read<AppBloc>().state.user;
-    return BlocConsumer<CreateProjectBloc, CreateProjectState>(
-      listener: (BuildContext context, CreateProjectState state) {
+    return BlocConsumer<AddOpenRoleBloc, AddOpenRoleState>(
+      listener: (BuildContext context, AddOpenRoleState state) {
         if (state.status.isSubmissionSuccess) {
           Navigator.of(context).push(HomePage.route());
         }
       },
-      builder: (BuildContext context, CreateProjectState state) {
+      builder: (BuildContext context, AddOpenRoleState state) {
         return ElevatedButton(
           onPressed: () {
-            context.read<CreateProjectBloc>().add(CreateButtonPressed(user.id, user.displayName ?? ''));
+            context.read<AddOpenRoleBloc>().add(PostButtonPressed(projectId));
           },
           style: ElevatedButton.styleFrom(
             primary: AppColors.primaryColor,
@@ -37,7 +35,7 @@ class CreateButtonWidget extends StatelessWidget {
             minimumSize: const Size(double.infinity, 48),
           ),
           child: const Text(
-            'Create',
+            'Post',
             style: TextStyle(
               color: Color.fromRGBO(18, 18, 18, 1),
               fontFamily: 'Lato',
