@@ -5,6 +5,7 @@ import 'package:union_app/src/repository/storage/firebase_project_repository/fir
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/open_roles/add_open_role/view/add_open_role_page.dart';
 import 'package:union_app/src/screens/project/edit_project/edit_project.dart';
+import 'package:union_app/src/screens/project/project_details/widgets/open_role_item_widget.dart';
 import 'package:union_app/src/theme.dart';
 
 class ProjectDetailsPage extends StatelessWidget {
@@ -73,6 +74,14 @@ class _ProjectDetailsPage extends StatelessWidget {
           Text(project.details, style: AppStyles.textStyleBody),
           const SizedBox(height: 16),
           if (project.tags!.isNotEmpty)
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
+              child: Text(
+                'Tags',
+                style: AppStyles.textStyleHeading1,
+              ),
+            ),
+          if (project.tags!.isNotEmpty)
             Wrap(
               spacing: 4,
               children: project.tags!
@@ -81,9 +90,28 @@ class _ProjectDetailsPage extends StatelessWidget {
                   )
                   .toList()
                   .cast<Widget>(),
-            )
-          else
-            const Text(''),
+            ),
+          if (project.openRoles!.isNotEmpty)
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
+              child: Text(
+                'Open roles',
+                style: AppStyles.textStyleHeading1,
+              ),
+            ),
+          Flexible(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: project.openRoles!.length,
+              itemBuilder: (BuildContext context, int index) {
+                return OpenRoleItemWidget(
+                  projectOpenRole: ProjectOpenRole.fromJson(
+                      project.openRoles![index] as Map<String, dynamic>), showApplyButton: true,
+
+                );
+              },
+            ),
+          ),
         ],
       ),
     );

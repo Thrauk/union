@@ -21,13 +21,13 @@ class RemoteSwitchButtonWidget extends StatelessWidget {
                   style: AppStyles.textStyleBodyBig),
               const SizedBox(width: 6),
               Switch(
-               inactiveTrackColor: AppColors.white02,
+                inactiveTrackColor: AppColors.white02,
                 activeColor: AppColors.primaryColor,
                 value: state.isRemotePossible,
                 onChanged: (bool value) {
-                  context
-                      .read<AddOpenRoleBloc>()
-                      .add(IsRemotePossibleChanged(value));
+                    context
+                        .read<AddOpenRoleBloc>()
+                        .add(IsRemotePossibleChanged(value));
                 },
               ),
             ],
