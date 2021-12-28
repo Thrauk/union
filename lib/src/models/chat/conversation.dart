@@ -11,9 +11,9 @@ class Conversation extends Equatable {
 
   Conversation.fromJson(Map<String, dynamic> json)
       : id = json['id'] as String,
-        members = json['members'] as List<String>,
+        members = (json['members'] as List<dynamic>).cast<String>(),
         lastReceivedTimestamp = json['lastReceivedTimestamp'] as int,
-        lastMessage = ChatMessage.fromJson(json['readTimestamp'] as Map<String,dynamic>);
+        lastMessage = ChatMessage.fromJson(json['lastMessage'] as Map<String,dynamic>);
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'id': id,
@@ -36,7 +36,7 @@ class Conversation extends Equatable {
     );
   }
 
-  static Conversation get empty => const Conversation(id: '', members: <String>[]);
+  static const Conversation empty = Conversation(id: '', members: <String>[]);
 
   final String id;
   final List<String> members;

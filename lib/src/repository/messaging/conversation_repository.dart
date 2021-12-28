@@ -59,7 +59,7 @@ class ConversationRepository {
     );
   }
 
-  Future<void> createConversationBetweenTwoUsers(
+  Future<Conversation> createConversationBetweenTwoUsers(
       String uidUser1, String uidUser2, ChatMessage message) async {
     final DocumentReference<Map<String, dynamic>> documentReference =
         firestoreInstance.doc();
@@ -68,15 +68,26 @@ class ConversationRepository {
         members: <String>[uidUser1, uidUser2],
         );
     await documentReference.set(conversation.toJson());
+    return conversation;
   }
 
-  Future<Conversation> getConversationBetweenTwoUsers(String id, String userId1, String userId2) async {
+  Future<Conversation> getConversationBetweenTwoUsers(String userId1, String userId2) async {
     final QuerySnapshot<Map<String,dynamic>> querySnapshot = await firestoreInstance
         .where('members', arrayContains: userId1)
-        .where('members', arrayContains: userId2)
-        .limit(1)
         .get();
-    final QueryDocumentSnapshot<Map<String,dynamic>> json = querySnapshot.docs.single;
+
+
+
+    final QueryDocumentSnapshot<Map<String,dynamic>> json = querySnapshot.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> element) {
+      if(element.data()['members'] != null) {
+        final List<dynamic> membersDynamic = element.data()['members'] as List<dynamic>;
+        final List<String> members = membersDynamic.cast<String>();
+        if(members.contains(userId2)) {
+          return true;
+        }
+      } return false;
+    }).first;
+
     if(json != null) {
       return Conversation.fromJson(json.data());
     } else {

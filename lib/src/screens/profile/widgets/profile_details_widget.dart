@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/screens/messaging/chat/view/chat_page.dart';
 import 'package:union_app/src/screens/profile/bloc/profile_bloc.dart';
 import 'package:union_app/src/screens/edit_profile/view/edit_profile.dart';
 import 'package:union_app/src/screens/profile/widgets/follow_buttons_widget.dart';
@@ -97,10 +98,12 @@ class ProfileDetailsWidget extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 child: IconButton(
                   icon: const Icon(
-                    Icons.message,
+                    Icons.send,
                     color: AppColors.white07,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(ChatPage.route(state.fullUser.id));
+                  },
                 ),
               )
           ],
