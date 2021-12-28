@@ -27,7 +27,7 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
 
   void _titleChanged(TitleChanged event, Emitter<CreateProjectState> emit) {
     final ProjectTitle title = ProjectTitle.dirty(event.value);
-    emit(state.copyWith(title: title, status: Formz.validate([title])));
+    emit(state.copyWith(title: title, status: Formz.validate([title, state.shortDescription, state.details])));
   }
 
   void _shortDescriptionChanged(
@@ -35,12 +35,12 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
     final ProjectBody shortDescription = ProjectBody.dirty(event.value);
     emit(state.copyWith(
         shortDescription: shortDescription,
-        status: Formz.validate([shortDescription])));
+        status: Formz.validate([shortDescription, state.title, state.details])));
   }
 
   void _detailsChanged(DetailsChanged event, Emitter<CreateProjectState> emit) {
     final ProjectBody details = ProjectBody.dirty(event.value);
-    emit(state.copyWith(details: details, status: Formz.validate([details])));
+    emit(state.copyWith(details: details, status: Formz.validate([details, state.shortDescription, state.title])));
   }
 
   void _addTagPressed(

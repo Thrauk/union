@@ -24,7 +24,7 @@ class CityInputWidget extends StatelessWidget {
             cursorColor: AppColors.primaryColor,
             decoration: InputDecoration(
               labelText: 'City *',
-              errorText: state.location.invalid ? 'Invalid city' : null,
+              errorText: state.city.invalid ? 'Invalid city' : null,
             ),
           ),
         );

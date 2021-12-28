@@ -24,7 +24,7 @@ class CountryInputWidget extends StatelessWidget {
             cursorColor: AppColors.primaryColor,
             decoration: InputDecoration(
               labelText: 'Country *',
-              errorText: state.location.invalid ? 'Invalid country' : null,
+              errorText: state.country.invalid ? 'Invalid country' : null,
             ),
           ),
         );

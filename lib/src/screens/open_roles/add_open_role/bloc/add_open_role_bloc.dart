@@ -24,17 +24,26 @@ class AddOpenRoleBloc extends Bloc<AddOpenRoleEvent, AddOpenRoleState> {
 
   void _titleChanged(TitleChanged event, Emitter<AddOpenRoleState> emit) {
     final ShortText title = ShortText.dirty(event.value);
-    emit(state.copyWith(title: title, status: Formz.validate([title])));
+    emit(state.copyWith(
+        title: title,
+        status: Formz.validate(
+            [title, state.specifications, state.country, state.city])));
   }
 
   void _cityChanged(CityChanged event, Emitter<AddOpenRoleState> emit) {
     final ShortText city = ShortText.dirty(event.value);
-    emit(state.copyWith(city: city, status: Formz.validate([city])));
+    emit(state.copyWith(
+        city: city,
+        status: Formz.validate(
+            [city, state.title, state.country, state.specifications])));
   }
 
   void _countryChanged(CountryChanged event, Emitter<AddOpenRoleState> emit) {
     final ShortText country = ShortText.dirty(event.value);
-    emit(state.copyWith(country: country, status: Formz.validate([country])));
+    emit(state.copyWith(
+        country: country,
+        status: Formz.validate(
+            [country, state.title, state.specifications, state.city])));
   }
 
   void _specificationsChanged(
@@ -42,31 +51,37 @@ class AddOpenRoleBloc extends Bloc<AddOpenRoleEvent, AddOpenRoleState> {
     final LongText specifications = LongText.dirty(event.value);
     emit(state.copyWith(
         specifications: specifications,
-        status: Formz.validate([specifications])));
+        status: Formz.validate(
+            [specifications, state.title, state.country, state.city])));
   }
 
   void _isPaidChanged(IsPaidChanged event, Emitter<AddOpenRoleState> emit) {
     emit(state.copyWith(isPaid: event.value));
   }
 
-  void _postButtonPressed(
-      PostButtonPressed event, Emitter<AddOpenRoleState> emit) {
-    try {
-      final ProjectOpenRole projectOpenRole = ProjectOpenRole(
-          projectId: event.projectId,
-          isPaid: state.isPaid,
-          title: state.title.value,
-          location: '${state.city.value} ${state.country.value}',
-          specifications: state.specifications.value,
-          timestamp: DateTime.now().microsecondsSinceEpoch);
-      _openRoleRepository.createProjectOpenRole(projectOpenRole);
-    } catch (e) {
-      print('_postButtonPressed $e');
-    }
-  }
-
   void _isRemotePossibleChanged(
       IsRemotePossibleChanged event, Emitter<AddOpenRoleState> emit) {
     emit(state.copyWith(isRemotePossible: event.value));
+  }
+
+  void _postButtonPressed(
+      PostButtonPressed event, Emitter<AddOpenRoleState> emit) {
+    try {
+      if (state.status == FormzStatus.valid) {
+        final ProjectOpenRole projectOpenRole = ProjectOpenRole(
+            projectId: event.projectId,
+            isPaid: state.isPaid,
+            title: state.title.value,
+            location: '${state.city.value} ${state.country.value}',
+            specifications: state.specifications.value,
+            timestamp: DateTime.now().microsecondsSinceEpoch);
+        _openRoleRepository.createProjectOpenRole(projectOpenRole);
+        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+      } else {
+        emit(state.copyWith(status: FormzStatus.submissionFailure));
+      }
+    } catch (e) {
+      print('_postButtonPressed $e');
+    }
   }
 }
