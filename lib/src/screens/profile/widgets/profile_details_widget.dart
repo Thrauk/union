@@ -11,7 +11,8 @@ class ProfileDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileBloc, ProfileState>(builder: (BuildContext context, ProfileState state) {
+    return BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (BuildContext context, ProfileState state) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: Stack(
@@ -91,6 +92,17 @@ class ProfileDetailsWidget extends StatelessWidget {
                 alignment: Alignment.topRight,
                 child: FollowButtonsWidget(),
               ),
+            if (!state.ownProfile)
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.message,
+                    color: AppColors.white07,
+                  ),
+                  onPressed: () {},
+                ),
+              )
           ],
         ),
       );

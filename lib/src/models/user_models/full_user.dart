@@ -34,9 +34,9 @@ class FullUser extends Equatable {
         'location': location,
         'jobTitle': jobTitle,
         'projects_ids': projectsIds,
-        'following' : following,
-        'followers' : followers,
-      };
+        'following': following,
+        'followers': followers,
+      }..removeWhere((String key, dynamic value) => value == null);
 
   final String? email;
 
@@ -63,32 +63,42 @@ class FullUser extends Equatable {
 
   bool get isNotEmpty => this != FullUser.empty;
 
-  FullUser copyWith(
-      {String? id,
-      String? email,
-      String? displayName,
-      String? photo,
-      String? description,
-      String? location,
-      String? jobTitle,
-      List<dynamic>? projectsIds,
-      List<dynamic>? followers,
-      List<dynamic>? following,}) {
+  FullUser copyWith({
+    String? id,
+    String? email,
+    String? displayName,
+    String? photo,
+    String? description,
+    String? location,
+    String? jobTitle,
+    List<dynamic>? projectsIds,
+    List<dynamic>? followers,
+    List<dynamic>? following,
+  }) {
     return FullUser(
-      id: id ?? this.id,
-      email: email ?? this.email,
-      displayName: displayName ?? this.displayName,
-      photo: photo ?? this.photo,
-      description: description ?? this.description,
-      location: location ?? this.location,
-      jobTitle: jobTitle ?? this.jobTitle,
-      projectsIds: projectsIds ?? this.projectsIds,
-      followers: followers ?? this.followers,
-      following: following ?? this.following
-    );
+        id: id ?? this.id,
+        email: email ?? this.email,
+        displayName: displayName ?? this.displayName,
+        photo: photo ?? this.photo,
+        description: description ?? this.description,
+        location: location ?? this.location,
+        jobTitle: jobTitle ?? this.jobTitle,
+        projectsIds: projectsIds ?? this.projectsIds,
+        followers: followers ?? this.followers,
+        following: following ?? this.following,);
   }
 
-
   @override
-  List<Object?> get props => <Object?>[email, id, displayName, photo, description, location, jobTitle, projectsIds, following, followers];
+  List<Object?> get props => <Object?>[
+        email,
+        id,
+        displayName,
+        photo,
+        description,
+        location,
+        jobTitle,
+        projectsIds,
+        following,
+        followers
+      ];
 }
