@@ -13,7 +13,9 @@ class FirebaseProjectOpenRoleRepository {
 
   void createProjectOpenRole(ProjectOpenRole projectOpenRole) {
     try {
-      firestoreProjectsOpenRolesDocument.set(projectOpenRole.toJson());
+      final ProjectOpenRole openRoleToSave = projectOpenRole.copyWith(id: firestoreProjectsOpenRolesDocument.id);
+      print('project open role ${openRoleToSave.toJson()}');
+      firestoreProjectsOpenRolesDocument.set(openRoleToSave.toJson());
       firestoreProjectsCollection.doc(projectOpenRole.projectId).update({
         'open_roles':
             FieldValue.arrayUnion([firestoreProjectsOpenRolesDocument.id])

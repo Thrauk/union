@@ -4,7 +4,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
-import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/project/project_details/view/project_details_page.dart';
 import 'package:union_app/src/screens/project/widgets/project_item_widget/bloc/project_item_widget_bloc.dart';
 import 'package:union_app/src/theme.dart';
@@ -19,7 +18,7 @@ class ProjectItemWidget extends StatelessWidget {
     return BlocProvider<ProjectItemWidgetBloc>(
       child: _ProjectItemWidget(project: project),
       create: (_) => ProjectItemWidgetBloc(FirebaseProjectRepository())
-        ..add(SetOwnerId(context.read<AppBloc>().state.user.id)),
+        ..add(GetDetails(project.ownerId)),
     );
   }
 }
@@ -75,7 +74,7 @@ class _ProjectItemWidget extends StatelessWidget {
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        state.ownerDisplayName!,
+                        state.ownerDisplayName ?? '',
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontFamily: 'Lato',
@@ -85,8 +84,6 @@ class _ProjectItemWidget extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
-                      const Image(
-                          image: AssetImage('assets/icons/three_dots.png'))
                     ],
                   ),
                   const SizedBox(height: 12),

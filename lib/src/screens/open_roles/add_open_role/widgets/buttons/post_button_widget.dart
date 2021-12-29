@@ -13,6 +13,8 @@ class PostButtonWidget extends StatelessWidget {
   final String projectId;
   @override
   Widget build(BuildContext context) {
+    print("PROJECT ID");
+    print(projectId);
     return BlocConsumer<AddOpenRoleBloc, AddOpenRoleState>(
       listener: (BuildContext context, AddOpenRoleState state) {
         if (state.status.isSubmissionSuccess) {

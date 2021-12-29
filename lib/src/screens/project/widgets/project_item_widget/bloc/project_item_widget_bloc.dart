@@ -17,15 +17,13 @@ class ProjectItemWidgetBloc
 
   final FirebaseProjectRepository _projectRepository;
 
-  Future<void> _getDetails(GetDetails event, Emitter<ProjectItemWidgetState> emit) async {
-    print("GetDetails");
+  void _getDetails(GetDetails event, Emitter<ProjectItemWidgetState> emit) async {
     final Map<String, String>? mapResult = await _projectRepository.getProjectUserDetails(event.ownerId);
     emit(state.copyWith(ownerDisplayName: mapResult!['owner_name'], ownerPhotoUrl: mapResult['owner_photo']));
   }
+
   void _setOwnerId(SetOwnerId event, Emitter<ProjectItemWidgetState> emit) {
-    print("SetownerID");
     emit(state.copyWith(ownerId: event.ownerId));
-    add(GetDetails(state.ownerId!));
   }
 
   Future<void> _modifyIsExpanded(OnTextPressed event, Emitter<ProjectItemWidgetState> emit) async {
