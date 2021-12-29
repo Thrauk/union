@@ -37,6 +37,7 @@ class TextFieldProprieties {
       labelText: labelText,
       hintText: hintText,
       errorText: errorText,
+      contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
     );
   }
 }

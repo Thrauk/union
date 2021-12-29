@@ -37,3 +37,7 @@ class ComposedMessageChanged extends ChatEvent {
   @override
   List<Object> get props => <Object>[message];
 }
+
+class ScrollToBottom extends ChatEvent {}
+
+class ScrollDone extends ChatEvent {}

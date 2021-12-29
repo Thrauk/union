@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:union_app/src/models/chat/chat_message.dart';
 import 'package:union_app/src/models/chat/conversation.dart';
 import 'package:union_app/src/models/models.dart';
@@ -24,6 +25,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatUpdated>(_onChatUpdated);
     on<StartMessageSubscribe>(_onStartMessageSubscribe);
     on<ComposedMessageChanged>(_onComposedMessageChanged);
+    on<ScrollToBottom>(_onScrollToBottom);
+    on<ScrollDone>(_onScrollDone);
     add(Initialize());
   }
 
@@ -93,6 +96,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   void _onComposedMessageChanged(ComposedMessageChanged event, Emitter<ChatState> emit) {
     emit(state.copyWith(composedMessage: event.message));
+  }
+
+  void _onScrollToBottom(ScrollToBottom event, Emitter<ChatState> emit) {
+    emit(state.copyWith(scrollToBottom: true));
+  }
+
+  void _onScrollDone(ScrollDone event, Emitter<ChatState> emit) {
+    emit(state.copyWith(scrollToBottom: false));
   }
 
   @override

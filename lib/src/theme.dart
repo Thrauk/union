@@ -67,6 +67,13 @@ class AppStyles {
     fontSize: 14,
   );
 
+  static const TextStyle textStyleBodySmallDark = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.normal,
+    color: AppColors.black09,
+    fontSize: 14,
+  );
+
   static const TextStyle buttonTextStyle = TextStyle(
     fontFamily: 'Lato',
     fontWeight: FontWeight.w700,
@@ -95,6 +102,8 @@ class AppColors {
   static const Color white07 = Color.fromRGBO(255, 255, 255, 0.7);
   static const Color white08 = Color.fromRGBO(255, 255, 255, 0.8);
   static const Color white09 = Color.fromRGBO(255, 255, 255, 0.9);
+
+  static const Color black09 = Color.fromRGBO(0, 0, 0, 0.9);
 
   static const Color greenLight = Color.fromRGBO(100, 255, 100, 1);
   static const Color redLight = Color.fromRGBO(255, 100, 100, 1);

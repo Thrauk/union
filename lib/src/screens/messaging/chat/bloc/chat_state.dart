@@ -9,6 +9,7 @@ class ChatState extends Equatable {
     this.conversation = Conversation.empty,
     this.loaded = false,
     this.composedMessage = '',
+    this.scrollToBottom = false,
   });
 
   final bool existingChat;
@@ -18,6 +19,7 @@ class ChatState extends Equatable {
   final FullUser partnerUser;
   final Conversation conversation;
   final String composedMessage;
+  final bool scrollToBottom;
 
   ChatState copyWith({
     bool? existingChat,
@@ -27,6 +29,7 @@ class ChatState extends Equatable {
     Conversation? conversation,
     bool? loaded,
     String? composedMessage,
+    bool? scrollToBottom,
   }) {
     return ChatState(
       existingChat: existingChat ?? this.existingChat,
@@ -36,9 +39,10 @@ class ChatState extends Equatable {
       conversation: conversation ?? this.conversation,
       loaded: loaded ?? this.loaded,
       composedMessage: composedMessage ?? this.composedMessage,
+      scrollToBottom: scrollToBottom ?? this.scrollToBottom,
     );
   }
 
   @override
-  List<Object?> get props => <Object?>[existingChat, messages, myUser, partnerUser, conversation, loaded, composedMessage];
+  List<Object?> get props => <Object?>[existingChat, messages, myUser, partnerUser, conversation, loaded, composedMessage, scrollToBottom];
 }
