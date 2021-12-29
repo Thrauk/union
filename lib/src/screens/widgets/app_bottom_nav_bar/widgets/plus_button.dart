@@ -11,7 +11,7 @@ class PlusButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SpeedDial(
-      buttonSize: 32,
+      buttonSize: const Size(32,32),
       overlayColor: AppColors.backgroundLight,
       icon: Icons.add,
       backgroundColor: AppColors.primaryColor,

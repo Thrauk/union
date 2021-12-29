@@ -1,3 +1,4 @@
+import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/app/app.dart';
@@ -18,10 +19,7 @@ class ChatPage extends StatelessWidget {
     final String uid = context.select((AppBloc bloc) => bloc.state.user.id);
     return Scaffold(
       drawer: const AppDrawer(),
-      appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          title: const Center(child: Text('Chattin'))),
+      appBar: AppBar(backgroundColor: Colors.transparent, shadowColor: Colors.transparent, title: const Text('Chattin ')),
       body: BlocProvider<ChatBloc>(
         create: (_) => ChatBloc(
           myUid: uid,
@@ -43,44 +41,49 @@ class _EditProfilePage extends StatelessWidget {
         builder: (BuildContext context, ChatState state) {
           return Column(
             children: <Widget>[
-              Expanded(
-                flex: 9,
+              Flexible(
                 child: ListView.builder(
                   shrinkWrap: false,
                   itemCount: state.messages.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Align(
-                      alignment: state.messages[index].authorId == uid ? Alignment.centerRight : Alignment.centerLeft,
-                      child: Text(
-                        state.messages[index].message,
-                        style: TextStyle(
-                          color: Colors.white38
-                        ),
-                      ),
+                    return state.messages[index].authorId == uid
+                        ? Bubble(
+                      margin: const BubbleEdges.only(top: 10, left: 50),
+                      alignment: Alignment.topRight,
+                      color: Color.fromRGBO(225, 255, 199, 1.0),
+                      child: Text(state.messages[index].message, textAlign: TextAlign.right),
+                    )
+                        : Bubble(
+                      margin: const BubbleEdges.only(top: 10, right: 50),
+                      alignment: Alignment.topLeft,
+                      child: Text(state.messages[index].message, textAlign: TextAlign.right),
                     );
                   },
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: Row(
-                  children: <Widget>[
-                    Flexible(
-                      child: TextField(
-                        onChanged: (String value) => context.read<ChatBloc>().add(ComposedMessageChanged(message: value)),
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    child: TextField(
+                      onChanged: (String value) => context.read<ChatBloc>().add(ComposedMessageChanged(message: value)),
+                      style: const TextStyle(
+                        color: Colors.white,
                       ),
+                      maxLines: 5,
+                      minLines: 1,
+                      keyboardType: TextInputType.multiline,
                     ),
-                    IconButton(
-                      onPressed: () {
-                        context.read<ChatBloc>().add(SendMessage());
-                      },
-                      icon: const Icon(Icons.send, color: Colors.white38,),
-                    )
-                  ],
-                ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      context.read<ChatBloc>().add(SendMessage());
+                    },
+                    icon: const Icon(
+                      Icons.send,
+                      color: Colors.white38,
+                    ),
+                  )
+                ],
               ),
             ],
           );
