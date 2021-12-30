@@ -17,7 +17,7 @@ class MessageRepository {
   final ConversationRepository _conversationRepository = ConversationRepository();
 
   Stream<List<ChatMessage>> chatMessageStream(String conversationId) {
-    return firestoreInstance.doc(conversationId).collection('messages').orderBy('sentTimestamp').limit(50).snapshots().map(_messageListFromQuery);
+    return firestoreInstance.doc(conversationId).collection('messages').orderBy('sentTimestamp', descending: true).limit(100).snapshots().map(_messageListFromQuery);
   }
 
   List<ChatMessage> _messageListFromQuery(QuerySnapshot<Map<String,dynamic>> query) {

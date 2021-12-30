@@ -16,10 +16,9 @@ class ConversationRepository {
   final CollectionReference<Map<String, dynamic>> firestoreInstance =
       FirebaseFirestore.instance.collection('conversations');
 
-  Stream<List<Conversation>> userConversationStream(String id, String userId) {
+  Stream<List<Conversation>> userConversationStream(String userId) {
     return firestoreInstance
         .where('members', arrayContains: userId)
-        .orderBy('sentTimestamp')
         .snapshots()
         .map(_userConversationsFromQuery);
   }
@@ -35,7 +34,7 @@ class ConversationRepository {
       } else {
         return Conversation.empty;
       }
-    }).toList();
+    }).toList()..sort((a, b) => b.lastReceivedTimestamp!.compareTo(a.lastReceivedTimestamp ?? 0));
   }
 
   Stream<Conversation> conversationStream(String id) {

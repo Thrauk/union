@@ -61,7 +61,7 @@ class _EditProfilePage extends StatelessWidget {
                 builder: (BuildContext context, ChatState state) {
                   return ChatListWidget(
                     loggedUid: uid,
-                    chatMessages: state.messages,
+                    chatMessages: state.messages.reversed.toList(),
                   );
                 }),
           ),

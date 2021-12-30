@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/src/provider.dart';
+import 'package:union_app/src/screens/messaging/conversations/view/conversations_page.dart';
 import 'package:union_app/src/screens/widgets/app_bottom_nav_bar/widgets/plus_button.dart';
 import 'package:union_app/src/theme.dart';
 
@@ -40,8 +41,11 @@ class _CustomNavBar extends StatelessWidget {
                       context.read<AppBottomNavBarCubit>().state.index,
                   onTap: (int index) {
                     context.read<AppBottomNavBarCubit>().navigate(index);
+                    if(index == 3) {
+                      Navigator.of(context).push(ConversationsPage.route());
+                    }
                   },
-                  items: const <BottomNavigationBarItem>[
+                  items: <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
                         icon: Icon(Icons.home), label: 'Home'),
                     BottomNavigationBarItem(

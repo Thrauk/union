@@ -71,7 +71,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       SendMessage event, Emitter<ChatState> emit) async {
     if(state.composedMessage != '') {
       final ChatMessage chatMessage = ChatMessage(
-          message: state.composedMessage,
+          message: state.composedMessage.trim(),
           authorId: _myUid,
           sentTimestamp: DateTime.now().microsecondsSinceEpoch);
       if (state.conversation != Conversation.empty) {

@@ -11,6 +11,8 @@ class SendingAreaWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+
+    // MUST DISPOSE OF IT IN BLOC!!!
     final TextEditingController _controller = TextEditingController();
 
     return SizedBox(
