@@ -2,9 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
+import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_open_role_repository.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
+import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/open_roles/open_role_details/bloc/open_role_details_bloc.dart';
 import 'package:union_app/src/screens/open_roles/open_role_details/widgets/buttons/apply_button_widget.dart';
+import 'package:union_app/src/screens/open_roles/open_role_details/widgets/buttons/view_applicants_button_widget.dart';
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
 import 'package:union_app/src/theme.dart';
 import 'package:union_app/src/util/date_format_utils.dart';
@@ -23,8 +26,11 @@ class OpenRolesDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<OpenRoleDetailsBloc>(
-      create: (_) => OpenRoleDetailsBloc(FirebaseProjectRepository())
-        ..add(GetProjectDetails(projectOpenRole.projectId)),
+      create: (_) => OpenRoleDetailsBloc(
+          FirebaseProjectRepository(), FirebaseProjectOpenRoleRepository())
+        ..add(GetProjectDetails(projectOpenRole.projectId))
+        ..add(VerifyIfUserAlreadyApplied(
+            context.read<AppBloc>().state.user.id, projectOpenRole.id)),
       child: _OpenRolesDetailsPage(projectOpenRole: projectOpenRole),
     );
   }
@@ -91,15 +97,33 @@ class _OpenRolesDetailsPage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
+                if (projectOpenRole.isPaid)
+                  Row(
+                    children: const <Widget>[
+                      Icon(
+                        Icons.payments,
+                        color: AppColors.white07,
+                      ),
+                      SizedBox(width: 6),
+                      Text(
+                        'Paid',
+                        style: AppStyles.textStyleBody,
+                      ),
+                    ],
+                  ),
+                const SizedBox(height: 16),
                 const Text('Specifications',
                     style: AppStyles.textStyleHeading1),
                 const SizedBox(height: 8),
                 Text(projectOpenRole.specifications,
                     style: AppStyles.textStyleBody),
                 const Spacer(),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: ApplyButtonWidget(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: state.project.ownerId !=
+                          context.read<AppBloc>().state.user.id
+                      ? ApplyButtonWidget(openRoleId: projectOpenRole.id)
+                      : ViewApplicantsButtonWidget(openRole: projectOpenRole),
                 ),
               ],
             ),
