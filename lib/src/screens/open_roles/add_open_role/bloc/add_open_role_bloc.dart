@@ -68,8 +68,10 @@ class AddOpenRoleBloc extends Bloc<AddOpenRoleEvent, AddOpenRoleState> {
       PostButtonPressed event, Emitter<AddOpenRoleState> emit) {
     try {
       if (state.status == FormzStatus.valid) {
+        print(event.projectId);
         final ProjectOpenRole projectOpenRole = ProjectOpenRole(
             projectId: event.projectId,
+            isRemotePossible: state.isRemotePossible,
             isPaid: state.isPaid,
             title: state.title.value,
             location: '${state.city.value} ${state.country.value}',

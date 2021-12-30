@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_open_role_repository.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
+import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/open_roles/add_open_role/view/add_open_role_page.dart';
 import 'package:union_app/src/screens/project/edit_project/edit_project.dart';
@@ -105,7 +106,7 @@ class _ProjectDetailsPage extends StatelessWidget {
                       .toList()
                       .cast<Widget>(),
                 ),
-              if (project.openRoles!.isNotEmpty)
+              if (state.openRoles.isNotEmpty)
                 const Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
                   child: Text(
@@ -125,7 +126,7 @@ class _ProjectDetailsPage extends StatelessWidget {
                 );*/
                     return OpenRoleItemWidget(
                         projectOpenRole: state.openRoles[index],
-                        showApplyButton: true);
+                        showApplyButton: isNotProjectOwner(project.ownerId, context.read<AppBloc>().state.user.id));
                   },
                 ),
               ),
@@ -238,4 +239,8 @@ class Choices {
   static const String add_open_role = 'Add an open role';
 
   static const List<String> choices = <String>[edit, delete, add_open_role];
+}
+
+bool isNotProjectOwner(String projectOwnerId, String userId) {
+  return projectOwnerId != userId;
 }

@@ -46,6 +46,14 @@ class AppStyles {
     fontSize: 18,
   );
 
+
+  static const TextStyle textStyleHeading2 = TextStyle(
+    fontFamily: 'Lato',
+    color: AppColors.primaryColor,
+    fontWeight: FontWeight.w700,
+    fontSize: 32,
+  );
+
   static const TextStyle textStyleBody = TextStyle(
     fontFamily: 'Lato',
     fontWeight: FontWeight.normal,
