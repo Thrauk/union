@@ -5,6 +5,7 @@ import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/screens/app/bloc/app_bloc.dart';
 import 'package:union_app/src/screens/article/user_articles/view/user_articles_page.dart';
 import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/screens/open_roles/view_user_applications/view/user_applications_page.dart';
 import 'package:union_app/src/screens/profile/profile.dart';
 import 'package:union_app/src/screens/project/user_projects/user_projects.dart';
 
@@ -76,6 +77,19 @@ class AppDrawer extends StatelessWidget {
             ),
             title: Text('Organizations'),
           ),
+          ListTile(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  UserApplicationsPage.route(
+                      context.read<AppBloc>().state.user.id));
+            },
+            leading: const Icon(
+              Icons.analytics_outlined,
+              color: Colors.white70,
+            ),
+            title: const Text('My applications'),
+          ),
           const ListTile(
             leading: Icon(
               Icons.settings,
@@ -86,8 +100,7 @@ class AppDrawer extends StatelessWidget {
           GestureDetector(
             onTap: () {
               context.read<AppBloc>().add(AppLogoutRequested());
-              Navigator.of(context)
-                  .popUntil((Route<void> route) => false);
+              Navigator.of(context).popUntil((Route<void> route) => false);
             },
             child: const ListTile(
               leading: Icon(
