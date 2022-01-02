@@ -10,6 +10,12 @@ class GetProjectDetails extends OpenRoleDetailsEvent {
   final String projectId;
 }
 
+class NoticeChanged extends OpenRoleDetailsEvent {
+  const NoticeChanged(this.value);
+
+  final String value;
+}
+
 class ApplyButtonPressed extends OpenRoleDetailsEvent {
   ApplyButtonPressed(this.uid, this.openRoleId);
 

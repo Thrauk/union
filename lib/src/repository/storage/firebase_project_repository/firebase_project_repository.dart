@@ -38,7 +38,6 @@ class FirebaseProjectRepository {
 
   Future<Map<String, String>?> getProjectUserDetails(String ownerId) async {
     try {
-      print('ownerid $ownerId');
       var data = (await firestoreUserInstance.doc(ownerId).get()).data();
 
       final String ownerName =

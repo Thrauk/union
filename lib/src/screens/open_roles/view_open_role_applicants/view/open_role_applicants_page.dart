@@ -39,22 +39,22 @@ class _OpenRoleApplicantsPage extends StatelessWidget {
     return BlocBuilder<OpenRoleApplicantsBloc, OpenRoleApplicantsState>(
       buildWhen:
           (OpenRoleApplicantsState previous, OpenRoleApplicantsState current) {
-        return previous.usersList != current.usersList;
+        return previous.applicationsItems != current.applicationsItems;
       },
       builder: (BuildContext context, OpenRoleApplicantsState state) {
         return Scaffold(
           appBar: const SimpleAppBar(
             title: 'Applicants',
           ),
-          body: state.usersList.isNotEmpty
+          body: state.applicationsItems.isNotEmpty
               ? Column(
                   children: <Widget>[
                     Expanded(
                       child: ListView.builder(
-                        itemCount: state.usersList.length,
+                        itemCount: state.applicationsItems.length,
                         itemBuilder: (BuildContext context, int index) {
                           return ApplicantItemWidget(
-                              user: state.usersList[index]);
+                              applicationItem: state.applicationsItems[index]);
                         },
                       ),
                     )

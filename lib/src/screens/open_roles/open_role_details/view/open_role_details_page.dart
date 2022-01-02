@@ -118,9 +118,11 @@ class _OpenRolesDetailsPage extends StatelessWidget {
                 Text(projectOpenRole.specifications,
                     style: AppStyles.textStyleBody),
                 const Spacer(),
+                // TODO remove after test
+                ViewApplicantsButtonWidget(openRole: projectOpenRole),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: state.project.ownerId !=
+                  child: state.project.ownerId ==
                           context.read<AppBloc>().state.user.id
                       ? ApplyButtonWidget(openRoleId: projectOpenRole.id)
                       : ViewApplicantsButtonWidget(openRole: projectOpenRole),

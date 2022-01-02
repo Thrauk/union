@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:union_app/src/models/models.dart';
+import 'package:union_app/src/models/project_open_role_application.dart';
+import 'package:union_app/src/models/project_open_role_application_item.dart';
 
 class FirebaseProjectOpenRoleRepository {
   final CollectionReference<Map<String, dynamic>> firestoreProjectsCollection =
@@ -12,10 +14,6 @@ class FirebaseProjectOpenRoleRepository {
   final CollectionReference<Map<String, dynamic>>
       firestoreProjectsOpenRolesCollection =
       FirebaseFirestore.instance.collection('projects_open_roles');
-
-  final CollectionReference<Map<String, dynamic>>
-      firestoreProjectsAppliesCollection =
-      FirebaseFirestore.instance.collection('projects_applies');
 
   final CollectionReference<Map<String, dynamic>> firestoreUsersCollection =
       FirebaseFirestore.instance.collection('users');
@@ -71,71 +69,101 @@ class FirebaseProjectOpenRoleRepository {
     return null;
   }
 
-  Future<void> changeUidToOpenRole(String uid, String openRoleId) async {
+  Future<void> addOrRemoveUidFromOpenRole(
+      ProjectOpenRoleApplication roleApplication, String openRoleId) async {
     try {
-      final DocumentReference<Map<String, dynamic>> reference =
-          firestoreProjectsOpenRolesCollection.doc(openRoleId);
-      final Map<String, dynamic>? openRoleJson = (await reference.get()).data();
-      if (openRoleJson != null) {
-        final ProjectOpenRole openRole = ProjectOpenRole.fromJson(openRoleJson);
-        if (!openRole.applicantsUids.contains(uid)) {
-          firestoreProjectsAppliesCollection.doc(uid).update({
-            'applies': FieldValue.arrayUnion([openRoleId])
-          });
-          reference.update({
-            'applicants_uids': FieldValue.arrayUnion([uid])
-          });
-        } else {
-          // TODO crash if all fields are empty
-          firestoreProjectsAppliesCollection.doc(uid).update({
-            'applies': FieldValue.arrayRemove([openRoleId])
-          });
-          reference.update({
-            'applicants_uids': FieldValue.arrayRemove([uid])
-          });
+      final CollectionReference<Map<String, dynamic>> reference =
+          firestoreProjectsOpenRolesCollection
+              .doc(openRoleId)
+              .collection('applies');
+
+      final List<QueryDocumentSnapshot<Map<String, dynamic>>>
+          maybeApplicationQuery =
+          (await reference.where('uid', isEqualTo: roleApplication.uid).get())
+              .docs;
+
+      print('${maybeApplicationQuery.length}  sdadsad');
+
+      if (maybeApplicationQuery.isNotEmpty) {
+        for (final QueryDocumentSnapshot<Map<String, dynamic>> element
+            in maybeApplicationQuery) {
+          reference.doc(element.id).delete();
         }
+      } else {
+        reference.doc().set(roleApplication.toJson());
       }
     } catch (e) {
-      print('changeUidToOpenRole $e');
+      print('addOrRemoveUidFromOpenRole $e');
     }
+  }
+
+  Future<List<ProjectOpenRoleApplication>> _getProjectApplications(
+      String openRoleId) async {
+    try {
+      final CollectionReference<Map<String, dynamic>> reference =
+          firestoreProjectsOpenRolesCollection
+              .doc(openRoleId)
+              .collection('applies');
+
+      final List<QueryDocumentSnapshot<Map<String, dynamic>>>
+          applicationsListQuery = (await reference.get()).docs.toList();
+
+      return applicationsListQuery
+          .map((QueryDocumentSnapshot<Map<String, dynamic>> e) {
+        final Map<String, dynamic> json = e.data();
+        if (json != null) {
+          return ProjectOpenRoleApplication.fromJson(json);
+        } else {
+          return const ProjectOpenRoleApplication();
+        }
+      }).toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<ProjectOpenRoleApplicationItem>> getProjectApplicationItems(
+      String openRoleId) async {
+    try {
+      final List<ProjectOpenRoleApplicationItem> applicationsListItems =
+          <ProjectOpenRoleApplicationItem>[];
+
+      final List<ProjectOpenRoleApplication> applicationsList =
+          await _getProjectApplications(openRoleId);
+
+      for (final ProjectOpenRoleApplication application in applicationsList) {
+        final Map<String, dynamic>? userJson =
+            (await firestoreUsersCollection.doc(application.uid).get()).data();
+        if (userJson != null) {
+          final FullUser user = FullUser.fromJson(userJson);
+          applicationsListItems
+              .add(ProjectOpenRoleApplicationItem(application.notice, user));
+        }
+      }
+      return applicationsListItems;
+    } catch (e) {
+      print(' getProjectApplicationItems $e');
+    }
+    return [];
   }
 
   Future<bool?> isUidAlreadyAdded(String uid, String openRoleId) async {
     try {
-      final DocumentReference<Map<String, dynamic>> reference =
-          firestoreProjectsOpenRolesCollection.doc(openRoleId);
-      final Map<String, dynamic>? openRoleJson = (await reference.get()).data();
-      if (openRoleJson != null) {
-        final ProjectOpenRole openRole = ProjectOpenRole.fromJson(openRoleJson);
-        print('changeUidToOpenRole ${openRole.applicantsUids} $uid');
-        if (openRole.applicantsUids.contains(uid)) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    } catch (e) {
-      print('changeUidToOpenRole $e');
-    }
-    return null;
-  }
+      final CollectionReference<Map<String, dynamic>> reference =
+          firestoreProjectsOpenRolesCollection
+              .doc(openRoleId)
+              .collection('applies');
 
-  Future<List<FullUser>> getFullUsersListByOpenRole(String openRoleId) async {
-    final List<FullUser> userList = <FullUser>[];
-    try {
-      final Map<String, dynamic>? openRoleApplies =
-          (await firestoreProjectsOpenRolesCollection.doc(openRoleId).get())
-              .data();
-      final List<dynamic> usersUids =
-          openRoleApplies!['applicants_uids'] as List<dynamic>;
-      for (final dynamic uid in usersUids) {
-        final Map<String, dynamic>? userJson =
-            (await firestoreUsersCollection.doc(uid as String).get()).data();
-        userList.add(FullUser.fromJson(userJson!));
-      }
+      final List<QueryDocumentSnapshot<Map<String, dynamic>>>
+          maybeApplicationQuery =
+          (await reference.where('uid', isEqualTo: uid).get()).docs;
+
+      if (maybeApplicationQuery.isEmpty)
+        return false;
+      else
+        return true;
     } catch (e) {
-      print('getFullUsersListByOpenRole $e');
+      print('isUidAlreadyAdded $e');
     }
-    return userList;
   }
 }

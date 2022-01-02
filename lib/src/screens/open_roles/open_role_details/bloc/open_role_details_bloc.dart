@@ -1,9 +1,9 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:union_app/src/models/models.dart';
+import 'package:union_app/src/models/project_open_role_application.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_open_role_repository.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
 
@@ -19,6 +19,7 @@ class OpenRoleDetailsBloc
     on<GetProjectDetails>(_getProjectDetails);
     on<ApplyButtonPressed>(_applyButtonPressed);
     on<VerifyIfUserAlreadyApplied>(_verifyIfUserAlreadyApplied);
+    on<NoticeChanged>(_noticeChanged);
   }
 
   FirebaseProjectRepository firebaseProjectRepository;
@@ -41,9 +42,10 @@ class OpenRoleDetailsBloc
   Future<void> _applyButtonPressed(
       ApplyButtonPressed event, Emitter<OpenRoleDetailsState> emit) async {
     try {
-      firebaseProjectOpenRoleRepository.changeUidToOpenRole(
-          event.uid, event.openRoleId);
-      add(VerifyIfUserAlreadyApplied(event.uid, event.openRoleId));
+        await firebaseProjectOpenRoleRepository.addOrRemoveUidFromOpenRole(
+            ProjectOpenRoleApplication(uid: event.uid, notice: state.notice),
+            event.openRoleId);
+        add(VerifyIfUserAlreadyApplied(event.uid, event.openRoleId));
     } catch (e) {
       print('_applyButtonPressed $e');
     }
@@ -55,11 +57,17 @@ class OpenRoleDetailsBloc
     try {
       final bool? hasAlreadyApplied = await firebaseProjectOpenRoleRepository
           .isUidAlreadyAdded(event.uid, event.openRoleId);
+      print('_verifyIfUserAlreadyApplied $hasAlreadyApplied');
       if (hasAlreadyApplied != null) {
         emit(state.copyWith(alreadyAppliedToProject: hasAlreadyApplied));
       }
     } catch (e) {
       print('_verifyIfUserAlreadyApplied $e');
     }
+  }
+
+  void _noticeChanged(NoticeChanged event, Emitter<OpenRoleDetailsState> emit) {
+    final LongText notice = LongText.dirty(event.value);
+    emit(state.copyWith(notice: event.value, status: Formz.validate([notice])));
   }
 }

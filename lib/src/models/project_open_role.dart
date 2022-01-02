@@ -8,7 +8,6 @@ class ProjectOpenRole {
     this.isRemotePossible = false,
     this.isPaid = false,
     this.timestamp = 0,
-    this.applicantsUids = const <String>[],
   });
 
   ProjectOpenRole.fromJson(Map<String, dynamic> json)
@@ -19,8 +18,7 @@ class ProjectOpenRole {
         title = json['title'] as String,
         timestamp = json['timestamp'] as int,
         isRemotePossible = json['is_remote_possible'] as bool,
-        specifications = json['specifications'] as String,
-        applicantsUids = json['applicants_uids'] as List<dynamic>;
+        specifications = json['specifications'] as String;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'project_id': projectId,
@@ -31,7 +29,6 @@ class ProjectOpenRole {
         'specifications': specifications,
         'is_remote_possible': isRemotePossible,
         'timestamp': timestamp,
-        'applicants_uids': applicantsUids,
       };
 
   ProjectOpenRole copyWith({
@@ -43,7 +40,6 @@ class ProjectOpenRole {
     bool? isRemotePossible,
     String? specifications,
     int? timestamp,
-    List<dynamic>? applicantsUids,
   }) {
     return ProjectOpenRole(
       id: id ?? this.id,
@@ -54,7 +50,6 @@ class ProjectOpenRole {
       isRemotePossible: isRemotePossible ?? this.isRemotePossible,
       specifications: specifications ?? this.specifications,
       timestamp: timestamp ?? this.timestamp,
-      applicantsUids: applicantsUids ?? this.applicantsUids,
     );
   }
 
@@ -66,5 +61,4 @@ class ProjectOpenRole {
   final bool isRemotePossible;
   final String specifications;
   final int timestamp;
-  final List<dynamic> applicantsUids;
 }
