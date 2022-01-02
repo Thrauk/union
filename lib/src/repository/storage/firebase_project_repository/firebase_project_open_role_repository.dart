@@ -15,6 +15,10 @@ class FirebaseProjectOpenRoleRepository {
       firestoreProjectsOpenRolesCollection =
       FirebaseFirestore.instance.collection('projects_open_roles');
 
+  final CollectionReference<Map<String, dynamic>>
+      firestoreProjectsApplicationsCollection =
+      FirebaseFirestore.instance.collection('projects_applications');
+
   final CollectionReference<Map<String, dynamic>> firestoreUsersCollection =
       FirebaseFirestore.instance.collection('users');
 
@@ -46,7 +50,7 @@ class FirebaseProjectOpenRoleRepository {
           .map((el) => el as String)
           .toList();
       for (final String id in openRolesIds) {
-        final ProjectOpenRole? openRole = await getOpenRoleById(id);
+        final ProjectOpenRole? openRole = await _getOpenRoleById(id);
         if (openRole != null) {
           openRoles.add(openRole);
         }
@@ -57,7 +61,7 @@ class FirebaseProjectOpenRoleRepository {
     return openRoles;
   }
 
-  Future<ProjectOpenRole?> getOpenRoleById(String id) async {
+  Future<ProjectOpenRole?> _getOpenRoleById(String id) async {
     try {
       final DocumentSnapshot<Map<String, dynamic>> json =
           await firestoreProjectsOpenRolesCollection.doc(id).get();
@@ -72,14 +76,19 @@ class FirebaseProjectOpenRoleRepository {
   Future<void> addOrRemoveUidFromOpenRole(
       ProjectOpenRoleApplication roleApplication, String openRoleId) async {
     try {
-      final CollectionReference<Map<String, dynamic>> reference =
-          firestoreProjectsOpenRolesCollection
-              .doc(openRoleId)
-              .collection('applies');
+      // final CollectionReference<Map<String, dynamic>> reference =
+      //     firestoreProjectsOpenRolesCollection
+      //         .doc(openRoleId)
+      //         .collection('applies');
 
+      // final List<QueryDocumentSnapshot<Map<String, dynamic>>>
+      //     maybeApplicationQuery =
+      //     (await reference.where('uid', isEqualTo: roleApplication.uid).get())
+      //         .docs;
       final List<QueryDocumentSnapshot<Map<String, dynamic>>>
-          maybeApplicationQuery =
-          (await reference.where('uid', isEqualTo: roleApplication.uid).get())
+          maybeApplicationQuery = (await firestoreProjectsApplicationsCollection
+                  .where('uid', isEqualTo: roleApplication.uid)
+                  .get())
               .docs;
 
       print('${maybeApplicationQuery.length}  sdadsad');
@@ -87,10 +96,13 @@ class FirebaseProjectOpenRoleRepository {
       if (maybeApplicationQuery.isNotEmpty) {
         for (final QueryDocumentSnapshot<Map<String, dynamic>> element
             in maybeApplicationQuery) {
-          reference.doc(element.id).delete();
+          firestoreProjectsApplicationsCollection.doc(element.id).delete();
         }
       } else {
-        reference.doc().set(roleApplication.toJson());
+        final applicationToSave = roleApplication.copyWith(openRoleId: openRoleId);
+        firestoreProjectsApplicationsCollection
+            .doc()
+            .set(applicationToSave.toJson());
       }
     } catch (e) {
       print('addOrRemoveUidFromOpenRole $e');
@@ -100,10 +112,9 @@ class FirebaseProjectOpenRoleRepository {
   Future<List<ProjectOpenRoleApplication>> _getProjectApplications(
       String openRoleId) async {
     try {
-      final CollectionReference<Map<String, dynamic>> reference =
-          firestoreProjectsOpenRolesCollection
-              .doc(openRoleId)
-              .collection('applies');
+      final Query<Map<String, dynamic>> reference =
+          firestoreProjectsApplicationsCollection
+              .where('open_role_id', isEqualTo: openRoleId);
 
       final List<QueryDocumentSnapshot<Map<String, dynamic>>>
           applicationsListQuery = (await reference.get()).docs.toList();
@@ -149,14 +160,12 @@ class FirebaseProjectOpenRoleRepository {
 
   Future<bool?> isUidAlreadyAdded(String uid, String openRoleId) async {
     try {
-      final CollectionReference<Map<String, dynamic>> reference =
-          firestoreProjectsOpenRolesCollection
-              .doc(openRoleId)
-              .collection('applies');
-
       final List<QueryDocumentSnapshot<Map<String, dynamic>>>
-          maybeApplicationQuery =
-          (await reference.where('uid', isEqualTo: uid).get()).docs;
+          maybeApplicationQuery = (await firestoreProjectsApplicationsCollection
+                  .where('uid', isEqualTo: uid)
+                  .where('open_role_id', isEqualTo: openRoleId)
+                  .get())
+              .docs;
 
       if (maybeApplicationQuery.isEmpty)
         return false;
