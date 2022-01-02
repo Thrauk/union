@@ -75,6 +75,23 @@ class FirebaseArticleRepository {
     return articles;
   }
 
+  Future<List<Article>> getQueryArticlesByUid(String uid) async {
+    final QuerySnapshot<Map<String, dynamic>> query = await firestoreArticleCollection.where('owner_id', isEqualTo: uid).get();
+    return _userArticlesFromQuery(query);
+  }
+
+  List<Article> _userArticlesFromQuery(QuerySnapshot<Map<String, dynamic>> query) {
+    return query.docs.toList().map((QueryDocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
+      final Map<String, dynamic> json = documentSnapshot.data();
+      if (json != null) {
+        return Article.fromJson(json);
+      } else {
+        return Article.empty;
+      }
+    }).toList()
+      ..sort((Article a, Article b) => b.date.compareTo(a.date));
+  }
+
   void deleteArticle(Article article) {
     try {
       firestoreArticleCollection.doc(article.id).delete();
@@ -89,4 +106,6 @@ class FirebaseArticleRepository {
   void updateArticle(Article article) {
     firestoreArticleCollection.doc(article.id).update(article.toJson());
   }
+
+
 }
