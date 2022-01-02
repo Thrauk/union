@@ -89,4 +89,21 @@ class FirebaseProjectRepository {
     }
     return projects;
   }
+
+  Future<List<Project>> getQueryProjectsByUid(String uid) async {
+    final QuerySnapshot<Map<String, dynamic>> query = await firestoreProjectsCollection.where('owner_id', isEqualTo: uid).get();
+    return _userProjectFromQuery(query);
+  }
+
+  List<Project> _userProjectFromQuery(QuerySnapshot<Map<String, dynamic>> query) {
+    return query.docs.toList().map((QueryDocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
+      final Map<String, dynamic> json = documentSnapshot.data();
+      if (json != null) {
+        return Project.fromJson(json);
+      } else {
+        return Project.empty;
+      }
+    }).toList()
+      ..sort((Project a, Project b) => a.title!.compareTo(b.title ?? ''));
+  }
 }
