@@ -40,5 +40,5 @@ class AddOpenRoleState extends Equatable {
   }
 
   @override
-  List<Object> get props => [title, specifications, isPaid, city, country, isRemotePossible];
+  List<Object> get props => [title, specifications, isPaid, city, country, isRemotePossible, status];
 }

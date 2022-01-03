@@ -4,13 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_open_role_repository.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/open_roles/add_open_role/bloc/add_open_role_bloc.dart';
-import 'package:union_app/src/screens/open_roles/add_open_role/widgets/buttons/post_button_widget.dart';
-import 'package:union_app/src/screens/open_roles/add_open_role/widgets/buttons/remote_switch_button_widget.dart';
-import 'package:union_app/src/screens/open_roles/add_open_role/widgets/form_fields/country_input_widget.dart';
-import 'package:union_app/src/screens/open_roles/add_open_role/widgets/form_fields/location_input_widget.dart';
-import 'package:union_app/src/screens/open_roles/add_open_role/widgets/form_fields/specifications_input_widget.dart';
-import 'package:union_app/src/screens/open_roles/add_open_role/widgets/form_fields/title_input_widget.dart';
-import 'package:union_app/src/screens/open_roles/add_open_role/widgets/radio_buttons/is_paid_radio_buttons.dart';
+import 'package:union_app/src/screens/open_roles/add_open_role/widgets/widgets.dart';
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
 import 'package:union_app/src/theme.dart';
 

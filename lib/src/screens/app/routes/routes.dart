@@ -1,10 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/auth/login/login.dart';
-import 'package:union_app/src/screens/auth/sign_up/sign_up.dart';
 import 'package:union_app/src/screens/home/home.dart';
-import 'package:union_app/src/screens/intro/view/intro_page.dart';
-import 'package:union_app/src/screens/profile/profile.dart';
 
 List<Page<void>> onGenerateAppViewPages(AppStatus state, List<Page<dynamic>> pages) {
   switch (state) {

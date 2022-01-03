@@ -85,7 +85,6 @@ class EditProjectBloc extends Bloc<EditProjectEvent, EditProjectState> {
       try {
         _projectRepository.updateProject(state.project);
         emit(state.copyWith(status: FormzStatus.submissionSuccess));
-        print(state.status);
       } catch (_) {
         // TODO display on screen it's submission failure
         emit(state.copyWith(status: FormzStatus.submissionFailure));
