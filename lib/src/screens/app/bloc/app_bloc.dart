@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/authentication/auth.dart';
+import 'package:union_app/src/repository/notification/notification_repository.dart';
 
 part 'app_event.dart';
 part 'app_state.dart';
@@ -19,6 +20,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         ) {
     on<AppUserChanged>(_onUserChanged);
     on<AppLogoutRequested>(_onLogoutRequested);
+    on<AppUserLoggedIn>(_onAppUserLoggedIn);
     _userSubscription = _authenticationRepository.user.listen(
       (AppUser user) => add(AppUserChanged(user)),
     );
@@ -30,19 +32,36 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     _firebaseOnMessageOpenedAppSubscription = FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('Message clicked!');
     });
+
+
+
+
   }
 
   final AuthenticationRepository _authenticationRepository;
+  final NotificationRepository _notificationRepository = NotificationRepository();
   late final StreamSubscription<AppUser> _userSubscription;
   late final StreamSubscription<RemoteMessage> _firebaseOnMessageSubscription;
   late final StreamSubscription<RemoteMessage> _firebaseOnMessageOpenedAppSubscription;
 
+
+
   void _onUserChanged(AppUserChanged event, Emitter<AppState> emit) {
     print('User changed');
     print(event.user.isNotEmpty);
+
+    if(event.user.isNotEmpty) {
+      add(AppUserLoggedIn(event.user));
+    }
+
     emit(event.user.isNotEmpty
         ? AppState.authenticated(event.user)
         : const AppState.unauthenticated());
+  }
+
+
+  void _onAppUserLoggedIn(AppUserLoggedIn event, Emitter<AppState> emit) {
+    _notificationRepository.registerNotification(event.user.id);
   }
 
   void _onLogoutRequested(AppLogoutRequested event, Emitter<AppState> emit) {

@@ -8,6 +8,9 @@ import 'src/repository/authentication/auth.dart';
 
 import 'src/screens/app/app.dart';
 
+Future<void> _messageHandler(RemoteMessage message) async {
+  print('background message ${message.notification!.body}');
+}
 
 
 Future<void> main() async {
@@ -20,6 +23,7 @@ Future<void> main() async {
       FirebaseAuthRepository(storageRepository: storageRepository);
 
   NotificationRepository();
+  FirebaseMessaging.onBackgroundMessage(_messageHandler);
 
   await authenticationRepository.user.first;
   runApp(App(authenticationRepository: authenticationRepository));
