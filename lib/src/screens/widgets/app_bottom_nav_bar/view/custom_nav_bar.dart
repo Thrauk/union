@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/src/provider.dart';
+import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/messaging/conversations/view/conversations_page.dart';
 import 'package:union_app/src/screens/widgets/app_bottom_nav_bar/widgets/plus_button.dart';
 import 'package:union_app/src/theme.dart';
@@ -37,24 +38,22 @@ class _CustomNavBar extends StatelessWidget {
                   unselectedItemColor: AppColors.white07,
                   type: BottomNavigationBarType.fixed,
                   backgroundColor: AppColors.backgroundLight,
-                  currentIndex:
-                      context.read<AppBottomNavBarCubit>().state.index,
+                  currentIndex: context.read<AppBottomNavBarCubit>().state.index,
                   onTap: (int index) {
                     context.read<AppBottomNavBarCubit>().navigate(index);
-                    if(index == 3) {
-                      Navigator.of(context).push(ConversationsPage.route());
+                    switch (index) {
+                      case 0:
+                        Navigator.of(context).push(HomePage.route());
+                        break;
+                      case 3:
+                        Navigator.of(context).push(ConversationsPage.route());
                     }
                   },
-                  items: <BottomNavigationBarItem>[
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.home), label: 'Home'),
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.person), label: 'Profile'),
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.notifications),
-                        label: 'Notifications'),
-                    BottomNavigationBarItem(
-                        icon: Icon(Icons.message), label: 'Messages'),
+                  items: const <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+                    BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+                    BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notifications'),
+                    BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Messages'),
                   ],
                   selectedItemColor: AppColors.primaryColor,
                 ),

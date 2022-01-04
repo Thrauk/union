@@ -8,12 +8,10 @@ class FirebaseArticleRepository {
   final CollectionReference<Map<String, dynamic>> firestoreArticleCollection =
       FirebaseFirestore.instance.collection('articles');
 
-  final CollectionReference<Map<String, dynamic>> firestoreUserInstance =
-      FirebaseFirestore.instance.collection('users');
+  final CollectionReference<Map<String, dynamic>> firestoreUserInstance = FirebaseFirestore.instance.collection('users');
 
   void createArticle(Article article) {
-    final Article articleToSave =
-        article.copyWith(id: firestoreArticleDocument.id);
+    final Article articleToSave = article.copyWith(id: firestoreArticleDocument.id);
     firestoreUserInstance.doc(article.ownerId).update({
       'articles_ids': FieldValue.arrayUnion([articleToSave.id])
     });
@@ -24,15 +22,10 @@ class FirebaseArticleRepository {
     try {
       final Map<String, dynamic>? data = (await firestoreUserInstance.doc(ownerId).get()).data();
 
-      final String ownerName =
-      data!['displayName'] != null ? data['displayName'] as String : '';
-      final String ownerPhoto =
-      data['photo'] != null ? data['photo'] as String : '';
+      final String ownerName = data!['displayName'] != null ? data['displayName'] as String : '';
+      final String ownerPhoto = data['photo'] != null ? data['photo'] as String : '';
       print('Ownername $ownerName');
-      return <String, String>{
-        'owner_name': ownerName,
-        'owner_photo': ownerPhoto
-      };
+      return <String, String>{'owner_name': ownerName, 'owner_photo': ownerPhoto};
     } catch (e) {
       print('getArticleUserDetails $e');
     }
@@ -41,8 +34,7 @@ class FirebaseArticleRepository {
 
   Future<Article?> getArticleById(String id) async {
     try {
-      final DocumentSnapshot<Map<String, dynamic>> json =
-      await firestoreArticleCollection.doc(id).get();
+      final DocumentSnapshot<Map<String, dynamic>> json = await firestoreArticleCollection.doc(id).get();
       print(json.data());
       final Article article = Article.fromJson(json.data()!);
       return article;
@@ -59,9 +51,7 @@ class FirebaseArticleRepository {
     try {
       articlesData = (await firestoreUserInstance.doc(uid).get()).data();
 
-      articlesIds = (articlesData!['articles_ids'] as List<dynamic>)
-          .map((el) => el as String)
-          .toList();
+      articlesIds = (articlesData!['articles_ids'] as List<dynamic>).map((el) => el as String).toList();
       print(articlesIds);
       for (final String id in articlesIds) {
         final Article? article = await getArticleById(id);
@@ -107,5 +97,11 @@ class FirebaseArticleRepository {
     firestoreArticleCollection.doc(article.id).update(article.toJson());
   }
 
-
+  Future<List<Article>> getArticles(int limit) async {
+    final List<Article> articles = (await firestoreArticleCollection.orderBy('date', descending: true).limit(limit).get())
+        .docs
+        .map((QueryDocumentSnapshot<Map<String, dynamic>> e) => Article.fromJson(e.data()))
+        .toList();
+    return articles;
+  }
 }

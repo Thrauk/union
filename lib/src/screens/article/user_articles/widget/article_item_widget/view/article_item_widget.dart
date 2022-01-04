@@ -17,7 +17,7 @@ class ArticleItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<ArticleItemWidgetBloc>(
       child: _ArticleItemWidget(article: article),
       create: (_) => ArticleItemWidgetBloc(FirebaseArticleRepository())
         ..add(GetDetails(article.ownerId)),

@@ -67,18 +67,6 @@ class _ProjectItemWidget extends StatelessWidget {
                   ),
                   Row(
                     children: <Widget>[
-                      /*Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: state.ownerPhotoUrl != ''
-                                  ? NetworkImage(state.ownerPhotoUrl!)
-                                  : const AssetImage('assets/icons/user.png') as ImageProvider),
-                        ),
-                      ),*/
                       Text(
                         'Created by ${state.ownerDisplayName}',
                         overflow: TextOverflow.ellipsis,
