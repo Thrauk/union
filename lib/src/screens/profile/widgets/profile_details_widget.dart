@@ -24,14 +24,11 @@ class ProfileDetailsWidget extends StatelessWidget {
                   photo: state.fullUser.photo,
                 ),
                 const SizedBox(
-                  height: 4,
+                  height: 8,
                 ),
                 Text(
                   state.fullUser.displayName ?? 'John Doe',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
+                  style: AppStyles.textStyleHeadingWhite20,
                 ),
                 const SizedBox(
                   height: 8,
@@ -41,10 +38,7 @@ class ProfileDetailsWidget extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       state.fullUser.location ?? 'No location',
-                      style: const TextStyle(
-                        color: AppColors.white08,
-                        fontSize: 16,
-                      ),
+                      style: AppStyles.textStyleBody
                     ),
                     const Text(
                       ' • ',
@@ -62,17 +56,17 @@ class ProfileDetailsWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
-                Text(
-                  state.fullUser.description ?? 'No description',
-                  style: const TextStyle(
-                    color: AppColors.white08,
-                    fontSize: 18,
-                  ),
-                  textAlign: TextAlign.center,
-                )
+                // const SizedBox(
+                //   height: 16,
+                // ),
+                // Text(
+                //   state.fullUser.description ?? 'No description',
+                //   style: const TextStyle(
+                //     color: AppColors.white08,
+                //     fontSize: 18,
+                //   ),
+                //   textAlign: TextAlign.center,
+                // )
               ],
             ),
             if (state.ownProfile)

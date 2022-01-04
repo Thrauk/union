@@ -5,6 +5,7 @@ import 'package:union_app/src/repository/storage/firebase_user/firebase_user.dar
 import 'package:union_app/src/screens/profile/profile.dart';
 import 'package:union_app/src/screens/profile/widgets/projects/project_list_widget.dart';
 import 'package:union_app/src/screens/profile/widgets/stats/profile_statistics_widget.dart';
+import 'package:union_app/src/screens/profile/widgets/profile_description_widget.dart';
 import 'package:union_app/src/screens/widgets/app_bar/app_bar_with_search_bar.dart';
 import 'package:union_app/src/screens/widgets/app_bottom_nav_bar/view/custom_nav_bar.dart';
 import 'package:union_app/src/screens/widgets/app_drawer.dart';
@@ -36,8 +37,9 @@ class ProfilePage extends StatelessWidget {
           children: <Widget>[
             ProfileDetailsWidget(),
             ProfileStatisticsWidget(),
+            const ProfileDescriptionWidget(),
             //InteractionMenuWidget(),
-            TestingProfileWidget(),
+            // TestingProfileWidget(),
             Flexible(child: ProjectListWidget(uid: uid)),
           ],
         ),

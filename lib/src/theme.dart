@@ -46,6 +46,13 @@ class AppStyles {
     fontSize: 18,
   );
 
+  static const TextStyle textStyleHeadingWhite20 = TextStyle(
+    fontFamily: 'Lato',
+    color: AppColors.white09,
+    fontWeight: FontWeight.w600,
+    fontSize: 20,
+  );
+
 
   static const TextStyle textStyleHeading2 = TextStyle(
     fontFamily: 'Lato',
