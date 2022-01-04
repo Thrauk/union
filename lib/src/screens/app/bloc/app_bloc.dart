@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/authentication/auth.dart';
@@ -21,10 +22,20 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     _userSubscription = _authenticationRepository.user.listen(
       (AppUser user) => add(AppUserChanged(user)),
     );
+
+    _firebaseOnMessageSubscription = FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      print("message recieved");
+      print(event.notification!.body);
+    });
+    _firebaseOnMessageOpenedAppSubscription = FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('Message clicked!');
+    });
   }
 
   final AuthenticationRepository _authenticationRepository;
   late final StreamSubscription<AppUser> _userSubscription;
+  late final StreamSubscription<RemoteMessage> _firebaseOnMessageSubscription;
+  late final StreamSubscription<RemoteMessage> _firebaseOnMessageOpenedAppSubscription;
 
   void _onUserChanged(AppUserChanged event, Emitter<AppState> emit) {
     print('User changed');
@@ -41,6 +52,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   @override
   Future<void> close() {
     _userSubscription.cancel();
+    _firebaseOnMessageSubscription.cancel();
+    _firebaseOnMessageOpenedAppSubscription.cancel();
     return super.close();
   }
 }
