@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:union_app/src/models/models.dart';
@@ -25,6 +26,7 @@ class FirebaseAuthRepository implements AuthenticationRepository {
   @override
   Future<void> logOut() async {
     try {
+      await FirebaseMessaging.instance.deleteToken();
       await Future.wait(
         <Future<void>>[
           _firebaseAuth.signOut(),

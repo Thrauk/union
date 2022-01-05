@@ -9,20 +9,20 @@ import 'src/repository/authentication/auth.dart';
 import 'src/screens/app/app.dart';
 
 Future<void> _messageHandler(RemoteMessage message) async {
-  print('background message ${message.notification!.body}');
+  //print('background message ${message.notification!.body}');
+  if (message.notification != null) {
+    NotificationRepository().showNotification(message.notification!);
+  }
 }
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  final FirebaseStorageRepository storageRepository =
-      FirebaseStorageRepository();
-  final FirebaseAuthRepository authenticationRepository =
-      FirebaseAuthRepository(storageRepository: storageRepository);
+  final FirebaseStorageRepository storageRepository = FirebaseStorageRepository();
+  final FirebaseAuthRepository authenticationRepository = FirebaseAuthRepository(storageRepository: storageRepository);
 
-  NotificationRepository();
+  NotificationRepository().initialize();
   FirebaseMessaging.onBackgroundMessage(_messageHandler);
 
   await authenticationRepository.user.first;

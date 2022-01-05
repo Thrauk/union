@@ -25,3 +25,4 @@ class AppUserLoggedIn extends AppEvent {
   List<Object> get props => <Object>[user];
 
 }
+

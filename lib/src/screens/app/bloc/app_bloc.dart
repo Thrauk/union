@@ -26,11 +26,13 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     );
 
     _firebaseOnMessageSubscription = FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-      print("message recieved");
-      print(event.notification!.body);
+      if(event.notification != null) {
+        _notificationRepository.showNotification(event.notification!);
+      }
     });
     _firebaseOnMessageOpenedAppSubscription = FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('Message clicked!');
+      // NOT YET IMPLEMENTED
+      // print(message.notification!.body);
     });
 
 

@@ -40,7 +40,6 @@ class ProjectListElementWidget extends StatelessWidget {
                 ConstrainedBox(
                   constraints: const BoxConstraints(
                     minHeight: 14,
-                    maxHeight: 14 * 3,
                   ),
                   child: GestureDetector(
                     child: Text(

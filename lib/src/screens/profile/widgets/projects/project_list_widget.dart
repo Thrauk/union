@@ -17,7 +17,8 @@ class ProjectListWidget extends StatelessWidget {
       builder: (BuildContext context, ProjectListState state) {
         return ListView.builder(
             itemCount: state.projectList.length,
-            shrinkWrap: false,
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
               return ProjectListElementWidget(user: state.user, project: state.projectList[index],);
             });

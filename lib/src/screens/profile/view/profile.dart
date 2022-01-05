@@ -33,15 +33,18 @@ class ProfilePage extends StatelessWidget {
       appBar: const AppBarWithSearchBar(),
       body: BlocProvider<ProfileBloc>(
         create: (_) => ProfileBloc(uid: uid, userRepository: FirebaseUserRepository(), firebaseAuthRepository: context.read<AuthenticationRepository>()),
-        child: Column(
-          children: <Widget>[
-            ProfileDetailsWidget(),
-            ProfileStatisticsWidget(),
-            const ProfileDescriptionWidget(),
-            //InteractionMenuWidget(),
-            // TestingProfileWidget(),
-            Flexible(child: ProjectListWidget(uid: uid)),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ProfileDetailsWidget(),
+              ProfileStatisticsWidget(),
+              const ProfileDescriptionWidget(),
+              //InteractionMenuWidget(),
+              // TestingProfileWidget(),
+              Flexible(child: ProjectListWidget(uid: uid)),
+            ],
+          ),
         ),
       ),
     );
