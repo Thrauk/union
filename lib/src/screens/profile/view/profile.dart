@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/repository/authentication/auth.dart';
 import 'package:union_app/src/repository/storage/firebase_user/firebase_user.dart';
 import 'package:union_app/src/screens/profile/profile.dart';
+import 'package:union_app/src/screens/profile/widgets/posts/profile_posts_widget.dart';
 import 'package:union_app/src/screens/profile/widgets/projects/project_list_widget.dart';
 import 'package:union_app/src/screens/profile/widgets/stats/profile_statistics_widget.dart';
 import 'package:union_app/src/screens/profile/widgets/profile_description_widget.dart';
@@ -20,7 +21,6 @@ class ProfilePage extends StatelessWidget {
 
   static Page<void> page({required String uid}) => MaterialPage<void>(child: ProfilePage(uid: uid));
 
-
   final String uid;
 
   @override
@@ -32,17 +32,27 @@ class ProfilePage extends StatelessWidget {
       drawer: const AppDrawer(),
       appBar: const AppBarWithSearchBar(),
       body: BlocProvider<ProfileBloc>(
-        create: (_) => ProfileBloc(uid: uid, userRepository: FirebaseUserRepository(), firebaseAuthRepository: context.read<AuthenticationRepository>()),
+        create: (_) => ProfileBloc(
+            uid: uid,
+            userRepository: FirebaseUserRepository(),
+            firebaseAuthRepository: context.read<AuthenticationRepository>()),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+            children: const <Widget>[
               ProfileDetailsWidget(),
               ProfileStatisticsWidget(),
-              const ProfileDescriptionWidget(),
+              ProfileDescriptionWidget(),
               //InteractionMenuWidget(),
+
+              ProfilePostsWidget(),
+
               // TestingProfileWidget(),
-              Flexible(child: ProjectListWidget(uid: uid)),
+              // Flexible(
+              //   child: ProjectListWidget(
+              //     uid: uid,
+              //   ),
+              // ),
             ],
           ),
         ),

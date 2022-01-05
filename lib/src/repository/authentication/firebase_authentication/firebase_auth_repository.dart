@@ -65,7 +65,9 @@ class FirebaseAuthRepository implements AuthenticationRepository {
       userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
-      ).whenComplete(() => _firebaseAuth.currentUser!.updateDisplayName(name));
+      );
+
+      await _firebaseAuth.currentUser!.updateDisplayName(name);
 
       appUser = AppUser(
           id: userCredential.user!.uid,

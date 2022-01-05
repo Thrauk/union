@@ -38,7 +38,9 @@ class SignUpPage extends StatelessWidget {
                     ),
                   );
               } else if (state.status.isSubmissionSuccess) {
-                Navigator.of(context).popUntil((Route<void> route) => false);
+                //Navigator.of(context).popUntil((Route<void> route) => false);
+                // THIS SHOULD BE CHANGED IN THE FUTURE!!!!
+                Navigator.of(context).push(HomePage.route());
               }
             },
             child: const _SignUpPage()),

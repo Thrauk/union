@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/screens/profile/widgets/projects/project_list_element_widget.dart';
+import 'package:union_app/src/screens/profile/widgets/articles/bloc/articles_list_bloc.dart';
 
-import 'bloc/project_list_bloc.dart';
+import 'articles_list_element_widget.dart';
 
-class ProjectListWidget extends StatelessWidget {
-  const ProjectListWidget({
+class ArticlesListWidget extends StatelessWidget {
+  const ArticlesListWidget({
     Key? key,
     required this.uid,
     required this.user,
@@ -17,18 +17,18 @@ class ProjectListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ProjectListBloc>(
-        create: (_) => ProjectListBloc(uid: uid)..add(Initialize()),
-        child: BlocBuilder<ProjectListBloc, ProjectListState>(
-          builder: (BuildContext context, ProjectListState state) {
+    return BlocProvider<ArticlesListBloc>(
+        create: (_) => ArticlesListBloc(uid: uid)..add(Initialize()),
+        child: BlocBuilder<ArticlesListBloc, ArticlesListState>(
+          builder: (BuildContext context, ArticlesListState state) {
             return ListView.builder(
-                itemCount: state.projectList.length,
+                itemCount: state.articleList.length,
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  return ProjectListElementWidget(
+                  return ArticlesListElementWidget(
                     user: user,
-                    project: state.projectList[index],
+                    article: state.articleList[index],
                   );
                 });
           },

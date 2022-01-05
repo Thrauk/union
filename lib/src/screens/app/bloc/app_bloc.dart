@@ -51,6 +51,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   void _onUserChanged(AppUserChanged event, Emitter<AppState> emit) {
     print('User changed');
     print(event.user.isNotEmpty);
+    print(event.user.displayName);
+    print(event.user.email);
+    print(event.user.id);
 
     if(event.user.isNotEmpty) {
       add(AppUserLoggedIn(event.user));

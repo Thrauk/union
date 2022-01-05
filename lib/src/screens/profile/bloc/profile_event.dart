@@ -19,3 +19,7 @@ class ProfileChanged extends ProfileEvent {
   @override
   List<Object> get props => <Object>[user];
 }
+
+class SelectedProjectsPosts extends ProfileEvent {}
+
+class SelectedArticlesPosts extends ProfileEvent {}

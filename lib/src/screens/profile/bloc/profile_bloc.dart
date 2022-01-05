@@ -23,6 +23,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<OwnedProfile>(_onOwnedProfile);
     on<ProfileChanged>(_onProfileChanged);
     on<FollowOrUnfollow>(_onFollowOrUnfollow);
+    on<SelectedProjectsPosts>(_onSelectedProjectsPosts);
+    on<SelectedArticlesPosts>(_onSelectedArticlesPosts);
+
     if (_authRepository.currentUser.id == _uid) {
       add(OwnedProfile());
     }
@@ -58,6 +61,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       _userRepository.followService.followUser(_authRepository.currentUser.id, _uid);
     }
     emit(state.copyWith(followsUser: !state.followsUser));
+  }
+
+  void _onSelectedProjectsPosts(SelectedProjectsPosts event, Emitter<ProfileState> emit) {
+    emit(state.copyWith(selectedPosts: SelectedPosts.project));
+  }
+
+  void _onSelectedArticlesPosts(SelectedArticlesPosts event, Emitter<ProfileState> emit) {
+    emit(state.copyWith(selectedPosts: SelectedPosts.article));
   }
 
   @override

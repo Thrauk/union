@@ -54,6 +54,7 @@ class SignUpCubit extends Cubit<SignUpState> {
         status: Formz.validate(
           // ignore: always_specify_types
           [
+            state.name,
             state.email,
             password,
           ],
