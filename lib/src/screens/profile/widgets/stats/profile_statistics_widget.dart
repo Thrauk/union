@@ -43,7 +43,7 @@ class ProfileStatisticsWidget extends StatelessWidget {
                   child: ProfileStatElementWidget(
                     onPressed: () {},
                     title: 'Rating',
-                    data: '5/5',
+                    data: 'N/A',
                     buttonType: StatButton.RightRounded,
                   ),
                 ),

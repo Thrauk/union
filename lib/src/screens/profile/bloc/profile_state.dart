@@ -2,14 +2,14 @@ part of 'profile_bloc.dart';
 
 enum ProfileType { myProfile, otherProfile }
 
-enum SelectedPosts { project, article }
+enum SelectedPosts { project, article, none }
 
 class ProfileState extends Equatable {
   const ProfileState({
     this.fullUser = FullUser.empty,
     this.ownProfile = false,
     this.followsUser = false,
-    this.selectedPosts = SelectedPosts.project,
+    this.selectedPosts = SelectedPosts.none,
   });
 
   final FullUser fullUser;

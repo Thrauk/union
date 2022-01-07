@@ -43,6 +43,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (state.fullUser.followers != null && state.fullUser.followers!.contains(_authRepository.currentUser.id)) {
       emit(state.copyWith(followsUser: true));
     }
+    emit(state.copyWith(selectedPosts: SelectedPosts.project));
   }
 
   void _onProfileChanged(ProfileChanged event, Emitter<ProfileState> emit) {
