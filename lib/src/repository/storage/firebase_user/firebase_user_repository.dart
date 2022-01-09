@@ -72,4 +72,5 @@ class FirebaseUserRepository {
     await updateUserDetails(user.copyWith(photo: url));
     return url;
   }
+
 }

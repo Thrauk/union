@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/authentication/auth.dart';
 import 'package:union_app/src/repository/notification/notification_repository.dart';
+import 'package:union_app/src/repository/storage/firebase_user/firebase_user.dart';
 
 part 'app_event.dart';
 part 'app_state.dart';
@@ -41,8 +42,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   }
 
   final AuthenticationRepository _authenticationRepository;
+  final FirebaseUserRepository _firebaseUserRepository = FirebaseUserRepository();
   final NotificationRepository _notificationRepository = NotificationRepository();
   late final StreamSubscription<AppUser> _userSubscription;
+  late final StreamSubscription<FullUser> _userDetailsSubscription;
   late final StreamSubscription<RemoteMessage> _firebaseOnMessageSubscription;
   late final StreamSubscription<RemoteMessage> _firebaseOnMessageOpenedAppSubscription;
 
@@ -65,12 +68,18 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   }
 
 
-  void _onAppUserLoggedIn(AppUserLoggedIn event, Emitter<AppState> emit) {
+  Future<void> _onAppUserLoggedIn(AppUserLoggedIn event, Emitter<AppState> emit) async {
     _notificationRepository.registerNotification(event.user.id);
+    final FullUser currentDetails = await _firebaseUserRepository.getFullUserByUid(event.user.id);
+    emit(state.copyWith(userDetails: currentDetails));
+    _userDetailsSubscription = _firebaseUserRepository.fullUser(event.user.id).listen((FullUser fullUser) {
+      emit(state.copyWith(userDetails: fullUser));
+    });
   }
 
   void _onLogoutRequested(AppLogoutRequested event, Emitter<AppState> emit) {
     _authenticationRepository.logOut();
+    _userDetailsSubscription.cancel();
   }
 
   @override
@@ -78,6 +87,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     _userSubscription.cancel();
     _firebaseOnMessageSubscription.cancel();
     _firebaseOnMessageOpenedAppSubscription.cancel();
+    _userDetailsSubscription.cancel();
     return super.close();
   }
 }

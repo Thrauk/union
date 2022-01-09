@@ -18,26 +18,29 @@ class AppDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => ProfilePage(uid: user.id),
+          BlocBuilder<AppBloc, AppState>(builder: (BuildContext context, AppState state) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => ProfilePage(uid: user.id),
+                  ),
+                );
+              },
+              child: UserAccountsDrawerHeader(
+                currentAccountPictureSize: const Size(85, 85),
+                currentAccountPicture: Avatar(photo: state.userDetails.photo),
+                accountName: context.select(
+                      (AppBloc bloc) => Text(state.userDetails.displayName ?? ''),
                 ),
-              );
-            },
-            child: UserAccountsDrawerHeader(
-              currentAccountPictureSize: const Size(100, 100),
-              currentAccountPicture: Avatar(photo: user.photo),
-              accountName: context.select(
-                (AppBloc bloc) => Text(user.displayName ?? ''),
+                accountEmail: context.select(
+                      (AppBloc bloc) => Text(state.userDetails.email ?? ''),
+                ),
               ),
-              accountEmail: context.select(
-                (AppBloc bloc) => Text(user.email ?? ''),
-              ),
-            ),
-          ),
+            );
+          }),
+
           ListTile(
             onTap: () {
               Navigator.push(
