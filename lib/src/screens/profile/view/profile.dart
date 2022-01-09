@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/repository/authentication/auth.dart';
 import 'package:union_app/src/repository/storage/firebase_user/firebase_user.dart';
+import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/profile/profile.dart';
 import 'package:union_app/src/screens/profile/widgets/posts/profile_posts_widget.dart';
 import 'package:union_app/src/screens/profile/widgets/stats/profile_statistics_widget.dart';
@@ -23,11 +24,12 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String _loggedUid = context.select((AppBloc bloc) => bloc.state.user.id);
     return Scaffold(
       // floatingActionButton: const PlusButton(),
       // floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
       bottomNavigationBar: const CustomNavBar(),
-      drawer: const AppDrawer(),
+      drawer: _loggedUid == uid ? const AppDrawer() : null,
       appBar: const AppBarWithSearchBar(),
       body: BlocProvider<ProfileBloc>(
         create: (_) => ProfileBloc(

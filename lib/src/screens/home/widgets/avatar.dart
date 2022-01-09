@@ -10,7 +10,7 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? photo = this.photo;
+    final String? photo = this.photo == '' ? null : this.photo;
     return CircleAvatar(
       radius: avatarSize,
       backgroundColor: Theme.of(context).primaryColor,

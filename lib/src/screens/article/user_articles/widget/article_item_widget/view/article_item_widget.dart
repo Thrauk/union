@@ -5,6 +5,8 @@ import 'package:union_app/src/models/article.dart';
 import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
 import 'package:union_app/src/screens/article/article_details/article_details_page.dart';
 import 'package:union_app/src/screens/article/user_articles/widget/article_item_widget/bloc/article_item_widget_bloc.dart';
+import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/screens/profile/profile.dart';
 import 'package:union_app/src/theme.dart';
 import 'package:flutter/rendering.dart';
 import 'package:union_app/src/models/models.dart';
@@ -19,8 +21,7 @@ class ArticleItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<ArticleItemWidgetBloc>(
       child: _ArticleItemWidget(article: article),
-      create: (_) => ArticleItemWidgetBloc(FirebaseArticleRepository())
-        ..add(GetDetails(article.ownerId)),
+      create: (_) => ArticleItemWidgetBloc(FirebaseArticleRepository())..add(GetDetails(article.ownerId)),
     );
   }
 }
@@ -33,11 +34,9 @@ class _ArticleItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ArticleItemWidgetBloc, ArticleItemWidgetState>(
-      buildWhen:
-          (ArticleItemWidgetState previous, ArticleItemWidgetState current) {
+      buildWhen: (ArticleItemWidgetState previous, ArticleItemWidgetState current) {
         return (previous.ownerDisplayName != current.ownerDisplayName) ||
-            (previous.ownerPhotoUrl != current.ownerPhotoUrl ||
-                previous.isExpanded != current.isExpanded);
+            (previous.ownerPhotoUrl != current.ownerPhotoUrl || previous.isExpanded != current.isExpanded);
       },
       builder: (BuildContext context, ArticleItemWidgetState state) {
         return GestureDetector(
@@ -61,17 +60,13 @@ class _ArticleItemWidget extends StatelessWidget {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: state.ownerPhotoUrl != ''
-                                  ? NetworkImage(state.ownerPhotoUrl!)
-                                  : const AssetImage('assets/icons/user.png')
-                                      as ImageProvider),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(ProfilePage.route(uid: article.ownerId));
+                        },
+                        child: Avatar(
+                          photo: state.ownerPhotoUrl,
+                          avatarSize: 22,
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -82,8 +77,9 @@ class _ArticleItemWidget extends StatelessWidget {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                          'on ${DateFormatUtils.timestampToDate(article.date)}',
-                      style: AppStyles.textStyleBodySmall,),
+                        'on ${DateFormatUtils.timestampToDate(article.date)}',
+                        style: AppStyles.textStyleBodySmall,
+                      ),
                     ],
                   ),
                   const SizedBox(
@@ -99,9 +95,7 @@ class _ArticleItemWidget extends StatelessWidget {
                         child: GestureDetector(
                           child: Text(
                             article.body ?? '',
-                            overflow: state.isExpanded == false
-                                ? TextOverflow.ellipsis
-                                : TextOverflow.visible,
+                            overflow: state.isExpanded == false ? TextOverflow.ellipsis : TextOverflow.visible,
                             style: const TextStyle(
                               fontFamily: 'Lato',
                               fontSize: 14,
