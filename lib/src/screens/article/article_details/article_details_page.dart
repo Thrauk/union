@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
+import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/article/edit_article/view/edit_article_page.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/theme.dart';
@@ -16,29 +18,29 @@ class ArticleDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          Theme(
-            data: Theme.of(context).copyWith(
-              cardColor: AppColors.backgroundLight1,
-              iconTheme: const IconThemeData(color: AppColors.white09),
-            ),
-            child: PopupMenuButton<String>(
-              onSelected: (String choice) =>
-                  manageChoices(choice, context, article),
-              itemBuilder: (BuildContext context) {
-                return Choices.choices.map(
-                  (String choice) {
-                    return PopupMenuItem<String>(
-                      value: choice,
-                      child: Text(
-                        choice,
-                        style: const TextStyle(color: AppColors.white09),
-                      ),
-                    );
-                  },
-                ).toList();
-              },
-            ),
-          )
+          if (context.read<AppBloc>().state.user.id == article.ownerId)
+            Theme(
+              data: Theme.of(context).copyWith(
+                cardColor: AppColors.backgroundLight1,
+                iconTheme: const IconThemeData(color: AppColors.white09),
+              ),
+              child: PopupMenuButton<String>(
+                onSelected: (String choice) => manageChoices(choice, context, article),
+                itemBuilder: (BuildContext context) {
+                  return Choices.choices.map(
+                    (String choice) {
+                      return PopupMenuItem<String>(
+                        value: choice,
+                        child: Text(
+                          choice,
+                          style: const TextStyle(color: AppColors.white09),
+                        ),
+                      );
+                    },
+                  ).toList();
+                },
+              ),
+            )
         ],
         backgroundColor: AppColors.backgroundLight,
         title: const Text('Article'),
@@ -49,8 +51,7 @@ class ArticleDetailsPage extends StatelessWidget {
 }
 
 class _ArticleDetailsPage extends StatelessWidget {
-  const _ArticleDetailsPage({Key? key, required this.article})
-      : super(key: key);
+  const _ArticleDetailsPage({Key? key, required this.article}) : super(key: key);
 
   final Article article;
 
@@ -64,13 +65,14 @@ class _ArticleDetailsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(article.body ?? '', style: AppStyles.textStyleBody),
+            const SizedBox(height: 8),
             if (article.tags!.isNotEmpty)
               Wrap(
                 spacing: 4,
                 children: article.tags!
                     .map(
                       (dynamic tag) => TagWidget(label: tag as String),
-                )
+                    )
                     .toList()
                     .cast<Widget>(),
               )
@@ -111,15 +113,13 @@ class TagWidget extends StatelessWidget {
     return Chip(
       label: Text(
         label,
-        style: const TextStyle(
-            color: AppColors.backgroundDark, fontWeight: FontWeight.w600),
+        style: const TextStyle(color: AppColors.backgroundDark, fontWeight: FontWeight.w600),
       ),
       labelPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
       backgroundColor: AppColors.primaryColor,
     );
   }
 }
-
 
 void showDeleteDialog(BuildContext context, Article article) {
   showDialog(
@@ -136,8 +136,7 @@ void showDeleteDialog(BuildContext context, Article article) {
             onPressed: () {
               try {
                 FirebaseArticleRepository().deleteArticle(article);
-                Navigator.of(context).pushAndRemoveUntil(
-                    HomePage.route(), (Route<dynamic> route) => false);
+                Navigator.of(context).pushAndRemoveUntil(HomePage.route(), (Route<dynamic> route) => false);
               } catch (e) {
                 print('showDeleteDialog $e');
               }
@@ -145,9 +144,7 @@ void showDeleteDialog(BuildContext context, Article article) {
             child: Text(
               'Yes',
               style: AppStyles.textStyleBody.merge(
-                const TextStyle(
-                    color: AppColors.backgroundLight,
-                    fontWeight: FontWeight.w700),
+                const TextStyle(color: AppColors.backgroundLight, fontWeight: FontWeight.w700),
               ),
             ),
           ),
@@ -164,8 +161,7 @@ void showDeleteDialog(BuildContext context, Article article) {
         ],
         backgroundColor: AppColors.backgroundLight,
         title: const Text('Hold on!', style: AppStyles.textStyleHeading1),
-        content: const Text('Are you sure you want to delete this article?',
-            style: AppStyles.textStyleBody),
+        content: const Text('Are you sure you want to delete this article?', style: AppStyles.textStyleBody),
       ),
     ),
   );

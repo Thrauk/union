@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_open_role_applications_repository.dart';
+import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/open_roles/view_user_applications/bloc/view_user_applications_bloc.dart';
 import 'package:union_app/src/screens/project/project_details/widgets/open_role_item_widget.dart';
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
@@ -53,7 +54,7 @@ class _UserApplicationsPage extends StatelessWidget {
                               itemBuilder: (BuildContext context, int index) {
                                 return OpenRoleItemWidget(
                                   projectOpenRole: state.openRoles[index],
-                                  showApplyButton: false,
+                                  showApplyButton: uid != context.read<AppBloc>().state.user.id,
                                 );
                               },
                             )

@@ -7,32 +7,32 @@ class TextFieldProprieties {
       {String labelText = '', String hintText = '', String? errorText}) {
     return InputDecoration(
       border: InputBorder.none,
-      focusedBorder: OutlineInputBorder(
+      focusedBorder: const OutlineInputBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(15),
         ),
       ),
-      enabledBorder: OutlineInputBorder(
+      enabledBorder: const OutlineInputBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(15),
         ),
       ),
-      errorBorder: OutlineInputBorder(
+      errorBorder: const OutlineInputBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(15),
         ),
       ),
-      disabledBorder: OutlineInputBorder(
+      disabledBorder: const OutlineInputBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(15),
         ),
       ),
-      focusedErrorBorder: OutlineInputBorder(
+      focusedErrorBorder: const OutlineInputBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(15),
         ),
       ),
-      fillColor: Color.fromRGBO(50, 50, 50, 0.7),
+      fillColor: const Color.fromRGBO(50, 50, 50, 0.7),
       filled: true,
       labelText: labelText,
       hintText: hintText,

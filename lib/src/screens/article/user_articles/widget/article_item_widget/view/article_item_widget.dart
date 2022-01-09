@@ -78,24 +78,16 @@ class _ArticleItemWidget extends StatelessWidget {
                       Text(
                         state.ownerDisplayName!,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontFamily: 'Lato',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.white09,
-                        ),
+                        style: AppStyles.textStyleBody,
                       ),
                       const SizedBox(width: 6),
                       Text(
-                          ' on ${DateFormatUtils.timestampToDate(article.date)}',
+                          'on ${DateFormatUtils.timestampToDate(article.date)}',
                       style: AppStyles.textStyleBodySmall,),
-                      const Spacer(),
-                      const Image(
-                          image: AssetImage('assets/icons/three_dots.png'))
                     ],
                   ),
                   const SizedBox(
-                    height: 8,
+                    height: 12,
                   ),
                   Wrap(
                     children: [

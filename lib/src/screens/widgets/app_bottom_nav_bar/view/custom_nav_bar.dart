@@ -29,7 +29,7 @@ class _CustomNavBar extends StatelessWidget {
         return IntrinsicHeight(
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               Expanded(
                 flex: 4,
                 child: BottomNavigationBar(

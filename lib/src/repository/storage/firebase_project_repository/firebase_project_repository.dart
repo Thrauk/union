@@ -35,7 +35,7 @@ class FirebaseProjectRepository {
 
   Future<Map<String, String>?> getProjectUserDetails(String ownerId) async {
     try {
-      var data = (await firestoreUserInstance.doc(ownerId).get()).data();
+      final Map<String, dynamic>? data = (await firestoreUserInstance.doc(ownerId).get()).data();
 
       final String ownerName = data!['displayName'] != null ? data['displayName'] as String : '';
       final String ownerPhoto = data['photo'] != null ? data['photo'] as String : '';

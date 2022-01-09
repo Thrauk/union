@@ -13,8 +13,7 @@ part 'edit_project_event.dart';
 part 'edit_project_state.dart';
 
 class EditProjectBloc extends Bloc<EditProjectEvent, EditProjectState> {
-  EditProjectBloc(Project project, this._projectRepository)
-      : super(EditProjectState(project: project)) {
+  EditProjectBloc(Project project, this._projectRepository) : super(EditProjectState(project: project)) {
     on<TitleChanged>(_titleChanged);
     on<DetailsChanged>(_detailsChanged);
     on<ShortDescriptionChanged>(_shortDescriptionChanged);
@@ -28,38 +27,25 @@ class EditProjectBloc extends Bloc<EditProjectEvent, EditProjectState> {
 
   void _titleChanged(TitleChanged event, Emitter<EditProjectState> emit) {
     final ProjectTitle title = ProjectTitle.dirty(event.value);
-    emit(state.copyWith(
-        project: state.project.copyWith(title: event.value),
-        status: Formz.validate([title])));
+    emit(state.copyWith(project: state.project.copyWith(title: event.value), status: Formz.validate([title])));
   }
 
-  void _shortDescriptionChanged(
-      ShortDescriptionChanged event, Emitter<EditProjectState> emit) {
+  void _shortDescriptionChanged(ShortDescriptionChanged event, Emitter<EditProjectState> emit) {
     final ProjectBody shortDescription = ProjectBody.dirty(event.value);
     emit(state.copyWith(
-        project: state.project.copyWith(shortDescription: event.value),
-        status: Formz.validate([shortDescription])));
+        project: state.project.copyWith(shortDescription: event.value), status: Formz.validate([shortDescription])));
   }
 
   void _detailsChanged(DetailsChanged event, Emitter<EditProjectState> emit) {
     final ProjectBody details = ProjectBody.dirty(event.value);
-    emit(state.copyWith(
-        project: state.project.copyWith(details: event.value),
-        status: Formz.validate([details])));
+    emit(state.copyWith(project: state.project.copyWith(details: event.value), status: Formz.validate([details])));
   }
 
-  void _addTagPressed(
-      AddTagButtonPressed event, Emitter<EditProjectState> emit) {
+  void _addTagPressed(AddTagButtonPressed event, Emitter<EditProjectState> emit) {
     final TagName tag = TagName.dirty(event.value);
-    if (!Formz.validate([tag]).isInvalid &&
-        !state.project.tags!.contains(tag.value)) {
-      final List tagList = state.project.tags != null
-          ? state.project.tags! + [tag.value]
-          : [tag.value];
-      emit(state.copyWith(
-          project: state.project.copyWith(tags: tagList),
-          tag: tag,
-          status: Formz.validate([tag])));
+    if (!Formz.validate([tag]).isInvalid && !state.project.tags!.contains(tag.value)) {
+      final List tagList = state.project.tags != null ? state.project.tags! + [tag.value] : [tag.value];
+      emit(state.copyWith(project: state.project.copyWith(tags: tagList), tag: tag, status: Formz.validate([tag])));
     } else {
       emit(state.copyWith(tag: tag, status: Formz.validate([tag])));
     }
@@ -70,17 +56,13 @@ class EditProjectBloc extends Bloc<EditProjectEvent, EditProjectState> {
     emit(state.copyWith(tag: tag, status: Formz.validate([tag])));
   }
 
-  void _removeTagPressed(
-      RemoveTagButtonPressed event, Emitter<EditProjectState> emit) {
-    final List tagList = state.project.tags != null
-        ? List.from(state.project.tags!.toList())
-        : List.from([]);
-    tagList.removeWhere((element) => element== event.value);
-    emit(state.copyWith(project: state.project.copyWith(tags: tagList)));
+  void _removeTagPressed(RemoveTagButtonPressed event, Emitter<EditProjectState> emit) {
+    final List tagList = state.project.tags != null ? List.from(state.project.tags!.toList()) : List.from([]);
+    tagList.removeWhere((element) => element == event.value);
+    emit(state.copyWith(project: state.project.copyWith(tags: tagList), status: FormzStatus.valid));
   }
 
-  void _saveButtonPressed(
-      SaveButtonPressed event, Emitter<EditProjectState> emit) {
+  void _saveButtonPressed(SaveButtonPressed event, Emitter<EditProjectState> emit) {
     if (state.status.isValid) {
       try {
         _projectRepository.updateProject(state.project);
@@ -89,6 +71,8 @@ class EditProjectBloc extends Bloc<EditProjectEvent, EditProjectState> {
         // TODO display on screen it's submission failure
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }
+    } else if (state.status.isPure) {
+      emit(state.copyWith(status: FormzStatus.submissionSuccess));
     }
   }
 }

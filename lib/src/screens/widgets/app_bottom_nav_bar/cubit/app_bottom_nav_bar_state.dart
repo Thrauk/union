@@ -15,3 +15,4 @@ class AppBottomNavBarState {
   List<Object?> get props => <int>[index];
 }
 
+

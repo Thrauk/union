@@ -26,6 +26,7 @@ class ProjectDetailsPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           actions: [
+            if(context.read<AppBloc>().state.user.id == project.ownerId)
             Theme(
               data: Theme.of(context).copyWith(
                 cardColor: AppColors.backgroundLight1,
@@ -74,63 +75,67 @@ class _ProjectDetailsPage extends StatelessWidget {
       builder: (BuildContext context, ProjectDetailsState state) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(height: 16),
-              const Text('Short Description',
-                  style: AppStyles.textStyleHeading1),
-              const SizedBox(height: 16),
-              Text(project.shortDescription, style: AppStyles.textStyleBody),
-              const SizedBox(height: 24),
-              const Text('Details', style: AppStyles.textStyleHeading1),
-              const SizedBox(height: 16),
-              Text(project.details, style: AppStyles.textStyleBody),
-              const SizedBox(height: 16),
-              if (project.tags!.isNotEmpty)
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
-                  child: Text(
-                    'Tags',
-                    style: AppStyles.textStyleHeading1,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const SizedBox(height: 16),
+                const Text('Short Description',
+                    style: AppStyles.textStyleHeading1),
+                const SizedBox(height: 16),
+                Text(project.shortDescription, style: AppStyles.textStyleBody),
+                const SizedBox(height: 24),
+                const Text('Details', style: AppStyles.textStyleHeading1),
+                const SizedBox(height: 16),
+                Text(project.details, style: AppStyles.textStyleBody),
+                const SizedBox(height: 16),
+                if (project.tags!.isNotEmpty)
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
+                    child: Text(
+                      'Tags',
+                      style: AppStyles.textStyleHeading1,
+                    ),
+                  ),
+                if (project.tags!.isNotEmpty)
+                  Wrap(
+                    spacing: 4,
+                    children: project.tags!
+                        .map(
+                          (dynamic tag) => TagWidget(label: tag as String),
+                        )
+                        .toList()
+                        .cast<Widget>(),
+                  ),
+                if (state.openRoles.isNotEmpty)
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
+                    child: Text(
+                      'Open roles',
+                      style: AppStyles.textStyleHeading1,
+                    ),
+                  ),
+                Flexible(
+                  child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: state.openRoles.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      /*return OpenRoleItemWidget(
+                    projectOpenRole: ProjectOpenRole.fromJson(
+                        project.openRoles![index] as Map<String, dynamic>),
+                    showApplyButton: true,
+                  );*/
+                      return OpenRoleItemWidget(
+                          projectOpenRole: state.openRoles[index],
+                          showApplyButton: isNotProjectOwner(project.ownerId, context.read<AppBloc>().state.user.id));
+                    },
                   ),
                 ),
-              if (project.tags!.isNotEmpty)
-                Wrap(
-                  spacing: 4,
-                  children: project.tags!
-                      .map(
-                        (dynamic tag) => TagWidget(label: tag as String),
-                      )
-                      .toList()
-                      .cast<Widget>(),
-                ),
-              if (state.openRoles.isNotEmpty)
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
-                  child: Text(
-                    'Open roles',
-                    style: AppStyles.textStyleHeading1,
-                  ),
-                ),
-              Flexible(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: state.openRoles.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    /*return OpenRoleItemWidget(
-                  projectOpenRole: ProjectOpenRole.fromJson(
-                      project.openRoles![index] as Map<String, dynamic>),
-                  showApplyButton: true,
-                );*/
-                    return OpenRoleItemWidget(
-                        projectOpenRole: state.openRoles[index],
-                        showApplyButton: isNotProjectOwner(project.ownerId, context.read<AppBloc>().state.user.id));
-                  },
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

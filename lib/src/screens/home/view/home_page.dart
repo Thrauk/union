@@ -1,5 +1,3 @@
-// ignore_for_file: always_specify_types
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
@@ -39,7 +37,7 @@ class _HomePage extends StatelessWidget {
       buildWhen: (HomePagePostsState previous, HomePagePostsState current) {
         return previous.postType != current.postType;
       },
-      builder: (context, state) {
+      builder: (BuildContext context, HomePagePostsState state) {
         return Scaffold(
           drawer: const AppDrawer(),
           bottomNavigationBar: const CustomNavBar(),

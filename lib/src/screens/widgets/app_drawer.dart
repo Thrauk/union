@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
+import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/app/bloc/app_bloc.dart';
 import 'package:union_app/src/screens/article/user_articles/view/user_articles_page.dart';
 import 'package:union_app/src/screens/home/home.dart';

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:union_app/src/models/chat/chat_message.dart';
 import 'package:union_app/src/models/chat/conversation.dart';
-import 'package:union_app/src/repository/messaging/message_repository.dart';
 
 class ConversationRepository {
   factory ConversationRepository() {

@@ -7,7 +7,6 @@ import 'package:union_app/src/screens/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:union_app/src/screens/edit_profile/widgets/buttons/buttons.dart';
 import 'package:union_app/src/screens/edit_profile/widgets/editable_avatar.dart';
 import 'package:union_app/src/screens/edit_profile/widgets/form_fields/form_fields.dart';
-import 'package:union_app/src/screens/home/widgets/widgets.dart';
 import 'package:union_app/src/screens/widgets/app_drawer.dart';
 
 class EditProfilePage extends StatelessWidget {
@@ -69,16 +68,16 @@ class _EditProfilePage extends StatelessWidget {
                             photoUrl: state.photoUrl,
                           ),
                         ),
-                        SizedBox(height: 15),
-                        DisplayNameInputWidget(),
-                        SizedBox(height: 15),
-                        JobTitleInputWidget(),
-                        SizedBox(height: 15),
-                        LocationInputWidget(),
-                        SizedBox(height: 15),
-                        DescriptionInputWidget(),
-                        SizedBox(height: 15),
-                        SubmitButtonWidget(),
+                        const SizedBox(height: 15),
+                        const DisplayNameInputWidget(),
+                        const SizedBox(height: 15),
+                        const JobTitleInputWidget(),
+                        const SizedBox(height: 15),
+                        const LocationInputWidget(),
+                        const SizedBox(height: 15),
+                        const DescriptionInputWidget(),
+                        const SizedBox(height: 15),
+                        const SubmitButtonWidget(),
                       ],
                     )
                   : Container();

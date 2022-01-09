@@ -8,6 +8,7 @@ import 'package:union_app/src/models/form_inputs/tag_name.dart';
 import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
 
 part 'edit_article_event.dart';
+
 part 'edit_article_state.dart';
 
 class EditArticleBloc extends Bloc<EditArticleEvent, EditArticleState> {
@@ -23,23 +24,14 @@ class EditArticleBloc extends Bloc<EditArticleEvent, EditArticleState> {
 
   void _bodyChanged(BodyChanged event, Emitter<EditArticleState> emit) {
     final ArticleBody body = ArticleBody.dirty(event.value);
-    emit(state.copyWith(
-        article: state.article.copyWith(body: event.value),
-        status: Formz.validate([body])));
+    emit(state.copyWith(article: state.article.copyWith(body: event.value), status: Formz.validate([body])));
   }
 
-  void _addTagPressed(
-      AddTagButtonPressed event, Emitter<EditArticleState> emit) {
+  void _addTagPressed(AddTagButtonPressed event, Emitter<EditArticleState> emit) {
     final TagName tag = TagName.dirty(event.value);
-    if (!Formz.validate([tag]).isInvalid &&
-        !state.article.tags!.contains(tag.value)) {
-      final List tagList = state.article.tags != null
-          ? state.article.tags! + [tag.value]
-          : [tag.value];
-      emit(state.copyWith(
-          article: state.article.copyWith(tags: tagList),
-          tag: tag,
-          status: Formz.validate([tag])));
+    if (!Formz.validate([tag]).isInvalid && !state.article.tags!.contains(tag.value)) {
+      final List tagList = state.article.tags != null ? state.article.tags! + [tag.value] : [tag.value];
+      emit(state.copyWith(article: state.article.copyWith(tags: tagList), tag: tag, status: Formz.validate([tag])));
     } else {
       emit(state.copyWith(tag: tag, status: Formz.validate([tag])));
     }
@@ -50,15 +42,13 @@ class EditArticleBloc extends Bloc<EditArticleEvent, EditArticleState> {
     emit(state.copyWith(tag: tag, status: Formz.validate([tag])));
   }
 
-  void _removeTagPressed(
-      RemoveTagButtonPressed event, Emitter<EditArticleState> emit) {
+  void _removeTagPressed(RemoveTagButtonPressed event, Emitter<EditArticleState> emit) {
     final List<dynamic> tagList = state.article.tags != null ? List.from(state.article.tags!.toList()) : List.from([]);
     tagList.removeWhere((element) => element == event.value);
-    emit(state.copyWith(article: state.article.copyWith(tags: tagList)));
+    emit(state.copyWith(article: state.article.copyWith(tags: tagList), status: FormzStatus.valid));
   }
 
-  void _saveButtonPressed(
-      SaveButtonPressed event, Emitter<EditArticleState> emit) {
+  void _saveButtonPressed(SaveButtonPressed event, Emitter<EditArticleState> emit) {
     if (state.status.isValid) {
       try {
         _articleRepository.updateArticle(state.article);
@@ -68,6 +58,8 @@ class EditArticleBloc extends Bloc<EditArticleEvent, EditArticleState> {
         // TODO display on screen it's submission failure
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }
+    } else if (state.status.isPure) {
+      emit(state.copyWith(status: FormzStatus.submissionSuccess));
     }
   }
 }
