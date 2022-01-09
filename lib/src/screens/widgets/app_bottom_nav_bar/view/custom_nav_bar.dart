@@ -37,7 +37,7 @@ class _CustomNavBar extends StatelessWidget {
                   unselectedFontSize: 0,
                   unselectedItemColor: AppColors.white07,
                   type: BottomNavigationBarType.fixed,
-                  backgroundColor: AppColors.backgroundLight,
+                  backgroundColor: AppColors.backgroundDark,
                   currentIndex: context.read<AppBottomNavBarCubit>().state.index,
                   onTap: (int index) {
                     context.read<AppBottomNavBarCubit>().navigate(index);
@@ -62,7 +62,7 @@ class _CustomNavBar extends StatelessWidget {
                   flex: 1,
                   child: Container(
                       height: double.infinity,
-                      color: AppColors.backgroundLight,
+                      color: AppColors.backgroundDark,
                       child: const Padding(
                         padding: EdgeInsets.all(6.0),
                         child: PlusButton(),
