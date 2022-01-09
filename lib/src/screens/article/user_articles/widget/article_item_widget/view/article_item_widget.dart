@@ -87,21 +87,11 @@ class _ArticleItemWidget extends StatelessWidget {
                   ),
                   Wrap(
                     children: [
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(
-                          minHeight: 14,
-                          maxHeight: 14 * 3,
-                        ),
-                        child: GestureDetector(
-                          child: Text(
-                            article.body ?? '',
-                            overflow: state.isExpanded == false ? TextOverflow.ellipsis : TextOverflow.visible,
-                            style: const TextStyle(
-                              fontFamily: 'Lato',
-                              fontSize: 14,
-                              color: AppColors.white07,
-                            ),
-                          ),
+                      GestureDetector(
+                        child: Text(
+                          article.body ?? '',
+                          overflow: TextOverflow.ellipsis,
+                          style: AppStyles.textStyleBody,
                         ),
                       ),
                     ],

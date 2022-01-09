@@ -42,22 +42,17 @@ class ArticlesListElementWidget extends StatelessWidget {
                 children: <Widget>[
                   Avatar(
                     photo: _user.photo,
-                    avatarSize: 10,
+                    avatarSize: 22,
                   ),
                   const SizedBox(width: 10),
                   Text(
                     _user.displayName ?? '',
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontFamily: 'Lato',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.white09,
-                    ),
+                    style: AppStyles.textStyleBody,
                   ),
                   const SizedBox(width: 6),
                   Text(
-                    ' on ${DateFormatUtils.timestampToDate(_article.date)}',
+                    'on ${DateFormatUtils.timestampToDate(_article.date)}',
                     style: AppStyles.textStyleBodySmall,
                   ),
                 ],
@@ -74,11 +69,8 @@ class ArticlesListElementWidget extends StatelessWidget {
                     child: GestureDetector(
                       child: Text(
                         _article.body ?? '',
-                        style: const TextStyle(
-                          fontFamily: 'Lato',
-                          fontSize: 14,
-                          color: AppColors.white07,
-                        ),
+                        style: AppStyles.textStyleBody,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ),

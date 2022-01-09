@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/project/project_details/view/project_details_page.dart';
 import 'package:union_app/src/util/date_format_utils.dart';
 
@@ -72,6 +71,7 @@ class ProjectListElementWidget extends StatelessWidget {
                       child: Text(
                         _project.shortDescription,
                         style: AppStyles.textStyleBody,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ),

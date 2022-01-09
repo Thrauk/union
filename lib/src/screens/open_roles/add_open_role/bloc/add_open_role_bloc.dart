@@ -28,6 +28,7 @@ class AddOpenRoleBloc extends Bloc<AddOpenRoleEvent, AddOpenRoleState> {
         title: title,
         status: Formz.validate(
             [title, state.specifications, state.country, state.city])));
+    print('_titleChanged ${state.status}');
   }
 
   void _cityChanged(CityChanged event, Emitter<AddOpenRoleState> emit) {
@@ -36,6 +37,7 @@ class AddOpenRoleBloc extends Bloc<AddOpenRoleEvent, AddOpenRoleState> {
         city: city,
         status: Formz.validate(
             [city, state.title, state.country, state.specifications])));
+    print('_cityChanged ${state.status}');
   }
 
   void _countryChanged(CountryChanged event, Emitter<AddOpenRoleState> emit) {
@@ -44,6 +46,9 @@ class AddOpenRoleBloc extends Bloc<AddOpenRoleEvent, AddOpenRoleState> {
         country: country,
         status: Formz.validate(
             [country, state.title, state.specifications, state.city])));
+    print('_countryChanged ${state.status}');
+
+
   }
 
   void _specificationsChanged(
@@ -53,6 +58,8 @@ class AddOpenRoleBloc extends Bloc<AddOpenRoleEvent, AddOpenRoleState> {
         specifications: specifications,
         status: Formz.validate(
             [specifications, state.title, state.country, state.city])));
+    print('_specificationsChanged ${state.status}');
+
   }
 
   void _isPaidChanged(IsPaidChanged event, Emitter<AddOpenRoleState> emit) {

@@ -9,6 +9,6 @@ class ProjectBody extends FormzInput<String, ProjectBodyValidationError> {
 
   @override
   ProjectBodyValidationError? validator(String? value) {
-    return (value!.length <= 300 && value.isNotEmpty) ? null : ProjectBodyValidationError.invalid;
+    return (value!.length <= 1000 && value.isNotEmpty) ? null : ProjectBodyValidationError.invalid;
   }
 }
