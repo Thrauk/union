@@ -9,7 +9,7 @@ class DateFormatUtils {
     // return time;
 
     final DateFormat df = DateFormat.MMMMd('en_US').add_Hm();
-    final DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    final DateTime date = DateTime.fromMicrosecondsSinceEpoch(timestamp);
     return df.format(date);
 
   }
