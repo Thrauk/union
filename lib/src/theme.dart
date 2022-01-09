@@ -68,6 +68,13 @@ class AppStyles {
     fontSize: 16,
   );
 
+  static const TextStyle textStyleBodyDark = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.normal,
+    color: AppColors.backgroundDark,
+    fontSize: 16,
+  );
+
   static const TextStyle textStyleBodyBig = TextStyle(
     fontFamily: 'Lato',
     fontWeight: FontWeight.normal,

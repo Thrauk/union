@@ -7,6 +7,7 @@ import 'package:union_app/src/screens/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:union_app/src/screens/edit_profile/widgets/buttons/buttons.dart';
 import 'package:union_app/src/screens/edit_profile/widgets/editable_avatar.dart';
 import 'package:union_app/src/screens/edit_profile/widgets/form_fields/form_fields.dart';
+import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
 import 'package:union_app/src/screens/widgets/app_drawer.dart';
 
 class EditProfilePage extends StatelessWidget {
@@ -23,10 +24,7 @@ class EditProfilePage extends StatelessWidget {
     final String uid = context.select((AppBloc bloc) => bloc.state.user.id);
     return Scaffold(
       drawer: const AppDrawer(),
-      appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          title: const Center(child: Text('Edit profile'))),
+      appBar: const SimpleAppBar(title: 'Edit Profile'),
       body: BlocProvider<EditProfileBloc>(
         create: (_) => EditProfileBloc(
           uid: uid,

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:union_app/src/design/design.dart';
 import 'package:union_app/src/screens/edit_profile/edit_profile.dart';
 
 class DescriptionInputWidget extends StatelessWidget {
@@ -19,9 +18,12 @@ class DescriptionInputWidget extends StatelessWidget {
                 .read<EditProfileBloc>()
                 .add(DescriptionChanged(value: value)),
             cursorColor: Colors.white,
-            decoration: TextFieldProprieties.revolutishInputDecoration(
+            // decoration: TextFieldProprieties.revolutishInputDecoration(
+            //   labelText: 'Description',
+            //   hintText: 'Description',
+            // ),
+            decoration: const InputDecoration(
               labelText: 'Description',
-              hintText: 'Description',
             ),
             style: const TextStyle(
               color: Colors.white,

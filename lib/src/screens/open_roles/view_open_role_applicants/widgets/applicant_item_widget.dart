@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/models/project_open_role_application_item.dart';
+import 'package:union_app/src/screens/messaging/chat/view/chat_page.dart';
 import 'package:union_app/src/theme.dart';
 
 class ApplicantItemWidget extends StatelessWidget {
-  const ApplicantItemWidget({Key? key, required this.applicationItem})
-      : super(key: key);
+  const ApplicantItemWidget({Key? key, required this.applicationItem}) : super(key: key);
 
   final ProjectOpenRoleApplicationItem applicationItem;
 
@@ -33,10 +33,8 @@ class ApplicantItemWidget extends StatelessWidget {
                       image: DecorationImage(
                           fit: BoxFit.fill,
                           image: applicationItem.user.photo != ''
-                              ? CachedNetworkImageProvider(
-                                  applicationItem.user.photo!)
-                              : const AssetImage('assets/icons/user.png')
-                                  as ImageProvider),
+                              ? CachedNetworkImageProvider(applicationItem.user.photo!)
+                              : const AssetImage('assets/icons/user.png') as ImageProvider),
                     ),
                   ),
                 ),
@@ -44,8 +42,7 @@ class ApplicantItemWidget extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(applicationItem.user.displayName ?? '',
-                        style: AppStyles.textStyleBody),
+                    Text(applicationItem.user.displayName ?? '', style: AppStyles.textStyleBody),
                     const SizedBox(height: 8),
                     if (applicationItem.user.location != null)
                       Row(
@@ -83,27 +80,29 @@ class ApplicantItemWidget extends StatelessWidget {
                   ],
                 ),
                 const Spacer(),
-                Container(
-                  alignment: Alignment.center,
-                  child: Chip(
-                    label: Row(
-                      children: const <Widget>[
-                        Icon(
-                          Icons.send,
-                          size: 18,
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          'Send message',
-                          style: TextStyle(
-                              color: AppColors.backgroundDark,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(ChatPage.route(applicationItem.user.id));
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Chip(
+                      label: Row(
+                        children: const <Widget>[
+                          Icon(
+                            Icons.send,
+                            size: 18,
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            'Send message',
+                            style: TextStyle(color: AppColors.backgroundDark, fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                      labelPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+                      backgroundColor: AppColors.primaryColor,
                     ),
-                    labelPadding:
-                        const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
-                    backgroundColor: AppColors.primaryColor,
                   ),
                 )
               ],

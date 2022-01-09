@@ -9,6 +9,7 @@ import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/open_roles/view_user_applications/view/user_applications_page.dart';
 import 'package:union_app/src/screens/profile/profile.dart';
 import 'package:union_app/src/screens/project/user_projects/user_projects.dart';
+import 'package:union_app/src/theme.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -33,22 +34,26 @@ class AppDrawer extends StatelessWidget {
                 currentAccountPictureSize: const Size(85, 85),
                 currentAccountPicture: Avatar(photo: state.userDetails.photo),
                 accountName: context.select(
-                      (AppBloc bloc) => Text(state.userDetails.displayName ?? ''),
+                  (AppBloc bloc) => Text(
+                    state.userDetails.displayName ?? '',
+                    style: AppStyles.textStyleBodyDark,
+                  ),
                 ),
                 accountEmail: context.select(
-                      (AppBloc bloc) => Text(state.userDetails.email ?? ''),
+                  (AppBloc bloc) => Text(
+                    state.userDetails.email ?? '',
+                    style: AppStyles.textStyleBodySmallDark,
+                  ),
                 ),
               ),
             );
           }),
-
           ListTile(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => UserProjectsPage(
-                      uid: context.read<AppBloc>().state.user.id),
+                  builder: (BuildContext context) => UserProjectsPage(uid: context.read<AppBloc>().state.user.id),
                 ),
               );
             },
@@ -56,15 +61,17 @@ class AppDrawer extends StatelessWidget {
               Icons.analytics,
               color: Colors.white70,
             ),
-            title: const Text('Projects'),
+            title: const Text(
+              'Projects',
+              style: AppStyles.textStyleBody,
+            ),
           ),
           ListTile(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => UserArticlesPage(
-                      uid: context.read<AppBloc>().state.user.id),
+                  builder: (BuildContext context) => UserArticlesPage(uid: context.read<AppBloc>().state.user.id),
                 ),
               );
             },
@@ -72,34 +79,43 @@ class AppDrawer extends StatelessWidget {
               Icons.article,
               color: Colors.white70,
             ),
-            title: Text('Articles'),
+            title: const Text(
+              'Articles',
+              style: AppStyles.textStyleBody,
+            ),
           ),
           const ListTile(
             leading: Icon(
               Icons.group,
               color: Colors.white70,
             ),
-            title: Text('Organizations'),
+            title: Text(
+              'Organizations',
+              style: AppStyles.textStyleBody,
+            ),
           ),
           ListTile(
             onTap: () {
-              Navigator.push(
-                  context,
-                  UserApplicationsPage.route(
-                      context.read<AppBloc>().state.user.id));
+              Navigator.push(context, UserApplicationsPage.route(context.read<AppBloc>().state.user.id));
             },
             leading: const Icon(
               Icons.analytics_outlined,
               color: Colors.white70,
             ),
-            title: const Text('My applications'),
+            title: const Text(
+              'My applications',
+              style: AppStyles.textStyleBody,
+            ),
           ),
           const ListTile(
             leading: Icon(
               Icons.settings,
               color: Colors.white70,
             ),
-            title: Text('Settings'),
+            title: Text(
+              'Settings',
+              style: AppStyles.textStyleBody,
+            ),
           ),
           GestureDetector(
             onTap: () {
@@ -111,7 +127,10 @@ class AppDrawer extends StatelessWidget {
                 Icons.logout,
                 color: Colors.white70,
               ),
-              title: Text('Log Out'),
+              title: Text(
+                'Log Out',
+                style: AppStyles.textStyleBody,
+              ),
             ),
           ),
         ],

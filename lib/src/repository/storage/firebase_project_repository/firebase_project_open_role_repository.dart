@@ -70,8 +70,6 @@ class FirebaseProjectOpenRoleRepository {
                   .get())
               .docs;
 
-      print('${maybeApplicationQuery.length}  sdadsad');
-
       if (maybeApplicationQuery.isNotEmpty) {
         print('NOT EMPTY ');
         for (final QueryDocumentSnapshot<Map<String, dynamic>> element in maybeApplicationQuery) {

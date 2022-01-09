@@ -111,7 +111,7 @@ class _ProjectDetailsPage extends StatelessWidget {
                   ),
                 if (state.openRoles.isNotEmpty)
                   const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
+                    padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
                     child: Text(
                       'Open roles',
                       style: AppStyles.textStyleHeading1,

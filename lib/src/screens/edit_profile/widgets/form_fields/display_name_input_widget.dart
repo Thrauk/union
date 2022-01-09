@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:union_app/src/design/design.dart';
 import 'package:union_app/src/screens/edit_profile/edit_profile.dart';
 
 class DisplayNameInputWidget extends StatelessWidget {
@@ -19,8 +18,11 @@ class DisplayNameInputWidget extends StatelessWidget {
                 .read<EditProfileBloc>()
                 .add(DisplayNameChanged(value: value)),
             cursorColor: Colors.white,
-            decoration: TextFieldProprieties.revolutishInputDecoration(
-                labelText: 'Display name', hintText: 'Display name'),
+            // decoration: TextFieldProprieties.revolutishInputDecoration(
+            //     labelText: 'Display name', hintText: 'Display name'),
+            decoration: const InputDecoration(
+              labelText: 'Display name',
+            ),
             style: const TextStyle(
               color: Colors.white,
             ),

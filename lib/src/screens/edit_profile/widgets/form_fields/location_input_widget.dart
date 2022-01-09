@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:union_app/src/design/design.dart';
 import 'package:union_app/src/screens/edit_profile/edit_profile.dart';
 
 class LocationInputWidget extends StatelessWidget {
@@ -19,9 +18,12 @@ class LocationInputWidget extends StatelessWidget {
                 .read<EditProfileBloc>()
                 .add(LocationChanged(value: value)),
             cursorColor: Colors.white,
-            decoration: TextFieldProprieties.revolutishInputDecoration(
+            // decoration: TextFieldProprieties.revolutishInputDecoration(
+            //   labelText: 'Location',
+            //   hintText: 'Location',
+            // ),
+            decoration: const InputDecoration(
               labelText: 'Location',
-              hintText: 'Location',
             ),
             style: const TextStyle(
               color: Colors.white,

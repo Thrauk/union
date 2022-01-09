@@ -5,7 +5,6 @@ import 'package:union_app/src/models/chat/conversation.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/messaging/chat/view/chat_page.dart';
 import 'package:union_app/src/theme.dart';
-import 'package:union_app/src/util/date_format_utils.dart';
 
 import 'bloc/element_bloc.dart';
 
@@ -33,7 +32,7 @@ class ConversationsListElementWidget extends StatelessWidget {
                   children: <Widget>[
                     Avatar(
                       photo: state.user.photo,
-                      avatarSize: 30,
+                      avatarSize: 24,
                     ),
                     const SizedBox(
                       width: 8,
