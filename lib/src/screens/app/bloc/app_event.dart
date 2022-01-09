@@ -26,3 +26,10 @@ class AppUserLoggedIn extends AppEvent {
 
 }
 
+class UserDetailsChanged extends AppEvent {
+  const UserDetailsChanged(this.userDetails);
+  final FullUser userDetails;
+  @override
+  List<Object> get props => <Object>[userDetails];
+}
+

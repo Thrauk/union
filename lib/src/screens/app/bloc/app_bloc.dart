@@ -22,6 +22,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<AppUserChanged>(_onUserChanged);
     on<AppLogoutRequested>(_onLogoutRequested);
     on<AppUserLoggedIn>(_onAppUserLoggedIn);
+    on<UserDetailsChanged>(_onUserDetailsChanged);
     _userSubscription = _authenticationRepository.user.listen(
       (AppUser user) => add(AppUserChanged(user)),
     );
@@ -73,13 +74,17 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     final FullUser currentDetails = await _firebaseUserRepository.getFullUserByUid(event.user.id);
     emit(state.copyWith(userDetails: currentDetails));
     _userDetailsSubscription = _firebaseUserRepository.fullUser(event.user.id).listen((FullUser fullUser) {
-      emit(state.copyWith(userDetails: fullUser));
+      add(UserDetailsChanged(fullUser));
     });
   }
 
   void _onLogoutRequested(AppLogoutRequested event, Emitter<AppState> emit) {
     _authenticationRepository.logOut();
     _userDetailsSubscription.cancel();
+  }
+
+  void _onUserDetailsChanged(UserDetailsChanged event, Emitter<AppState> emit) {
+    emit(state.copyWith(userDetails: event.userDetails));
   }
 
   @override

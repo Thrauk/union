@@ -39,7 +39,7 @@ class ChatPage extends StatelessWidget {
                 Text(context.select((ChatBloc bloc) => bloc.state.partnerUser.displayName ?? ''), style: AppStyles.textStyleBodyBig,),
               ],
             )),
-            body: _EditProfilePage(),
+            body: _ChatPage(),
           );
         },
       ),
@@ -47,7 +47,7 @@ class ChatPage extends StatelessWidget {
   }
 }
 
-class _EditProfilePage extends StatelessWidget {
+class _ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String uid = context.select((AppBloc bloc) => bloc.state.user.id);
