@@ -62,7 +62,7 @@ class AppDrawer extends StatelessWidget {
               color: Colors.white70,
             ),
             title: const Text(
-              'Projects',
+              'My projects',
               style: AppStyles.textStyleBody,
             ),
           ),
@@ -80,7 +80,7 @@ class AppDrawer extends StatelessWidget {
               color: Colors.white70,
             ),
             title: const Text(
-              'Articles',
+              'My articles',
               style: AppStyles.textStyleBody,
             ),
           ),

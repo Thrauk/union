@@ -23,7 +23,6 @@ class EditProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final String uid = context.select((AppBloc bloc) => bloc.state.user.id);
     return Scaffold(
-      drawer: const AppDrawer(),
       appBar: const SimpleAppBar(title: 'Edit Profile'),
       body: BlocProvider<EditProfileBloc>(
         create: (_) => EditProfileBloc(

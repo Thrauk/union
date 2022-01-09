@@ -14,7 +14,7 @@ class ProjectTitle extends FormzInput<String, ProjectTitleValidationError> {
   @override
   ProjectTitleValidationError? validator(String? value) {
     return _nameRegExp.hasMatch(value ?? '')
-        ? value!.length < 20 ? null : ProjectTitleValidationError.invalid
+        ? value!.length < 75 ? null : ProjectTitleValidationError.invalid
         : ProjectTitleValidationError.invalid;
   }
 }

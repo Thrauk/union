@@ -78,7 +78,7 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
         emit(state.copyWith(status: FormzStatus.submissionSuccess));
         print(state.status);
       } catch (_) {
-        // TODO display on screen it's submission failure
+        print(_);
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }
     }
