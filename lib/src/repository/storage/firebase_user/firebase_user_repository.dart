@@ -2,13 +2,11 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:union_app/src/models/authentication/app_user.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/storage/firebase_user/services/follow_service.dart';
 
 class FirebaseUserRepository {
-
   factory FirebaseUserRepository() {
     return _singleton;
   }
@@ -73,4 +71,12 @@ class FirebaseUserRepository {
     return url;
   }
 
+  // DEMO FUNCTION, SHOULD NOT BE USED OTHERWISE
+  Future<List<FullUser>> getAllUsers() async {
+    final List<FullUser> users = (await firestoreInstance.get())
+        .docs
+        .map((QueryDocumentSnapshot<Map<String, dynamic>> userJson) => FullUser.fromJson(userJson.data()))
+        .toList();
+    return users;
+  }
 }

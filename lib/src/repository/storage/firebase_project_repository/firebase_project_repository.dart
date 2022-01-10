@@ -110,4 +110,14 @@ class FirebaseProjectRepository {
     }
     return <Project>[];
   }
+
+  // DEMO FUNCTION, SHOULD NOT BE USED OTHERWISE
+  Future<List<Project>> getAllProjects() async {
+    final List<Project> projects = (await firestoreProjectsCollection.get())
+        .docs
+        .map((QueryDocumentSnapshot<Map<String, dynamic>> projectJson) => Project.fromJson(projectJson.data()))
+        .toList();
+    return projects;
+  }
+
 }

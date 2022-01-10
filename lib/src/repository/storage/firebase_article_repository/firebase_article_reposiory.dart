@@ -104,4 +104,13 @@ class FirebaseArticleRepository {
         .toList();
     return articles;
   }
+
+  // DEMO FUNCTION, SHOULD NOT BE USED OTHERWISE
+  Future<List<Article>> getAllArticles() async {
+    final List<Article> articles = (await firestoreArticleCollection.get())
+        .docs
+        .map((QueryDocumentSnapshot<Map<String, dynamic>> articleJson) => Article.fromJson(articleJson.data()))
+        .toList();
+    return articles;
+  }
 }
