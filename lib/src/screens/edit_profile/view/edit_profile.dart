@@ -6,9 +6,9 @@ import 'package:union_app/src/screens/app/bloc/app_bloc.dart';
 import 'package:union_app/src/screens/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:union_app/src/screens/edit_profile/widgets/buttons/buttons.dart';
 import 'package:union_app/src/screens/edit_profile/widgets/editable_avatar.dart';
+import 'package:union_app/src/screens/edit_profile/widgets/file_uploader/view/file_uploader.dart';
 import 'package:union_app/src/screens/edit_profile/widgets/form_fields/form_fields.dart';
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
-import 'package:union_app/src/screens/widgets/app_drawer.dart';
 
 class EditProfilePage extends StatelessWidget {
   const EditProfilePage({Key? key}) : super(key: key);
@@ -73,6 +73,8 @@ class _EditProfilePage extends StatelessWidget {
                         const LocationInputWidget(),
                         const SizedBox(height: 15),
                         const DescriptionInputWidget(),
+                        const SizedBox(height: 15),
+                        const FileUploader(),
                         const SizedBox(height: 15),
                         const SubmitButtonWidget(),
                       ],

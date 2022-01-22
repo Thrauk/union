@@ -1,10 +1,23 @@
 part of 'upload_file_bloc.dart';
 
-abstract class UploadFileState extends Equatable {
-  const UploadFileState();
-}
+enum StatusEnum { INITIAL, LOADING, SUCCESSFUL, FAILED }
 
-class UploadFileInitial extends UploadFileState {
+class UploadFileState extends Equatable {
+  const UploadFileState({this.file, this.status = StatusEnum.INITIAL});
+
+  final FilePickerResult? file;
+  final StatusEnum status;
+
+  UploadFileState copyWith({
+    FilePickerResult? file,
+    StatusEnum? status
+  }) {
+    return UploadFileState(
+      file: file ?? this.file,
+        status: status ?? this.status
+    );
+  }
+
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [status, file];
 }
