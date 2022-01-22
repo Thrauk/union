@@ -103,11 +103,23 @@ class FirebaseAuthRepository implements AuthenticationRepository {
           idToken: googleAuth.idToken,
         );
       }
+      final firebase_auth.UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
 
-      await _firebaseAuth.signInWithCredential(credential);
+      final AppUser appUser = AppUser(
+          id: userCredential.user!.uid,
+          email: userCredential.user!.email,
+          displayName: userCredential.user!.displayName,
+          photo: userCredential.user!.photoURL,
+      );
+
+      _storageRepository.userService.saveUserAuthDetails(appUser);
+
+
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw LogInWithGoogleFailure.fromCode(e.code);
     } catch (_) {
+      print(_);
+      print('here');
       throw const LogInWithGoogleFailure();
     }
   }

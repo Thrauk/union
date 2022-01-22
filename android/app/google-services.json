@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "1066759154874-i97gatmmn2lat1fp8esoqj43gqbhp1s5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.devlink.union_app",
+            "certificate_hash": "2749d685afa656ef916c335650d479b7aaf97112"
+          }
+        },
+        {
           "client_id": "1066759154874-oqjr624ktqeear8u0eukta89ee1db880.apps.googleusercontent.com",
           "client_type": 3
         }
