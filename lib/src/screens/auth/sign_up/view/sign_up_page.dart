@@ -119,9 +119,9 @@ class _SignUpPage extends StatelessWidget {
                   height: 20,
                 ),
                 const EmailInputWidget(),
-                const SizedBox(height: 6),
+                const SizedBox(height: 12),
                 const NameInputWidget(),
-                const SizedBox(height: 6),
+                const SizedBox(height: 12),
                 const PasswordInputWidget(),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 14),
