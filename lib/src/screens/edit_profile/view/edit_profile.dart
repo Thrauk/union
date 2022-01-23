@@ -32,7 +32,6 @@ class EditProfilePage extends StatelessWidget {
         child: BlocListener<EditProfileBloc, EditProfileState>(
           listener: (BuildContext context, EditProfileState state) {
             if (state.status.isSubmissionFailure) {
-
             } else if (state.status.isSubmissionSuccess) {
               Navigator.of(context).pop<void>();
             }
@@ -55,31 +54,31 @@ class _EditProfilePage extends StatelessWidget {
         child: BlocBuilder<EditProfileBloc, EditProfileState>(
           builder: (BuildContext context, EditProfileState state) {
             return state.profileLoaded == true
-                  ? Column(
-                      children:  <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            context.read<EditProfileBloc>().add(SelectImage());
-                          },
-                          child: EditableAvatarWidget(
-                            photoUrl: state.photoUrl,
-                          ),
+                ? Column(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          context.read<EditProfileBloc>().add(SelectImage());
+                        },
+                        child: EditableAvatarWidget(
+                          photoUrl: state.photoUrl,
                         ),
-                        const SizedBox(height: 15),
-                        const DisplayNameInputWidget(),
-                        const SizedBox(height: 15),
-                        const JobTitleInputWidget(),
-                        const SizedBox(height: 15),
-                        const LocationInputWidget(),
-                        const SizedBox(height: 15),
-                        const DescriptionInputWidget(),
-                        const SizedBox(height: 15),
-                        const FileUploader(),
-                        const SizedBox(height: 15),
-                        const SubmitButtonWidget(),
-                      ],
-                    )
-                  : Container();
+                      ),
+                      const SizedBox(height: 15),
+                      const DisplayNameInputWidget(),
+                      const SizedBox(height: 15),
+                      const JobTitleInputWidget(),
+                      const SizedBox(height: 15),
+                      const LocationInputWidget(),
+                      const SizedBox(height: 15),
+                      const DescriptionInputWidget(),
+                      const SizedBox(height: 15),
+                      FileUploader(userId: state.fullUser.id),
+                      const SizedBox(height: 15),
+                      const SubmitButtonWidget(),
+                    ],
+                  )
+                : Container();
           },
         ),
       ),

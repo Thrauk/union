@@ -14,6 +14,13 @@ class ChooseFilePressed extends UploadFileEvent {
 
   final String userId;
 }
+
+class RemoveFilePressed extends UploadFileEvent {
+  RemoveFilePressed(this.userId);
+
+  final String userId;
+}
+
 class SaveFileToFirestore extends UploadFileEvent {
   SaveFileToFirestore(this.pickedFile, this.ownerId);
 
