@@ -5,6 +5,7 @@ import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_open_role_repository.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
 import 'package:union_app/src/screens/app/app.dart';
+import 'package:union_app/src/screens/messaging/chat/view/chat_page.dart';
 import 'package:union_app/src/screens/open_roles/open_role_details/bloc/open_role_details_bloc.dart';
 import 'package:union_app/src/screens/open_roles/open_role_details/widgets/buttons/apply_button_widget.dart';
 import 'package:union_app/src/screens/open_roles/open_role_details/widgets/buttons/view_applicants_button_widget.dart';
@@ -62,7 +63,31 @@ class _OpenRolesDetailsPage extends StatelessWidget {
                     'posted on ${DateFormatUtils.timestampToDate(projectOpenRole.timestamp)}',
                     style: AppStyles.textStyleBody,
                   ),
-                  const SizedBox(height: 24),
+                  if (state.project.ownerId != context.read<AppBloc>().state.user.id)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: ElevatedButton.icon(
+                        icon: const Icon(
+                          Icons.send,
+                          color: AppColors.primaryColor,
+                          size: 20.0,
+                        ),
+                        label: const Text(
+                          'Send message to owner',
+                          style: AppStyles.textStyleBodySmallW08,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).push(ChatPage.route(state.project.ownerId));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: AppColors.backgroundLight1,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  const SizedBox(height: 16),
                   Row(
                     children: <Widget>[
                       const Icon(Icons.analytics, color: AppColors.white07),
@@ -110,9 +135,8 @@ class _OpenRolesDetailsPage extends StatelessWidget {
                   const Text('Specifications', style: AppStyles.textStyleHeading1),
                   const SizedBox(height: 8),
                   Text(projectOpenRole.specifications, style: AppStyles.textStyleBody),
-                  const SizedBox(height: 32),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(vertical: 32.0),
                     child: state.project.ownerId != context.read<AppBloc>().state.user.id
                         ? ApplyButtonWidget(openRole: projectOpenRole)
                         : ViewApplicantsButtonWidget(openRole: projectOpenRole),
