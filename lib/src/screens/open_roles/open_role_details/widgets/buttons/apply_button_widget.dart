@@ -26,7 +26,17 @@ class ApplyButtonWidget extends StatelessWidget {
                     ApplyButtonPressed(context.read<AppBloc>().state.user.id, openRole.id),
                   );
             } else {
-              Navigator.push(context, ApplyToOpenRolePage.route(openRole));
+              final Future<void> future = Navigator.push(context, ApplyToOpenRolePage.route(openRole));
+              future.then((value) {
+                if ((value as dynamic) != null && (value as bool) == true) {
+                  context
+                      .read<OpenRoleDetailsBloc>()
+                      .add(VerifyIfUserAlreadyApplied(context
+                      .read<AppBloc>()
+                      .state
+                      .user
+                      .id, openRole.id));
+                }});
             }
           },
           style: ElevatedButton.styleFrom(

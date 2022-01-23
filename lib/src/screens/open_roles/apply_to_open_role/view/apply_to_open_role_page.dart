@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_open_role_repository.dart';
 import 'package:union_app/src/screens/app/app.dart';
@@ -113,23 +114,39 @@ class _ApplyToOpenRolePage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  ElevatedButton(
-                      onPressed: () {
-                        context.read<ApplyToOpenRoleBloc>().add(
-                              ApplyButtonPressed(
-                                context.read<AppBloc>().state.user.id,
-                                _projectOpenRole.id,
-                              ),
-                            );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: AppColors.primaryColor,
-                        minimumSize: const Size(double.infinity, 48),
-                      ),
-                      child: const Text(
-                        'Apply',
-                        style: AppStyles.buttonTextStyle,
-                      )),
+                  BlocConsumer<ApplyToOpenRoleBloc, ApplyToOpenRoleState>(
+                    listener: (BuildContext context, ApplyToOpenRoleState state) {
+                      if (state.status == FormzStatus.submissionSuccess) {
+                        Navigator.pop(context, true);
+                      }
+                      if (state.status == FormzStatus.submissionFailure)
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Something went wrong.'),
+                          ),
+                        );
+                    },
+                    builder: (context, state) {
+                      return ElevatedButton(
+                        onPressed: () {
+                          context.read<ApplyToOpenRoleBloc>().add(
+                                ApplyButtonPressed(
+                                  context.read<AppBloc>().state.user.id,
+                                  _projectOpenRole.id,
+                                ),
+                              );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: AppColors.primaryColor,
+                          minimumSize: const Size(double.infinity, 48),
+                        ),
+                        child: const Text(
+                          'Apply',
+                          style: AppStyles.buttonTextStyle,
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

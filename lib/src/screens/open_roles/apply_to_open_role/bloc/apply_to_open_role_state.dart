@@ -36,5 +36,5 @@ class ApplyToOpenRoleState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [notice, filePickerResult, id, cvUrl, cvAlreadyAdded];
+  List<Object?> get props => [notice, filePickerResult, id, cvUrl, cvAlreadyAdded, status];
 }

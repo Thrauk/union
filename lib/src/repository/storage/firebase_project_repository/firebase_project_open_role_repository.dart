@@ -68,8 +68,29 @@ class FirebaseProjectOpenRoleRepository {
     return null;
   }
 
-  Future<void> addOrRemoveUidFromOpenRole(ProjectOpenRoleApplication roleApplication, String openRoleId,
+  Future<void> addUidToOpenRole(ProjectOpenRoleApplication roleApplication, String openRoleId,
       {FilePickerResult? filePickerResult, String? userCVPath}) async {
+    try {
+      final DocumentReference<Map<String, dynamic>> applicationDoc = firestoreProjectsApplicationsCollection.doc();
+
+      ProjectOpenRoleApplication applicationToSave = roleApplication.copyWith(openRoleId: openRoleId, id: applicationDoc.id);
+      if (filePickerResult != null) {
+        final String? fileUrl = await saveCVFileToApplication(filePickerResult, applicationDoc.id);
+        if (fileUrl != null) applicationToSave = applicationToSave.copyWith(cvUrl: fileUrl);
+        applicationDoc.set(applicationToSave.toJson());
+        return;
+      } else if (userCVPath != null) {
+        copyCvFromUserToApplication(userCVPath, applicationDoc.id);
+        applicationToSave = applicationToSave.copyWith(cvUrl: userCVPath);
+        applicationDoc.set(applicationToSave.toJson());
+      }
+      applicationDoc.set(applicationToSave.toJson());
+    } catch (e) {
+      print('addUidToOpenRole $e');
+    }
+  }
+
+  Future<void> deleteUidFromOpenRole(String openRoleId, ProjectOpenRoleApplication roleApplication) async {
     try {
       final List<QueryDocumentSnapshot<Map<String, dynamic>>> maybeApplicationQuery =
           (await firestoreProjectsApplicationsCollection
@@ -83,24 +104,9 @@ class FirebaseProjectOpenRoleRepository {
           firestoreProjectsApplicationsCollection.doc(element.id).delete();
           deleteCVFileFromApplication(element.id);
         }
-      } else {
-        final DocumentReference<Map<String, dynamic>> applicationDoc = firestoreProjectsApplicationsCollection.doc();
-
-        ProjectOpenRoleApplication applicationToSave = roleApplication.copyWith(openRoleId: openRoleId, id: applicationDoc.id);
-        if (filePickerResult != null) {
-          final String? fileUrl = await saveCVFileToApplication(filePickerResult, applicationDoc.id);
-          if (fileUrl != null) applicationToSave = applicationToSave.copyWith(cvUrl: fileUrl);
-          applicationDoc.set(applicationToSave.toJson());
-          return;
-        } else if (userCVPath != null) {
-          copyCvFromUserToApplication(userCVPath, applicationDoc.id);
-          applicationToSave = applicationToSave.copyWith(cvUrl: userCVPath);
-          applicationDoc.set(applicationToSave.toJson());
-        }
-        applicationDoc.set(applicationToSave.toJson());
       }
     } catch (e) {
-      print('addOrRemoveUidFromOpenRole $e');
+      print('deleteUidFromOpenRole $e');
     }
   }
 
@@ -202,7 +208,6 @@ class FirebaseProjectOpenRoleRepository {
 
   Future<String?> copyCvFromUserToApplication(String userCvUrl, String applicationId) async {
     final Uint8List? userCV = await FirebaseStorage.instance.refFromURL(userCvUrl).getData();
-    print("userCv? $userCV");
     try {
       late String filePath;
       final Reference reference = FirebaseStorage.instance.ref('applications_cv/$applicationId/cv');
@@ -215,7 +220,6 @@ class FirebaseProjectOpenRoleRepository {
       }
     } catch (e) {
       print('copyCvFromUserToApplication $e');
-      throw e;
     }
   }
 }

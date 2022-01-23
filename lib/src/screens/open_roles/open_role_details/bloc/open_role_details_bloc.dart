@@ -11,10 +11,8 @@ part 'open_role_details_event.dart';
 
 part 'open_role_details_state.dart';
 
-class OpenRoleDetailsBloc
-    extends Bloc<OpenRoleDetailsEvent, OpenRoleDetailsState> {
-  OpenRoleDetailsBloc(
-      this.firebaseProjectRepository, this.firebaseProjectOpenRoleRepository)
+class OpenRoleDetailsBloc extends Bloc<OpenRoleDetailsEvent, OpenRoleDetailsState> {
+  OpenRoleDetailsBloc(this.firebaseProjectRepository, this.firebaseProjectOpenRoleRepository)
       : super(const OpenRoleDetailsState()) {
     on<GetProjectDetails>(_getProjectDetails);
     on<ApplyButtonPressed>(_applyButtonPressed);
@@ -24,11 +22,9 @@ class OpenRoleDetailsBloc
   FirebaseProjectRepository firebaseProjectRepository;
   FirebaseProjectOpenRoleRepository firebaseProjectOpenRoleRepository;
 
-  Future<void> _getProjectDetails(
-      GetProjectDetails event, Emitter<OpenRoleDetailsState> emit) async {
+  Future<void> _getProjectDetails(GetProjectDetails event, Emitter<OpenRoleDetailsState> emit) async {
     try {
-      final Project? project =
-          await firebaseProjectRepository.getProjectById(event.projectId);
+      final Project? project = await firebaseProjectRepository.getProjectById(event.projectId);
       if (project != null) {
         emit(state.copyWith(project: project));
       }
@@ -37,24 +33,23 @@ class OpenRoleDetailsBloc
     }
   }
 
-  Future<void> _applyButtonPressed(
-      ApplyButtonPressed event, Emitter<OpenRoleDetailsState> emit) async {
+  Future<void> _applyButtonPressed(ApplyButtonPressed event, Emitter<OpenRoleDetailsState> emit) async {
     try {
-        await firebaseProjectOpenRoleRepository.addOrRemoveUidFromOpenRole(
-            ProjectOpenRoleApplication(uid: event.uid),
-            event.openRoleId);
-        add(VerifyIfUserAlreadyApplied(event.uid, event.openRoleId));
+      if (state.alreadyAppliedToProject)
+        await firebaseProjectOpenRoleRepository.deleteUidFromOpenRole(
+          event.openRoleId,
+          ProjectOpenRoleApplication(uid: event.uid),
+        );
+      add(VerifyIfUserAlreadyApplied(event.uid, event.openRoleId));
     } catch (e) {
       print('_applyButtonPressed $e');
     }
   }
 
   Future<FutureOr<void>> _verifyIfUserAlreadyApplied(
-      VerifyIfUserAlreadyApplied event,
-      Emitter<OpenRoleDetailsState> emit) async {
+      VerifyIfUserAlreadyApplied event, Emitter<OpenRoleDetailsState> emit) async {
     try {
-      final bool? hasAlreadyApplied = await firebaseProjectOpenRoleRepository
-          .isUidAlreadyAdded(event.uid, event.openRoleId);
+      final bool? hasAlreadyApplied = await firebaseProjectOpenRoleRepository.isUidAlreadyAdded(event.uid, event.openRoleId);
       print('_verifyIfUserAlreadyApplied $hasAlreadyApplied');
       if (hasAlreadyApplied != null) {
         emit(state.copyWith(alreadyAppliedToProject: hasAlreadyApplied));
