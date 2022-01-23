@@ -40,7 +40,7 @@ class ApplyToOpenRoleBloc extends Bloc<ApplyToOpenRoleEvent, ApplyToOpenRoleStat
   }
 
   Future<FutureOr<void>> _chooseFilePressed(ChooseFilePressed event, Emitter<ApplyToOpenRoleState> emit) async {
-    final FilePickerResult? filePicked = await FilePicker.platform.pickFiles(allowMultiple: false, withData: true);
+    final FilePickerResult? filePicked = await FilePicker.platform.pickFiles(type : FileType.custom, allowMultiple: false, withData: true, allowedExtensions: ['pdf']);
     if (filePicked != null)
       emit(state.copyWith(filePickerResult: filePicked));
   }

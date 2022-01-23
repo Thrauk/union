@@ -140,7 +140,7 @@ class FirebaseProjectOpenRoleRepository {
         final Map<String, dynamic>? userJson = (await firestoreUsersCollection.doc(application.uid).get()).data();
         if (userJson != null) {
           final FullUser user = FullUser.fromJson(userJson);
-          applicationsListItems.add(ProjectOpenRoleApplicationItem(application.notice, user));
+          applicationsListItems.add(ProjectOpenRoleApplicationItem(application.notice, user, cvUrl: application.cvUrl));
         }
       }
       return applicationsListItems;
@@ -222,4 +222,18 @@ class FirebaseProjectOpenRoleRepository {
       print('copyCvFromUserToApplication $e');
     }
   }
+
+  // Future<void> downloadFileFromUrl(String url, String name) async {
+  //   try {
+  //     // final Directory dir = await getApplicationDocumentsDirectory();
+  //     final Directory? directory = (await getExternalStorageDirectories(type: StorageDirectory.downloads))?.first;
+  //     if(directory != null) {
+  //       final File file = File('${directory.path}/$name');
+  //       FirebaseStorage.instance.refFromURL(url).writeToFile(file);
+  //       print("Write to file ${directory.path}");
+  //     }
+  //   }catch (e) {
+  //     print('downloadFileFromUrl $e');
+  //   }
+  // }
 }
