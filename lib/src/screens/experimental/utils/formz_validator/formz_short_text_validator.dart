@@ -9,7 +9,7 @@ class ShortTextValidator extends FormzGenericValidator {
   const ShortTextValidator.dirty([String value = '']) : super.dirty(value);
 
   static final RegExp _nameRegExp = RegExp(
-    r'^[a-zA-Z0-9]+$',
+    r'^[a-zA-Z0-9 ]+$',
   );
 
   @override
