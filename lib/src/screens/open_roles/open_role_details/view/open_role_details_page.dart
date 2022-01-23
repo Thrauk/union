@@ -122,7 +122,7 @@ class _OpenRolesDetailsPage extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: state.project.ownerId !=
                           context.read<AppBloc>().state.user.id
-                      ? ApplyButtonWidget(openRoleId: projectOpenRole.id)
+                      ? ApplyButtonWidget(openRole: projectOpenRole)
                       : ViewApplicantsButtonWidget(openRole: projectOpenRole),
                 ),
               ],

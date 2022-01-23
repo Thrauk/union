@@ -19,7 +19,6 @@ class OpenRoleDetailsBloc
     on<GetProjectDetails>(_getProjectDetails);
     on<ApplyButtonPressed>(_applyButtonPressed);
     on<VerifyIfUserAlreadyApplied>(_verifyIfUserAlreadyApplied);
-    on<NoticeChanged>(_noticeChanged);
   }
 
   FirebaseProjectRepository firebaseProjectRepository;
@@ -32,7 +31,6 @@ class OpenRoleDetailsBloc
           await firebaseProjectRepository.getProjectById(event.projectId);
       if (project != null) {
         emit(state.copyWith(project: project));
-        print(project.toString());
       }
     } catch (e) {
       print('_getProjectDetails $e');
@@ -43,7 +41,7 @@ class OpenRoleDetailsBloc
       ApplyButtonPressed event, Emitter<OpenRoleDetailsState> emit) async {
     try {
         await firebaseProjectOpenRoleRepository.addOrRemoveUidFromOpenRole(
-            ProjectOpenRoleApplication(uid: event.uid, notice: state.notice),
+            ProjectOpenRoleApplication(uid: event.uid),
             event.openRoleId);
         add(VerifyIfUserAlreadyApplied(event.uid, event.openRoleId));
     } catch (e) {
@@ -64,10 +62,5 @@ class OpenRoleDetailsBloc
     } catch (e) {
       print('_verifyIfUserAlreadyApplied $e');
     }
-  }
-
-  void _noticeChanged(NoticeChanged event, Emitter<OpenRoleDetailsState> emit) {
-    final LongText notice = LongText.dirty(event.value);
-    emit(state.copyWith(notice: event.value, status: Formz.validate([notice])));
   }
 }
