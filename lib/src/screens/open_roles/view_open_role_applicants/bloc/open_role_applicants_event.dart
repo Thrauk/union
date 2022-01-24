@@ -9,3 +9,10 @@ class GetApplicantsList extends OpenRoleApplicantsEvent{
 
   final String openRoleId;
 }
+
+class DownloadCvPressed extends OpenRoleApplicantsEvent{
+  DownloadCvPressed(this.cvUrl, this.fileName);
+
+  final String fileName;
+  final String cvUrl;
+}

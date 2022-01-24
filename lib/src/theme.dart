@@ -83,6 +83,13 @@ class AppStyles {
   );
 
 
+  static const TextStyle textStyleBodySmallW08 = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.normal,
+    color: AppColors.white08,
+    fontSize: 14,
+  );
+
   static const TextStyle textStyleBodyDark = TextStyle(
     fontFamily: 'Lato',
     fontWeight: FontWeight.normal,
@@ -122,6 +129,13 @@ class AppStyles {
     fontWeight: FontWeight.w700,
     color: AppColors.backgroundLight,
     fontSize: 18,
+  );
+
+  static const TextStyle buttonTextStyleSmall = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.w700,
+    color: AppColors.backgroundLight,
+    fontSize: 16,
   );
 
   static const TextStyle buttonTextStylePrimaryColor = TextStyle(

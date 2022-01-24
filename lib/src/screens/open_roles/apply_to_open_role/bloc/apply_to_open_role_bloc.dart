@@ -24,7 +24,7 @@ class ApplyToOpenRoleBloc extends Bloc<ApplyToOpenRoleEvent, ApplyToOpenRoleStat
 
   Future<FutureOr<void>> _applyButtonPressed(ApplyButtonPressed event, Emitter<ApplyToOpenRoleState> emit) async {
     try {
-      await _firebaseProjectOpenRoleRepository.addOrRemoveUidFromOpenRole(
+      await _firebaseProjectOpenRoleRepository.addUidToOpenRole(
           ProjectOpenRoleApplication(uid: event.uid, notice: state.notice), event.openRoleId,
           filePickerResult: state.filePickerResult, userCVPath: state.cvUrl);
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
@@ -40,13 +40,13 @@ class ApplyToOpenRoleBloc extends Bloc<ApplyToOpenRoleEvent, ApplyToOpenRoleStat
   }
 
   Future<FutureOr<void>> _chooseFilePressed(ChooseFilePressed event, Emitter<ApplyToOpenRoleState> emit) async {
-    final FilePickerResult? filePicked = await FilePicker.platform.pickFiles(allowMultiple: false, withData: true);
-    if (filePicked != null) emit(state.copyWith(filePickerResult: filePicked));
+    final FilePickerResult? filePicked = await FilePicker.platform.pickFiles(type : FileType.custom, allowMultiple: false, withData: true, allowedExtensions: ['pdf']);
+    if (filePicked != null)
+      emit(state.copyWith(filePickerResult: filePicked));
   }
 
   Future<FutureOr<void>> _getUserCvIfPresent(VerifyIfUserHasCv event, Emitter<ApplyToOpenRoleState> emit) async {
     final String? maybeUserCvUrl = await _firebaseProjectOpenRoleRepository.getUserCvIfPresent(event.uid);
-    print("usercvUrl $maybeUserCvUrl");
     emit(state.copyWith(cvAlreadyAdded: maybeUserCvUrl != null, cvUrl: maybeUserCvUrl));
   }
 }

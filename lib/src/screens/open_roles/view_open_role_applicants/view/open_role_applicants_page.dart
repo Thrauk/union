@@ -9,14 +9,12 @@ import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
 import 'package:union_app/src/theme.dart';
 
 class OpenRoleApplicantsPage extends StatelessWidget {
-  const OpenRoleApplicantsPage({Key? key, required this.openRole})
-      : super(key: key);
+  const OpenRoleApplicantsPage({Key? key, required this.openRole}) : super(key: key);
 
   final ProjectOpenRole openRole;
 
   static Route<void> route(ProjectOpenRole openRole) {
-    return MaterialPageRoute<void>(
-        builder: (_) => OpenRoleApplicantsPage(openRole: openRole));
+    return MaterialPageRoute<void>(builder: (_) => OpenRoleApplicantsPage(openRole: openRole));
   }
 
   @override
@@ -24,8 +22,7 @@ class OpenRoleApplicantsPage extends StatelessWidget {
     return BlocProvider<OpenRoleApplicantsBloc>(
       child: const _OpenRoleApplicantsPage(),
       create: (BuildContext context) {
-        return OpenRoleApplicantsBloc(FirebaseProjectOpenRoleRepository())
-          ..add(GetApplicantsList(openRole.id));
+        return OpenRoleApplicantsBloc(FirebaseProjectOpenRoleRepository())..add(GetApplicantsList(openRole.id));
       },
     );
   }
@@ -37,8 +34,7 @@ class _OpenRoleApplicantsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<OpenRoleApplicantsBloc, OpenRoleApplicantsState>(
-      buildWhen:
-          (OpenRoleApplicantsState previous, OpenRoleApplicantsState current) {
+      buildWhen: (OpenRoleApplicantsState previous, OpenRoleApplicantsState current) {
         return previous.applicationsItems != current.applicationsItems;
       },
       builder: (BuildContext context, OpenRoleApplicantsState state) {
@@ -53,34 +49,39 @@ class _OpenRoleApplicantsPage extends StatelessWidget {
                       child: ListView.builder(
                         itemCount: state.applicationsItems.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return ApplicantItemWidget(
-                              applicationItem: state.applicationsItems[index]);
+                          return ApplicantItemWidget(applicationItem: state.applicationsItems[index]);
                         },
                       ),
                     )
                   ],
                 )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 34),
-                      child: Image(
-                        image: AssetImage('assets/icons/empty.png'),
+              : state.status == StatusEnum.loading
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.primaryColor,
                       ),
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const <Widget>[
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 34),
+                          child: Image(
+                            image: AssetImage('assets/icons/empty.png'),
+                          ),
+                        ),
+                        SizedBox(height: 32),
+                        Text(
+                          'No applicants yet!',
+                          style: TextStyle(
+                            fontFamily: 'Lato',
+                            color: AppColors.white07,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 32),
-                    Text(
-                      'No applicants yet!',
-                      style: TextStyle(
-                        fontFamily: 'Lato',
-                        color: AppColors.white07,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ],
-                ),
         );
       },
     );
