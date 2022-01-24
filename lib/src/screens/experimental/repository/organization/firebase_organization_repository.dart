@@ -31,7 +31,7 @@ class FirebaseOrganizationRepository {
     await firestoreInstance.doc(documentReference.id).set(retOrganization.toJson());
   }
 
-  Future<Organization> getOrganization(String id) async {
+  Future<Organization> getOrganizationById(String id) async {
     final Map<String, dynamic>? json = (await firestoreInstance.doc(id).get()).data();
     if (json != null) {
       return Organization.fromJson(json);
