@@ -9,7 +9,6 @@ import 'package:union_app/src/screens/messaging/chat/view/chat_page.dart';
 import 'package:union_app/src/screens/open_roles/open_role_details/bloc/open_role_details_bloc.dart';
 import 'package:union_app/src/screens/open_roles/open_role_details/widgets/buttons/apply_button_widget.dart';
 import 'package:union_app/src/screens/open_roles/open_role_details/widgets/buttons/view_applicants_button_widget.dart';
-import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
 import 'package:union_app/src/theme.dart';
 import 'package:union_app/src/util/date_format_utils.dart';
 
@@ -46,7 +45,35 @@ class _OpenRolesDetailsPage extends StatelessWidget {
       },
       builder: (BuildContext context, OpenRoleDetailsState state) {
         return Scaffold(
-          appBar: SimpleAppBar(title: projectOpenRole.title),
+          appBar: AppBar(
+            backgroundColor: AppColors.backgroundLight,
+            title: Text(projectOpenRole.title),
+            actions: [
+              if (projectOpenRole.ownerId == context.read<AppBloc>().state.user.id)
+                Theme(
+                  data: Theme.of(context).copyWith(
+                    cardColor: AppColors.backgroundLight1,
+                    iconTheme: const IconThemeData(color: AppColors.white09),
+                  ),
+                  child: PopupMenuButton<String>(
+                    onSelected: (String choice) => manageChoices(choice, context, projectOpenRole),
+                    itemBuilder: (BuildContext context) {
+                      return Choices.choices.map(
+                        (String choice) {
+                          return PopupMenuItem<String>(
+                            value: choice,
+                            child: Text(
+                              choice,
+                              style: const TextStyle(color: AppColors.white09),
+                            ),
+                          );
+                        },
+                      ).toList();
+                    },
+                  ),
+                ),
+            ],
+          ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: SingleChildScrollView(
@@ -131,23 +158,23 @@ class _OpenRolesDetailsPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                  if(projectOpenRole.experienceLevel.isNotEmpty)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const SizedBox(height: 16),
-                      const Text('Required experience level', style: AppStyles.textStyleHeading1),
-                      const SizedBox(height: 8),
-                      Text(projectOpenRole.experienceLevel, style: AppStyles.textStyleBody),
-                    ],
-                  ),
+                  if (projectOpenRole.experienceLevel.isNotEmpty)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const SizedBox(height: 16),
+                        const Text('Required experience level', style: AppStyles.textStyleHeading1),
+                        const SizedBox(height: 8),
+                        Text(projectOpenRole.experienceLevel, style: AppStyles.textStyleBody),
+                      ],
+                    ),
                   const SizedBox(height: 16),
                   const Text('Specifications', style: AppStyles.textStyleHeading1),
                   const SizedBox(height: 8),
                   Text(projectOpenRole.specifications, style: AppStyles.textStyleBody),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 32.0),
-                    child: state.project.ownerId != context.read<AppBloc>().state.user.id
+                    child: projectOpenRole.ownerId != context.read<AppBloc>().state.user.id
                         ? ApplyButtonWidget(openRole: projectOpenRole)
                         : ViewApplicantsButtonWidget(openRole: projectOpenRole),
                   ),
@@ -159,4 +186,65 @@ class _OpenRolesDetailsPage extends StatelessWidget {
       },
     );
   }
+}
+
+void manageChoices(String choice, BuildContext context, ProjectOpenRole openRole) {
+  switch (choice) {
+    case Choices.delete:
+      showDeleteDialog(context, openRole);
+      break;
+  }
+}
+
+void showDeleteDialog(BuildContext context, ProjectOpenRole openRole) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) => Center(
+      child: AlertDialog(
+        elevation: 20,
+        actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        actions: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: AppColors.primaryColor,
+            ),
+            onPressed: () {
+              try {
+                FirebaseProjectOpenRoleRepository().deleteOpenRole(openRole);
+                Navigator.pop(context);
+                Navigator.pop(context, true);
+              } catch (e) {
+                print('showDeleteDialog $e');
+              }
+            },
+            child: Text(
+              'Yes',
+              style: AppStyles.textStyleBody.merge(
+                const TextStyle(color: AppColors.backgroundLight, fontWeight: FontWeight.w700),
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+          GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Text(
+              'No',
+              style: AppStyles.textStyleBody.merge(
+                const TextStyle(color: AppColors.redLight),
+              ),
+            ),
+          ),
+        ],
+        backgroundColor: AppColors.backgroundLight,
+        title: const Text('Hold on!', style: AppStyles.textStyleHeading1),
+        content: const Text('Are you sure you want to delete this open role?', style: AppStyles.textStyleBody),
+      ),
+    ),
+  );
+}
+
+class Choices {
+  static const String delete = 'Delete';
+
+  static const List<String> choices = <String>[delete];
 }
