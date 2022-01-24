@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 
 class Organization extends Equatable {
   const Organization({
+    this.id = '',
     required this.name,
     required this.ownerId,
     required this.description,
@@ -17,6 +18,7 @@ class Organization extends Equatable {
 
   Organization.fromJson(Map<String, dynamic> json, {this.photo})
       : name = json['name'] as String,
+        id = json['id'] as String,
         ownerId = json['owner_id'] as String,
         description = json['description'] as String,
         type = json['type'] as String,
@@ -27,6 +29,7 @@ class Organization extends Equatable {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'name' : name,
+        'id' : id,
         'owner_id': ownerId,
         'description': description,
         'type': type,
@@ -37,6 +40,7 @@ class Organization extends Equatable {
       }..removeWhere((String key, dynamic value) => value == null);
 
   static const Organization empty = Organization(
+    id: '',
     name: '',
     type: '',
     ownerId: '',
@@ -47,6 +51,7 @@ class Organization extends Equatable {
 
   Organization copyWith({
     String? name,
+    String? id,
     String? ownerId,
     String? description,
     String? type,
@@ -57,6 +62,7 @@ class Organization extends Equatable {
   }) {
     return Organization(
       name: name ?? this.name,
+      id: id ?? this.id,
       description: description ?? this.description,
       ownerId: ownerId ?? this.ownerId,
       type: type ?? this.type,
@@ -68,6 +74,7 @@ class Organization extends Equatable {
   }
 
   final String name;
+  final String id;
   final String ownerId;
   final List<String> members;
   final String description;

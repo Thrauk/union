@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/src/provider.dart';
 import 'package:union_app/src/screens/app/app.dart';
-import 'package:union_app/src/screens/experimental/organization/joined_organizations/view/widgets/organizations_list_view.dart';
-import 'package:union_app/src/screens/experimental/organization/view_organization/bloc/view_organization_bloc.dart';
-import 'package:union_app/src/screens/experimental/organization/view_organization/view/components/view_organization_details.dart';
+import 'package:union_app/src/screens/experimental/organization/organization_members/bloc/organization_members_bloc.dart';
+import 'package:union_app/src/screens/experimental/organization/organization_members/view/widgets/organization_members_list_view.dart';
 import 'package:union_app/src/screens/widgets/app_bottom_nav_bar/app_bottom_nav_bar.dart';
 
 import '../../../../../theme.dart';
 
-class ViewOrganizationPage extends StatelessWidget {
-  const ViewOrganizationPage({Key? key, required this.organizationId}) : super(key: key);
+class OrganizationMembersPage extends StatelessWidget {
+  const OrganizationMembersPage({Key? key, required this.organizationId}) : super(key: key);
 
   static Route<void> route(String organizationId) {
     return MaterialPageRoute<void>(
-        builder: (_) => ViewOrganizationPage(
-              organizationId: organizationId,
-            ));
+      builder: (_) => OrganizationMembersPage(
+        organizationId: organizationId,
+      ),
+    );
   }
 
   final String organizationId;
@@ -30,13 +31,13 @@ class ViewOrganizationPage extends StatelessWidget {
         shadowColor: Colors.transparent,
         title: const Text('View Organization', style: AppStyles.textStyleBodyBig),
       ),
-      body: BlocProvider<ViewOrganizationBloc>(
-        create: (_) => ViewOrganizationBloc(
+      body: BlocProvider<OrganizationMembersBloc>(
+        create: (_) => OrganizationMembersBloc(
           uid: uid,
           organizationId: organizationId,
         )..add(LoadData()),
-        child: BlocBuilder<ViewOrganizationBloc, ViewOrganizationState>(
-          builder: (BuildContext context, ViewOrganizationState state) {
+        child: BlocBuilder<OrganizationMembersBloc, OrganizationMembersState>(
+          builder: (BuildContext context, OrganizationMembersState state) {
             if (!state.isLoaded) {
               return const Align(
                 alignment: Alignment.center,
@@ -45,9 +46,8 @@ class ViewOrganizationPage extends StatelessWidget {
                 ),
               );
             } else {
-              return ViewOrganizationDetails(
-                organization: state.organization,
-                isOwned: state.isOwned,
+              return OrganizationsMembersListView(
+                memberList: state.members,
               );
             }
           },

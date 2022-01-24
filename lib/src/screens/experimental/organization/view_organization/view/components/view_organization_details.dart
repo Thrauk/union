@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:union_app/src/screens/experimental/models/organization.dart';
+import 'package:union_app/src/screens/experimental/organization/organization_members/view/organization_members_page.dart';
 
 import '../../../../../../theme.dart';
 
@@ -23,7 +24,7 @@ class ViewOrganizationDetails extends StatelessWidget {
         children: <Widget>[
           if (organization.photoUrl != '')
             SizedBox(
-              height: 70,
+              height: 120,
               width: double.infinity,
               child: CachedNetworkImage(
                 imageUrl: organization.photoUrl,
@@ -35,7 +36,7 @@ class ViewOrganizationDetails extends StatelessWidget {
               alignment: Alignment.center,
               children: <Widget>[
                 Container(
-                  height: 70,
+                  height: 120,
                   width: double.infinity,
                   color: AppColors.primaryColor,
                 ),
@@ -78,9 +79,14 @@ class ViewOrganizationDetails extends StatelessWidget {
                   organization.type,
                   style: AppStyles.textStyleBodySmall,
                 ),
-                Text(
-                  'Members: ${organization.members.length}',
-                  style: AppStyles.textStyleBodySmall,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(OrganizationMembersPage.route(organization.id));
+                  },
+                  child: Text(
+                    'Members: ${organization.members.length}',
+                    style: AppStyles.textStyleBodySmall,
+                  ),
                 )
               ],
             ),

@@ -16,8 +16,9 @@ class FirebaseOrganizationRepository {
   final Reference storageReference = FirebaseStorage.instance.ref().child('organization');
 
   Future<void> saveOrganization(Organization organization) async {
-    Organization retOrganization = organization;
     final DocumentReference<Map<String, dynamic>> documentReference = firestoreInstance.doc();
+    Organization retOrganization = organization.copyWith(id: documentReference.id);
+
 
     if (organization.photo != null) {
       late String url;
