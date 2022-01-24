@@ -5,6 +5,7 @@ import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/app/bloc/app_bloc.dart';
 import 'package:union_app/src/screens/article/user_articles/view/user_articles_page.dart';
+import 'package:union_app/src/screens/experimental/organization/joined_organizations/view/joined_organizations_page.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/open_roles/view_user_applications/view/user_applications_page.dart';
 import 'package:union_app/src/screens/profile/profile.dart';
@@ -84,12 +85,15 @@ class AppDrawer extends StatelessWidget {
               style: AppStyles.textStyleBody,
             ),
           ),
-          const ListTile(
-            leading: Icon(
+          ListTile(
+            onTap: () {
+              Navigator.push(context, JoinedOrganizationsPage.route());
+            },
+            leading: const Icon(
               Icons.group,
               color: Colors.white70,
             ),
-            title: Text(
+            title: const Text(
               'Organizations',
               style: AppStyles.textStyleBody,
             ),

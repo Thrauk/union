@@ -18,9 +18,7 @@ class SingleLineGenericField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       //keyboardType: TextInputType.multiline,
-      style: const TextStyle(
-        color: AppColors.white07,
-      ),
+      style: AppStyles.textStyleBody,
       onChanged: onChanged,
       cursorColor: AppColors.primaryColor,
       decoration: InputDecoration(

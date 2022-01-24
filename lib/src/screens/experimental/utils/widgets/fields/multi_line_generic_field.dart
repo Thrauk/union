@@ -20,9 +20,7 @@ class MultiLineGenericField extends StatelessWidget {
       minLines: 1,
       maxLines: 10,
       keyboardType: TextInputType.multiline,
-      style: const TextStyle(
-        color: AppColors.white07,
-      ),
+      style: AppStyles.textStyleBody,
       onChanged: onChanged,
       cursorColor: AppColors.primaryColor,
       decoration: InputDecoration(

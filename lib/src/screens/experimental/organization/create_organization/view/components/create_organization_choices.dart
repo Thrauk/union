@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:union_app/src/screens/experimental/organization/create_organization/bloc/create_organization_bloc.dart';
 import 'package:union_app/src/screens/experimental/organization/create_organization/data/data.dart';
 
 import '../../../../../../theme.dart';
@@ -9,58 +11,72 @@ class CreateOrganizationChoices extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Align(
-          alignment: Alignment.centerLeft,
-          child: DropdownButton<String>(
-            hint: const Text(
-              'Organization category',
-              style: TextStyle(color: AppColors.primaryColor),
-            ),
-            //value: dropdownValue,
-            icon: const Icon(
-              Icons.arrow_downward,
-              color: AppColors.primaryColor,
-            ),
-            elevation: 16,
-            style: const TextStyle(color: AppColors.primaryColor),
-            underline: Container(
-              height: 2,
-              color: AppColors.primaryColor,
-            ),
-            onChanged: (String? newValue) {
-              // setState(() {
-              //   dropdownValue = newValue!;
-              // });
-            },
-            items: organizationCategories.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
-        ),
-        Row(
+    return BlocBuilder<CreateOrganizationBloc, CreateOrganizationState>(
+      builder: (BuildContext context, CreateOrganizationState state) {
+        return Column(
           children: <Widget>[
-            Text(
-              'Type: ',
-              style: AppStyles.textStyleBody,
+            Align(
+              alignment: Alignment.centerLeft,
+              child: DropdownButton<String>(
+                hint: const Text(
+                  'Organization category',
+                  style: AppStyles.textStyleBodyPrimary,
+                ),
+                value: state.selectedCategory,
+                icon: const Icon(
+                  Icons.keyboard_arrow_down_rounded,
+                  color: AppColors.primaryColor,
+                ),
+                elevation: 16,
+                style: AppStyles.textStyleBodyPrimary,
+                underline: Container(
+                  height: 2,
+                  color: state.categoryError == null ? AppColors.primaryColor : Colors.red,
+                ),
+                onChanged: (String? selectedCategory) {
+                  context.read<CreateOrganizationBloc>().add(CategoryChanged(category: selectedCategory));
+                },
+                items: organizationCategories.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
             ),
-            Text('Public/Private', style: AppStyles.textStyleBodyPrimary),
-            CupertinoSwitch(
-              value: true,
-              onChanged: (bool value) {},
-              activeColor: AppColors.primaryColor,
+            if (state.categoryError != null)
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  state.categoryError!,
+                  style: AppStyles.textStyleBodySmallError,
+                ),
+              ),
+            const SizedBox(height: 10),
+            Row(
+              children: <Widget>[
+                const Text(
+                  'Type: ',
+                  style: AppStyles.textStyleBody,
+                ),
+                SizedBox(width: 60, child: Text(state.isPublic ? 'Public' : 'Private', style: AppStyles.textStyleBodyPrimary)),
+                Switch(
+                  value: state.isPublic,
+                  onChanged: (bool value) {
+                    context.read<CreateOrganizationBloc>().add(TypeChanged(isPublic: value));
+                  },
+                  activeColor: AppColors.primaryColor,
+                ),
+              ],
+            ),
+            const Text(
+              'People must be added or request access in order to join a private organization. ' +
+                  'Public organizations are open to everyone.',
+              style: AppStyles.textStyleBodySmall,
             ),
           ],
-        ),
-        Text(
-          'People must be added or request access in order to join a private organization. ' +
-              'Public organizations are open to everyone.',
-          style: AppStyles.textStyleBodySmall,),
-      ],
+        );
+      },
     );
   }
 }

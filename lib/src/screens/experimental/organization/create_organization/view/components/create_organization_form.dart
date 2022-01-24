@@ -26,7 +26,7 @@ class CreateOrganizationForm extends StatelessWidget {
             ),
             SingleLineGenericField(
                 key: const Key(FieldKeys.locationKey),
-                errorText : state.validators.validateSingle(FieldKeys.locationKey)  ? 'Invalid location' : null,
+                errorText: state.validators.validateSingle(FieldKeys.locationKey) ? 'Invalid location' : null,
                 labelText: 'Location',
                 onChanged: (String value) {
                   context.read<CreateOrganizationBloc>().add(FieldChanged(fieldKey: FieldKeys.locationKey, value: value));
@@ -35,7 +35,13 @@ class CreateOrganizationForm extends StatelessWidget {
               height: 15,
             ),
             MultiLineGenericField(
-                key: const Key(FieldKeys.descriptionKey), labelText: 'Description', onChanged: (String value) {}),
+              key: const Key(FieldKeys.descriptionKey),
+              labelText: 'Description',
+              errorText: state.validators.validateSingle(FieldKeys.descriptionKey) ? 'Invalid description' : null,
+              onChanged: (String value) {
+                context.read<CreateOrganizationBloc>().add(LongFieldChanged(fieldKey: FieldKeys.descriptionKey, value: value));
+              },
+            ),
           ],
         );
       },

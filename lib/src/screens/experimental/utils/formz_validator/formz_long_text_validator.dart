@@ -9,13 +9,13 @@ class LongTextValidator extends FormzGenericValidator {
   const LongTextValidator.dirty([String value = '']) : super.dirty(value);
 
   static final RegExp _nameRegExp = RegExp(
-    r'[a-zA-Z0-9 @?.]+',
+    r'^[a-zA-Z0-9 @?.]+$',
   );
 
   @override
   FormzGenericFieldError? validator(String? value) {
     return _nameRegExp.hasMatch(value ?? '')
-        ? value!.length < 255 ? null : FormzGenericFieldError.invalid
+        ? value!.length < 2048 ? null : FormzGenericFieldError.invalid
         : FormzGenericFieldError.invalid;
   }
 }

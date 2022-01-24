@@ -68,6 +68,13 @@ class AppStyles {
     fontSize: 16,
   );
 
+  static const TextStyle textStyleBodyError = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.normal,
+    color: Colors.red,
+    fontSize: 16,
+  );
+
   static const TextStyle textStyleBodyPrimary = TextStyle(
     fontFamily: 'Lato',
     fontWeight: FontWeight.normal,
@@ -94,6 +101,12 @@ class AppStyles {
     fontFamily: 'Lato',
     fontWeight: FontWeight.normal,
     color: AppColors.white05,
+    fontSize: 14,
+  );
+  static const TextStyle textStyleBodySmallError = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.normal,
+    color: Colors.red,
     fontSize: 14,
   );
 
