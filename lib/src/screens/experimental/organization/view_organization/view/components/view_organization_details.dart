@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:union_app/src/screens/experimental/models/organization.dart';
 import 'package:union_app/src/screens/experimental/organization/organization_members/view/organization_members_page.dart';
+import 'package:union_app/src/screens/experimental/organization/view_organization/view/components/view_organization_member_area.dart';
 
 import '../../../../../../theme.dart';
 
@@ -10,10 +11,14 @@ class ViewOrganizationDetails extends StatelessWidget {
     Key? key,
     required this.organization,
     required this.isOwned,
+    required this.isMember,
+    required this.isPublic,
   }) : super(key: key);
 
   final Organization organization;
   final bool isOwned;
+  final bool isMember;
+  final bool isPublic;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +92,12 @@ class ViewOrganizationDetails extends StatelessWidget {
                     'Members: ${organization.members.length}',
                     style: AppStyles.textStyleBodySmall,
                   ),
-                )
+                ),
+                if (isMember || isPublic)
+                  ViewOrganizationMemberArea(
+                    isMember: isMember,
+                    isOwner: isOwned,
+                  ),
               ],
             ),
           ),

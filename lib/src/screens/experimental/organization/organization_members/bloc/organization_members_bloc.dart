@@ -19,6 +19,7 @@ class OrganizationMembersBloc extends Bloc<OrganizationMembersEvent, Organizatio
         _organizationId = organizationId,
         super(const OrganizationMembersState()) {
     on<LoadData>(_onLoadData);
+    on<RemoveMember>(_onRemoveMember);
   }
 
   final FirebaseOrganizationRepository _firebaseOrganizationRepository = FirebaseOrganizationRepository();
@@ -39,5 +40,14 @@ class OrganizationMembersBloc extends Bloc<OrganizationMembersEvent, Organizatio
       organization: organization,
       members: membersList,
     ));
+  }
+
+  Future<void> _onRemoveMember(RemoveMember event, Emitter<OrganizationMembersState> emit) async {
+    emit(state.copyWith(isLoaded: false));
+    await _firebaseOrganizationRepository.removeMemberByUid(_organizationId, event.memberUid);
+    add(LoadData());
+    //final List<FullUser> memberList = state.members;
+    //memberList.removeWhere((FullUser user) => user.id == event.memberUid);
+    //emit(state.copyWith(isLoaded: true, members: memberList));
   }
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
+import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/article/article_details/article_details_page.dart';
+import 'package:union_app/src/screens/experimental/models/organization.dart';
+import 'package:union_app/src/screens/experimental/organization/joined_organizations/view/widgets/organizations_list_view_element.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/profile/profile.dart';
 import 'package:union_app/src/screens/project/project_details/view/project_details_page.dart';
@@ -82,18 +85,21 @@ class _SearchBarWidget extends StatelessWidget {
 class _ResultListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final String uid = context.select((AppBloc bloc) => bloc.state.user.id);
     return BlocBuilder<MultiSearchPageBloc, MultiSearchPageState>(
       builder: (BuildContext context, MultiSearchPageState state) {
         return ListView.builder(
             itemCount: state.resultList.length,
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              if(state.searchType == SearchType.user) {
+              if (state.searchType == SearchType.user) {
                 return _UserListElement(element: state.resultList[index]);
-              } else if(state.searchType == SearchType.project) {
+              } else if (state.searchType == SearchType.project) {
                 return _ProjectListElement(element: state.resultList[index]);
+              } else if (state.searchType == SearchType.article) {
+                return _ArticleListElement(element: state.resultList[index]);
               }
-              return _ArticleListElement(element: state.resultList[index]);
+              return OrganizationListViewElement(organization: state.resultList[index] as Organization, loggedUid: uid);
             });
       },
     );
@@ -147,7 +153,6 @@ class _UserListElement extends StatelessWidget {
   }
 }
 
-
 class _ProjectListElement extends StatelessWidget {
   const _ProjectListElement({required dynamic element}) : project = element as Project;
 
@@ -176,7 +181,10 @@ class _ProjectListElement extends StatelessWidget {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  const Icon(Icons.analytics, color: AppColors.primaryColor,),
+                  const Icon(
+                    Icons.analytics,
+                    color: AppColors.primaryColor,
+                  ),
                   const SizedBox(width: 6),
                   Text(project.title!, overflow: TextOverflow.ellipsis, style: AppStyles.buttonTextStylePrimaryColor),
                 ],
@@ -222,7 +230,6 @@ class _ProjectListElement extends StatelessWidget {
     );
   }
 }
-
 
 class _ArticleListElement extends StatelessWidget {
   const _ArticleListElement({required dynamic element}) : article = element as Article;
@@ -343,10 +350,28 @@ class _SearchTypeChips extends StatelessWidget {
                 backgroundColor: state.searchType == SearchType.article ? AppColors.backgroundLight : null,
               ),
             ),
+            const SizedBox(width: 8),
+            GestureDetector(
+              onTap: () {
+                if (state.searchType != SearchType.organization) {
+                  context.read<MultiSearchPageBloc>().add(const SearchTypeChanged(searchType: SearchType.organization));
+                }
+              },
+              child: Chip(
+                label: Text(
+                  'Organizations',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'Lato',
+                      color: state.searchType == SearchType.organization ? AppColors.primaryColor : AppColors.white07),
+                ),
+                labelPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+                backgroundColor: state.searchType == SearchType.organization ? AppColors.backgroundLight : null,
+              ),
+            ),
           ],
         );
       },
     );
   }
-
 }

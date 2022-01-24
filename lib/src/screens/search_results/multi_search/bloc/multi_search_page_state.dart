@@ -1,6 +1,6 @@
 part of 'multi_search_page_bloc.dart';
 
-enum SearchType { user, project, position, article }
+enum SearchType { user, project, position, article, organization }
 
 class MultiSearchPageState extends Equatable {
   const MultiSearchPageState({

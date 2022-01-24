@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 import 'package:union_app/src/models/models.dart';
+import 'package:union_app/src/screens/experimental/organization/organization_members/bloc/organization_members_bloc.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/profile/profile.dart';
 
@@ -7,7 +9,6 @@ import '../../../../../../theme.dart';
 
 class OrganizationMembersListElement extends StatelessWidget {
   const OrganizationMembersListElement({Key? key, required this.user, required this.loggedUid}) : super(key: key);
-
 
   final FullUser user;
   final String loggedUid;
@@ -43,17 +44,29 @@ class OrganizationMembersListElement extends StatelessWidget {
                       user.jobTitle ?? '',
                       style: AppStyles.textStyleBodySmall,
                     ),
-
                   ],
                 ),
               ),
-              if(loggedUid != user.id) Align(
-                alignment: Alignment.centerRight,
-                child: Icon(Icons.remove_circle, color: AppColors.primaryColor,),
-              ) else Align(
-                alignment: Alignment.centerRight,
-                child: Icon(Icons.blender, color: AppColors.primaryColor,),
-              ),
+              if (loggedUid != user.id)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                      onTap: () {
+                        context.read<OrganizationMembersBloc>().add(RemoveMember(memberUid: user.id));
+                      },
+                      child: const Icon(
+                        Icons.remove_circle,
+                        color: AppColors.primaryColor,
+                      )),
+                )
+              else
+                const Align(
+                  alignment: Alignment.centerRight,
+                  child: Icon(
+                    Icons.blender,
+                    color: AppColors.primaryColor,
+                  ),
+                ),
             ],
           ),
         ),

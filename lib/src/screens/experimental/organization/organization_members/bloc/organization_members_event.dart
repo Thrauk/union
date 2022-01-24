@@ -9,3 +9,11 @@ abstract class OrganizationMembersEvent extends Equatable {
 
 class LoadData extends OrganizationMembersEvent {}
 
+class RemoveMember extends OrganizationMembersEvent {
+  const RemoveMember({required this.memberUid});
+
+  final String memberUid;
+
+  @override
+  List<Object> get props => <Object>[memberUid];
+}

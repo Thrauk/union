@@ -17,6 +17,8 @@ class ViewOrganizationBloc extends Bloc<ViewOrganizationEvent, ViewOrganizationS
         _organizationId = organizationId,
         super(const ViewOrganizationState()) {
     on<LoadData>(_onLoadData);
+    on<JoinOrganization>(_onJoinOrganization);
+    on<LeaveOrganization>(_onLeaveOrganization);
   }
 
   final FirebaseOrganizationRepository _firebaseOrganizationRepository = FirebaseOrganizationRepository();
@@ -32,4 +34,20 @@ class ViewOrganizationBloc extends Bloc<ViewOrganizationEvent, ViewOrganizationS
       organization: organization,
     ));
   }
+
+  Future<void> _onJoinOrganization(JoinOrganization event, Emitter<ViewOrganizationState> emit) async {
+    if(!state.isMember) {
+      final bool response = await _firebaseOrganizationRepository.joinOrganization(state.organization.id, _uid);
+      emit(state.copyWith(isMember: response));
+    }
+
+  }
+
+  Future<void> _onLeaveOrganization(LeaveOrganization event, Emitter<ViewOrganizationState> emit) async {
+    if(state.isMember) {
+      final bool response = await _firebaseOrganizationRepository.leaveOrganization(state.organization.id, _uid);
+      emit(state.copyWith(isMember: response ? false : true));
+    }
+  }
+
 }

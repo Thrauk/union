@@ -19,7 +19,6 @@ class FirebaseOrganizationRepository {
     final DocumentReference<Map<String, dynamic>> documentReference = firestoreInstance.doc();
     Organization retOrganization = organization.copyWith(id: documentReference.id);
 
-
     if (organization.photo != null) {
       late String url;
       final Reference reference = storageReference.child(documentReference.id).child('picture');
@@ -59,5 +58,43 @@ class FirebaseOrganizationRepository {
       }
     }).toList()
       ..sort((Organization a, Organization b) => a.name.compareTo(b.name));
+  }
+
+  Future<bool> removeMemberByUid(String organizationId, String memberUid) async {
+    try {
+      await firestoreInstance.doc(organizationId).update(
+        {
+          'members': FieldValue.arrayRemove(<String>[memberUid])
+        },
+      );
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<List<Organization>> getAllOrganizations() async {
+    final List<Organization> users = (await firestoreInstance.get())
+        .docs
+        .map((QueryDocumentSnapshot<Map<String, dynamic>> userJson) => Organization.fromJson(userJson.data()))
+        .toList();
+    return users;
+  }
+
+  Future<bool> joinOrganization(String organizationId, String memberUid) async {
+    try {
+      await firestoreInstance.doc(organizationId).update(
+        {
+          'members': FieldValue.arrayUnion(<String>[memberUid])
+        },
+      );
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<bool> leaveOrganization(String organizationId, String memberUid) async {
+    return removeMemberByUid(organizationId, memberUid);
   }
 }

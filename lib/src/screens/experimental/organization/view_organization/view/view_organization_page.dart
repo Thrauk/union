@@ -48,6 +48,8 @@ class ViewOrganizationPage extends StatelessWidget {
               return ViewOrganizationDetails(
                 organization: state.organization,
                 isOwned: state.isOwned,
+                isMember: state.isMember,
+                isPublic: state.organization.type == 'Public',
               );
             }
           },
