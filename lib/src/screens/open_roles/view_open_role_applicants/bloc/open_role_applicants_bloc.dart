@@ -21,7 +21,6 @@ class OpenRoleApplicantsBloc extends Bloc<OpenRoleApplicantsEvent, OpenRoleAppli
       final List<ProjectOpenRoleApplicationItem> applicationsItems =
           await openRoleRepository.getProjectApplicationItems(event.openRoleId);
 
-      if (applicationsItems.isNotEmpty)
         emit(state.copyWith(applicationsItems: applicationsItems, status: StatusEnum.successful));
     } catch (e) {
       emit(state.copyWith(status: StatusEnum.failed));
