@@ -77,7 +77,7 @@ class _OpenRolesDetailsPage extends StatelessWidget {
                           style: AppStyles.textStyleBodySmallW08,
                         ),
                         onPressed: () {
-                          Navigator.of(context).push(ChatPage.route(state.project.ownerId));
+                          Navigator.of(context).push(ChatPage.route(projectOpenRole.ownerId));
                         },
                         style: ElevatedButton.styleFrom(
                           primary: AppColors.backgroundLight1,
@@ -131,6 +131,16 @@ class _OpenRolesDetailsPage extends StatelessWidget {
                         ),
                       ],
                     ),
+                  if(projectOpenRole.experienceLevel.isNotEmpty)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const SizedBox(height: 16),
+                      const Text('Required experience level', style: AppStyles.textStyleHeading1),
+                      const SizedBox(height: 8),
+                      Text(projectOpenRole.experienceLevel, style: AppStyles.textStyleBody),
+                    ],
+                  ),
                   const SizedBox(height: 16),
                   const Text('Specifications', style: AppStyles.textStyleHeading1),
                   const SizedBox(height: 8),

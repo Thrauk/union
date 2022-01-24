@@ -71,16 +71,24 @@ class _FileUploader extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: AppColors.primaryColor,
+                    ElevatedButton.icon(
+                      icon: const Icon(
+                        Icons.upload_rounded,
+                        color: AppColors.primaryColor,
+                        size: 20.0,
+                      ),
+                      label: const Text(
+                        'Choose a file',
+                        style: AppStyles.textStyleBodySmallW08,
                       ),
                       onPressed: () {
                         context.read<UploadFileBloc>().add(ChooseFilePressed(_userId));
                       },
-                      child: const Text(
-                        'Choose a file',
-                        style: AppStyles.buttonTextStyle,
+                      style: ElevatedButton.styleFrom(
+                        primary: AppColors.backgroundLight1,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -91,7 +99,7 @@ class _FileUploader extends StatelessWidget {
                         },
                         child: const Text(
                           'Remove file',
-                          style: AppStyles.textStyleHeading1,
+                          style: AppStyles.buttonTextStylePrimaryColorSmall,
                         ),
                       ),
                   ],

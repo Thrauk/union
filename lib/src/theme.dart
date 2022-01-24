@@ -145,6 +145,13 @@ class AppStyles {
     fontSize: 18,
   );
 
+  static const TextStyle buttonTextStylePrimaryColorSmall = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.normal,
+    color: AppColors.primaryColor,
+    fontSize: 16,
+  );
+
 }
 
 class AppColors {

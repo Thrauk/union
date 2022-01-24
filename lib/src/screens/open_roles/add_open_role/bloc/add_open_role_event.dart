@@ -28,6 +28,12 @@ class CityChanged extends AddOpenRoleEvent {
   final String value;
 }
 
+class ExperienceLevelChanged extends AddOpenRoleEvent {
+  ExperienceLevelChanged(this.value);
+
+  final String value;
+}
+
 class IsPaidChanged extends AddOpenRoleEvent {
   IsPaidChanged(this.value);
 
@@ -41,7 +47,8 @@ class IsRemotePossibleChanged extends AddOpenRoleEvent {
 }
 
 class PostButtonPressed extends AddOpenRoleEvent {
-  PostButtonPressed(this.projectId);
+  PostButtonPressed(this.projectId, this.ownerId);
 
   final String projectId;
+  final String ownerId;
 }
