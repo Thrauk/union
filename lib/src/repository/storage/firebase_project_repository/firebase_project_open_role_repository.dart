@@ -102,7 +102,7 @@ class FirebaseProjectOpenRoleRepository {
       if (maybeApplicationQuery.isNotEmpty) {
         for (final QueryDocumentSnapshot<Map<String, dynamic>> element in maybeApplicationQuery) {
           firestoreProjectsApplicationsCollection.doc(element.id).delete();
-          deleteCVFileFromApplication(element.id);
+          if (roleApplication.cvUrl.isNotEmpty) deleteCVFileFromApplication(element.id);
         }
       }
     } catch (e) {
@@ -223,17 +223,10 @@ class FirebaseProjectOpenRoleRepository {
     }
   }
 
-  // Future<void> downloadFileFromUrl(String url, String name) async {
-  //   try {
-  //     // final Directory dir = await getApplicationDocumentsDirectory();
-  //     final Directory? directory = (await getExternalStorageDirectories(type: StorageDirectory.downloads))?.first;
-  //     if(directory != null) {
-  //       final File file = File('${directory.path}/$name');
-  //       FirebaseStorage.instance.refFromURL(url).writeToFile(file);
-  //       print("Write to file ${directory.path}");
-  //     }
-  //   }catch (e) {
-  //     print('downloadFileFromUrl $e');
-  //   }
-  // }
+  Future<void> deleteOpenRole(ProjectOpenRole openRole) async {
+    firestoreProjectsOpenRolesCollection.doc(openRole.id).delete();
+    final QuerySnapshot<Map<String, dynamic>> applicationsSnapshot =
+        await (firestoreProjectsApplicationsCollection.where('open_role_id', isEqualTo: openRole.id)).get();
+    applicationsSnapshot.docs.clear();
+  }
 }
