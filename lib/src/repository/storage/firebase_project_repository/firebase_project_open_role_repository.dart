@@ -79,7 +79,7 @@ class FirebaseProjectOpenRoleRepository {
         if (fileUrl != null) applicationToSave = applicationToSave.copyWith(cvUrl: fileUrl);
         applicationDoc.set(applicationToSave.toJson());
         return;
-      } else if (userCVPath != null) {
+      } else if (userCVPath != null && userCVPath.isNotEmpty) {
         copyCvFromUserToApplication(userCVPath, applicationDoc.id);
         applicationToSave = applicationToSave.copyWith(cvUrl: userCVPath);
         applicationDoc.set(applicationToSave.toJson());

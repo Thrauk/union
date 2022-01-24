@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:provider/src/provider.dart';
+import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/open_roles/add_open_role/bloc/add_open_role_bloc.dart';
 import 'package:union_app/src/theme.dart';
@@ -11,6 +12,7 @@ class PostButtonWidget extends StatelessWidget {
   const PostButtonWidget({Key? key, required this.projectId}) : super(key: key);
 
   final String projectId;
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AddOpenRoleBloc, AddOpenRoleState>(
@@ -22,7 +24,7 @@ class PostButtonWidget extends StatelessWidget {
       builder: (BuildContext context, AddOpenRoleState state) {
         return ElevatedButton(
           onPressed: () {
-            context.read<AddOpenRoleBloc>().add(PostButtonPressed(projectId));
+            context.read<AddOpenRoleBloc>().add(PostButtonPressed(projectId, context.read<AppBloc>().state.user.id));
           },
           style: ElevatedButton.styleFrom(
             primary: AppColors.primaryColor,

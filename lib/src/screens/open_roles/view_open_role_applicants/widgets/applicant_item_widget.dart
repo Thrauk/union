@@ -36,7 +36,8 @@ class ApplicantItemWidget extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(applicationItem.user.displayName ?? '', style: AppStyles.textStyleBody),
+                        Text(applicationItem.user.displayName ?? '', style: AppStyles.textStyleBody,
+                        overflow: TextOverflow.ellipsis),
                         const SizedBox(height: 8),
                         if (applicationItem.user.location != null)
                           Row(
@@ -68,34 +69,38 @@ class ApplicantItemWidget extends StatelessWidget {
                               Text(
                                 applicationItem.user.jobTitle!,
                                 style: AppStyles.textStyleBodySmall,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ],
                           ),
                       ],
                     ),
                     const Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(ChatPage.route(applicationItem.user.id));
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: Chip(
-                          label: Row(
-                            children: const <Widget>[
-                              Icon(
-                                Icons.send,
-                                size: 18,
-                              ),
-                              SizedBox(width: 4),
-                              Text(
-                                'Send message',
-                                style: TextStyle(color: AppColors.backgroundDark, fontWeight: FontWeight.w600),
-                              ),
-                            ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(ChatPage.route(applicationItem.user.id));
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Chip(
+                            label: Row(
+                              children: const <Widget>[
+                                Icon(
+                                  Icons.send,
+                                  size: 18,
+                                ),
+                                SizedBox(width: 4),
+                                Text(
+                                  'Send message',
+                                  style: TextStyle(color: AppColors.backgroundDark, fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                            labelPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+                            backgroundColor: AppColors.primaryColor,
                           ),
-                          labelPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
-                          backgroundColor: AppColors.primaryColor,
                         ),
                       ),
                     )

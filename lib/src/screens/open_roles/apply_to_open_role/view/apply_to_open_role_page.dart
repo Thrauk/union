@@ -73,14 +73,9 @@ class _ApplyToOpenRolePage extends StatelessWidget {
                       label: Text('Why do you want to apply?'),
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  Text(
-                    state.cvAlreadyAdded == true
-                        ? 'You already have CV uploaded. You can choose another one or apply with the existing one.'
-                        : 'Choose a file for your CV',
-                    style: AppStyles.textStyleBody,
-                  ),
+
                   const SizedBox(height: 16),
+                  const Text('Resume', style: AppStyles.textStyleHeading1),
                   Row(
                     children: <Widget>[
                       if (state.filePickerResult != null)
@@ -100,18 +95,44 @@ class _ApplyToOpenRolePage extends StatelessWidget {
                       const SizedBox(width: 16),
                       Expanded(
                         flex: 1,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(primary: AppColors.primaryColor),
+                        child: ElevatedButton.icon(
+                          icon: const Icon(
+                            Icons.upload_rounded,
+                            color: AppColors.primaryColor,
+                            size: 20.0,
+                          ),
+                          label: const Text(
+                            'Choose a file',
+                            style: AppStyles.textStyleBodySmallW08,
+                          ),
                           onPressed: () {
                             context.read<ApplyToOpenRoleBloc>().add(ChooseFilePressed());
                           },
-                          child: const Text(
-                            'Choose a file',
-                            style: AppStyles.buttonTextStyle,
+                          style: ElevatedButton.styleFrom(
+                            primary: AppColors.backgroundLight1,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
                           ),
                         ),
-                      )
+                      ),
                     ],
+                  ),
+                  const SizedBox(height: 4),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                        border: Border.all(color: AppColors.white02)
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(
+                        state.cvAlreadyAdded == true
+                            ? 'Note: You already have a resume uploaded. You can choose another one or apply with the existing one.'
+                            : "Note: You don't have a resume uploaded, choose one or apply without a resume.",
+                        style: AppStyles.textStyleBodySmallW08,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 16),
                   BlocConsumer<ApplyToOpenRoleBloc, ApplyToOpenRoleState>(

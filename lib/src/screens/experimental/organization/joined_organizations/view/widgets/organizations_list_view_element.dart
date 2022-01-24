@@ -37,7 +37,7 @@ class OrganizationListViewElement extends StatelessWidget {
                 alignment: Alignment.center,
                 children: <Widget>[
                   Container(
-                    height: 70,
+                    height: 120,
                     width: double.infinity,
                     color: AppColors.primaryColor,
                   ),
@@ -51,39 +51,62 @@ class OrganizationListViewElement extends StatelessWidget {
                   ),
                 ],
               ),
-            const SizedBox(
-              height: 10,
-            ),
+            // const SizedBox(
+            //   height: 10,
+            // ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         organization.name,
-                        style: AppStyles.textStyleBodyPrimary,
+                        style: AppStyles.textStyleHeading1,
                       ),
+                      const SizedBox(width: 4),
                       if (organization.ownerId == loggedUid)
-                        Icon(
-                          Icons.blender,
+                        const Icon(
+                          Icons.whatshot,
                           color: AppColors.primaryColor,
+                          size: 24,
                         ),
                     ],
                   ),
-                  Text(
-                    organization.category,
-                    style: AppStyles.textStyleBodySmall,
+                  const SizedBox(height: 8),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        organization.location,
+                        style: AppStyles.textStyleBody,
+                      ),
+                      const Text(
+                        ' • ',
+                        style: AppStyles.textStyleBodySmall,
+                      ),
+                      Text(
+                        organization.category,
+                        style: AppStyles.textStyleBody,
+                      ),
+                      const Text(
+                        ' • ',
+                        style: AppStyles.textStyleBodySmall,
+                      ),
+                      Text(
+                        organization.type,
+                        style: AppStyles.textStyleBody,
+                      ),
+                    ],
                   ),
-                  Text(
-                    organization.type,
-                    style: AppStyles.textStyleBodySmall,
-                  ),
-                  Text(
-                    'Members: ${organization.members.length}',
-                    style: AppStyles.textStyleBodySmall,
-                  )
+                      const SizedBox(height: 4),
+                      Text(
+                        organization.members.length > 1
+                            ? '${organization.members.length} members'
+                            : '${organization.members.length} member',
+                        style: AppStyles.textStyleBodySmall,
+                      ),
                 ],
               ),
             ),

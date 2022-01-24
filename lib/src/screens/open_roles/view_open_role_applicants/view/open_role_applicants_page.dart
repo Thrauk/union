@@ -35,7 +35,7 @@ class _OpenRoleApplicantsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<OpenRoleApplicantsBloc, OpenRoleApplicantsState>(
       buildWhen: (OpenRoleApplicantsState previous, OpenRoleApplicantsState current) {
-        return previous.applicationsItems != current.applicationsItems;
+        return previous.applicationsItems != current.applicationsItems || previous.status != current.status;
       },
       builder: (BuildContext context, OpenRoleApplicantsState state) {
         return Scaffold(

@@ -1,7 +1,9 @@
+// ignore_for_file: avoid_field_initializers_in_const_classes
+
 part of 'add_open_role_bloc.dart';
 
 class AddOpenRoleState extends Equatable {
-  const AddOpenRoleState(
+  AddOpenRoleState(
       {this.title = const ShortText.pure(),
       this.specifications = const LongText.pure(),
       this.isPaid = false,
@@ -9,8 +11,10 @@ class AddOpenRoleState extends Equatable {
       this.country = const ShortText.pure(),
       this.location = const ShortText.pure(),
       this.city = const ShortText.pure(),
+      this.selectedExperienceLevel = 'Not specified',
       this.status = FormzStatus.pure});
 
+  final List<String> experienceLevels = <String>['Not specified', 'Junior', 'Middle', 'Experienced'];
   final ShortText title;
   final LongText specifications;
   final bool isPaid;
@@ -19,10 +23,12 @@ class AddOpenRoleState extends Equatable {
   final ShortText city;
   final ShortText location;
   final FormzStatus status;
+  final String selectedExperienceLevel;
 
   AddOpenRoleState copyWith(
       {ShortText? title,
       LongText? specifications,
+      String? selectedExperienceLevel,
       bool? isPaid,
       bool? isRemotePossible,
       ShortText? country,
@@ -31,6 +37,7 @@ class AddOpenRoleState extends Equatable {
     return AddOpenRoleState(
       title: title ?? this.title,
       specifications: specifications ?? this.specifications,
+      selectedExperienceLevel: selectedExperienceLevel ?? this.selectedExperienceLevel,
       isPaid: isPaid ?? this.isPaid,
       isRemotePossible: isRemotePossible ?? this.isRemotePossible,
       country: country ?? this.country,
@@ -40,5 +47,5 @@ class AddOpenRoleState extends Equatable {
   }
 
   @override
-  List<Object> get props => [title, specifications, isPaid, city, country, isRemotePossible, status];
+  List<Object> get props => [title, specifications, isPaid, city, country, isRemotePossible, status, selectedExperienceLevel];
 }
