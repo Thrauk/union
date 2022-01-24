@@ -31,7 +31,9 @@ class JoinedOrganizationsPage extends StatelessWidget {
             if (!state.isLoaded) {
               return const Align(
                 alignment: Alignment.center,
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  color: AppColors.primaryColor,
+                ),
               );
             } else {
               return OrganizationsListView(
