@@ -25,7 +25,7 @@ class CreateProjectPage extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(
             child: Column(
-              children: const <Widget>[
+              children: <Widget>[
                 SizedBox(height: 16),
                 GithubButtonWidget(),
                 SizedBox(height: 24),
@@ -37,7 +37,7 @@ class CreateProjectPage extends StatelessWidget {
                 SizedBox(height: 16),
                 TagsContainer(),
                 SizedBox(height: 16),
-                CreateButtonWidget(),
+                CreateButtonWidget(organizationId: organizationId,),
               ],
             ),
           ),

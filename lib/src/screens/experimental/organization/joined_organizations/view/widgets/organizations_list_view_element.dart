@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 import 'package:union_app/src/screens/experimental/models/organization.dart';
+import 'package:union_app/src/screens/experimental/organization/joined_organizations/bloc/joined_organizations_bloc.dart';
 import 'package:union_app/src/screens/experimental/organization/view_organization/view/view_organization_page.dart';
 
 import '../../../../../../theme.dart';
@@ -20,7 +22,9 @@ class OrganizationListViewElement extends StatelessWidget {
     return SizedBox(
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).push(ViewOrganizationPage.route(organization.id));
+          Navigator.of(context)
+              .push(ViewOrganizationPage.route(organization.id))
+              .then((value) => context.read<JoinedOrganizationsBloc>().add(LoadData()));
         },
         child: Card(
           color: AppColors.backgroundLight1,
@@ -105,13 +109,13 @@ class OrganizationListViewElement extends StatelessWidget {
                         ),
                       ],
                     ),
-                        const SizedBox(height: 4),
-                        Text(
-                          organization.members.length > 1
-                              ? '${organization.members.length} members'
-                              : '${organization.members.length} member',
-                          style: AppStyles.textStyleBodySmall,
-                        ),
+                    const SizedBox(height: 4),
+                    Text(
+                      organization.members.length > 1
+                          ? '${organization.members.length} members'
+                          : '${organization.members.length} member',
+                      style: AppStyles.textStyleBodySmall,
+                    ),
                   ],
                 ),
               ),

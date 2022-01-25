@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:union_app/src/models/models.dart';
+import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
 import 'package:union_app/src/screens/experimental/models/organization.dart';
 
 class FirebaseOrganizationRepository {
@@ -10,6 +12,8 @@ class FirebaseOrganizationRepository {
   FirebaseOrganizationRepository._internal();
 
   static final FirebaseOrganizationRepository _singleton = FirebaseOrganizationRepository._internal();
+
+  final FirebaseProjectRepository _firebaseProjectRepository = FirebaseProjectRepository();
 
   final CollectionReference<Map<String, dynamic>> firestoreInstance = FirebaseFirestore.instance.collection('organizations');
 
@@ -104,6 +108,11 @@ class FirebaseOrganizationRepository {
 
   Future<void> deleteOrganization(String organizationId) async {
     await firestoreInstance.doc(organizationId).delete();
+    final List<Project> projects = await _firebaseProjectRepository.getProjectsOrganization(20, organizationId);
+    for (int i = 0; i < projects.length; i++) {
+      final Project project = projects[i];
+      _firebaseProjectRepository.deleteProject(project);
+    }
   }
 
 

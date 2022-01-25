@@ -13,9 +13,10 @@ class ViewOrganizationPage extends StatelessWidget {
 
   static Route<void> route(String organizationId) {
     return MaterialPageRoute<void>(
-      builder: (_) => ViewOrganizationPage(
-        organizationId: organizationId,
-      ),
+      builder: (_) =>
+          ViewOrganizationPage(
+            organizationId: organizationId,
+          ),
     );
   }
 
@@ -28,28 +29,38 @@ class ViewOrganizationPage extends StatelessWidget {
       bottomNavigationBar: const CustomNavBar(),
       appBar: const SimpleAppBar(title: 'Organization'),
       body: BlocProvider<ViewOrganizationBloc>(
-        create: (_) => ViewOrganizationBloc(
+        create: (_) =>
+        ViewOrganizationBloc(
           uid: uid,
           organizationId: organizationId,
-        )..add(LoadData()),
-        child: BlocBuilder<ViewOrganizationBloc, ViewOrganizationState>(
-          builder: (BuildContext context, ViewOrganizationState state) {
-            if (!state.isLoaded) {
-              return const Align(
-                alignment: Alignment.center,
-                child: CircularProgressIndicator(
-                  color: AppColors.primaryColor,
-                ),
-              );
-            } else {
-              return ViewOrganizationDetails(
-                organization: state.organization,
-                isOwned: state.isOwned,
-                isMember: state.isMember,
-                isPublic: state.organization.type == 'Public',
-              );
+        )
+          ..add(LoadData()),
+        child: BlocListener<ViewOrganizationBloc, ViewOrganizationState>(
+          listener: (BuildContext context, ViewOrganizationState state) {
+            if(state.isDeleted) {
+              Navigator.of(context).pop();
             }
           },
+          child: BlocBuilder<ViewOrganizationBloc, ViewOrganizationState>(
+            builder: (BuildContext context, ViewOrganizationState state) {
+              if (!state.isLoaded) {
+                return const Align(
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator(
+                    color: AppColors.primaryColor,
+                  ),
+                );
+              } else {
+                return ViewOrganizationDetails(
+                  organization: state.organization,
+                  isOwned: state.isOwned,
+                  isMember: state.isMember,
+                  isPublic: state.organization.type == 'Public',
+                  projects: state.projects,
+                );
+              }
+            },
+          ),
         ),
       ),
     );

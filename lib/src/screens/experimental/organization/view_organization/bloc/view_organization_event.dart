@@ -10,3 +10,5 @@ class LoadData extends ViewOrganizationEvent {}
 
 class JoinOrganization extends ViewOrganizationEvent {}
 class LeaveOrganization extends ViewOrganizationEvent {}
+
+class DeleteOrganization extends ViewOrganizationEvent {}

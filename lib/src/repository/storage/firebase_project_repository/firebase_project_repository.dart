@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:union_app/src/models/models.dart';
+import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_open_role_applications_repository.dart';
+import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_open_role_repository.dart';
 
 class FirebaseProjectRepository {
   final DocumentReference<Map<String, dynamic>> firestoreProjectsDocument =
@@ -7,6 +9,8 @@ class FirebaseProjectRepository {
 
   final CollectionReference<Map<String, dynamic>> firestoreProjectsCollection =
       FirebaseFirestore.instance.collection('projects');
+
+  final FirebaseProjectOpenRoleRepository _firebaseProjectOpenRoleRepository = FirebaseProjectOpenRoleRepository();
 
   final CollectionReference<Map<String, dynamic>> firestoreUserInstance = FirebaseFirestore.instance.collection('users');
 
@@ -28,6 +32,10 @@ class FirebaseProjectRepository {
       firestoreUserInstance.doc(project.ownerId).update({
         'projects_ids': FieldValue.arrayRemove([project.id])
       });
+      for(final dynamic openRoleId in project.openRoles ?? <dynamic>[]) {
+        final String id = openRoleId as String;
+        _firebaseProjectOpenRoleRepository.deleteOpenRole(ProjectOpenRole(id: id));
+      }
       // add delete open roles.
     } catch (e) {
       print('deleteProject $e');
@@ -99,14 +107,13 @@ class FirebaseProjectRepository {
 
   Future<List<Project>> getProjects(int limit) async {
     try {
-      final List<Project> projects = (await firestoreProjectsCollection.orderBy('timestamp', descending: true)
-          .limit(limit)
-          .get())
-          .docs
-          .map((QueryDocumentSnapshot<Map<String, dynamic>> e) => Project.fromJson(e.data()))
-          .toList();
+      final List<Project> projects =
+          (await firestoreProjectsCollection.orderBy('timestamp', descending: true).limit(limit).get())
+              .docs
+              .map((QueryDocumentSnapshot<Map<String, dynamic>> e) => Project.fromJson(e.data()))
+              .toList();
       return projects;
-    }catch(e) {
+    } catch (e) {
       print('getProjects $e');
     }
     return <Project>[];
@@ -114,15 +121,13 @@ class FirebaseProjectRepository {
 
   Future<List<Project>> getProjectsOrganization(int limit, String organizationId) async {
     try {
-      final List<Project> projects = (await firestoreProjectsCollection.orderBy('timestamp', descending: true)
-          .limit(limit)
-          .where('organization_id', isEqualTo: organizationId)
-          .get())
-          .docs
-          .map((QueryDocumentSnapshot<Map<String, dynamic>> e) => Project.fromJson(e.data()))
-          .toList();
+      final List<Project> projects =
+          (await firestoreProjectsCollection.where('organization_id', isEqualTo: organizationId).get())
+              .docs
+              .map((QueryDocumentSnapshot<Map<String, dynamic>> e) => Project.fromJson(e.data()))
+              .toList();
       return projects;
-    }catch(e) {
+    } catch (e) {
       print('getProjects $e');
     }
     return <Project>[];
@@ -136,5 +141,4 @@ class FirebaseProjectRepository {
         .toList();
     return projects;
   }
-
 }

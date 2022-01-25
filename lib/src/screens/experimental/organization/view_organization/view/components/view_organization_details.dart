@@ -19,12 +19,14 @@ class ViewOrganizationDetails extends StatelessWidget {
     required this.isOwned,
     required this.isMember,
     required this.isPublic,
+    this.projects = const <Project>[],
   }) : super(key: key);
 
   final Organization organization;
   final bool isOwned;
   final bool isMember;
   final bool isPublic;
+  final List<Project> projects;
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +145,7 @@ class ViewOrganizationDetails extends StatelessWidget {
                             ),
                             onPressed: () {
                               Navigator.of(context)
-                                  .push(CreateProjectPage.route())
+                                  .push(CreateProjectPage.route(organizationId: organization.id))
                                   .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
                             },
                             style: ElevatedButton.styleFrom(
@@ -179,6 +181,26 @@ class ViewOrganizationDetails extends StatelessWidget {
                         ],
                       ),
                     ),
+                  if(isOwned) ElevatedButton.icon(
+                    icon: const Icon(
+                      Icons.delete,
+                      color: AppColors.primaryColor,
+                      size: 20.0,
+                    ),
+                    label: const Text(
+                      'Delete project',
+                      style: AppStyles.textStyleBodySmallW08,
+                    ),
+                    onPressed: () {
+                      context.read<ViewOrganizationBloc>().add(DeleteOrganization());
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: AppColors.backgroundLight1,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -196,10 +218,10 @@ class ViewOrganizationDetails extends StatelessWidget {
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: 5,
+                      itemCount: projects.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return const ProjectItemWidget(
-                          project: Project(title: 'Test Proj', shortDescription: 'test short'),
+                        return ProjectItemWidget(
+                          project: projects[index],
                         );
                       },
                     ),
