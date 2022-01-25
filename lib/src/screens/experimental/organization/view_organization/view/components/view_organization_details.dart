@@ -59,43 +59,45 @@ class ViewOrganizationDetails extends StatelessWidget {
                 ),
               ],
             ),
-          const SizedBox(
-            height: 10,
-          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
                       organization.name,
-                      style: AppStyles.textStyleBodyPrimary,
+                      style: AppStyles.textStyleHeading2,
                     ),
                     if (isOwned)
-                      Icon(
-                        Icons.blender,
+                      const Icon(
+                        Icons.person,
                         color: AppColors.primaryColor,
                       ),
                   ],
                 ),
-                Text(
-                  organization.category,
-                  style: AppStyles.textStyleBodySmall,
-                ),
-                Text(
-                  organization.type,
-                  style: AppStyles.textStyleBodySmall,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(OrganizationMembersPage.route(organization.id));
-                  },
-                  child: Text(
-                    'Members: ${organization.members.length}',
-                    style: AppStyles.textStyleBodySmall,
-                  ),
+                Row(
+                  children: <Widget>[
+                    Text(
+                      organization.category,
+                      style: AppStyles.textStyleBodySmall,
+                    ),
+                    const Text(' • ', style: AppStyles.textStyleBodySmall),
+                    Text(
+                      organization.type,
+                      style: AppStyles.textStyleBodySmall,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(OrganizationMembersPage.route(organization.id));
+                      },
+                      child: Text(
+                        'Members: ${organization.members.length}',
+                        style: AppStyles.textStyleBodySmall,
+                      ),
+                    ),
+                  ],
                 ),
                 if (isMember || isPublic)
                   ViewOrganizationMemberArea(
@@ -107,17 +109,17 @@ class ViewOrganizationDetails extends StatelessWidget {
                     children: <Widget>[
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(AddMemberOrganization.route(organization.id)).then( (dynamic response) =>
-                              context.read<ViewOrganizationBloc>().add(LoadData())
-                          );
+                          Navigator.of(context)
+                              .push(AddMemberOrganization.route(organization.id))
+                              .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
                         },
                         child: const Text('Add member'),
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(CreateProjectPage.route()).then( (dynamic response) =>
-                              context.read<ViewOrganizationBloc>().add(LoadData())
-                          );
+                          Navigator.of(context)
+                              .push(CreateProjectPage.route())
+                              .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
                         },
                         child: const Text('Create project'),
                       ),

@@ -8,10 +8,11 @@ import 'package:union_app/src/screens/profile/profile.dart';
 import '../../../../../../theme.dart';
 
 class OrganizationMembersListElement extends StatelessWidget {
-  const OrganizationMembersListElement({Key? key, required this.user, required this.loggedUid}) : super(key: key);
+  const OrganizationMembersListElement({Key? key, required this.user, required this.loggedUid, required this.isOwner}) : super(key: key);
 
   final FullUser user;
   final String loggedUid;
+  final bool isOwner;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +57,7 @@ class OrganizationMembersListElement extends StatelessWidget {
                   ),
                 ],
               ),
-              if (loggedUid != user.id)
+              if (isOwner)
                 Align(
                   alignment: Alignment.centerRight,
                   child: GestureDetector(

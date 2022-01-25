@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/app/app.dart';
-import 'package:union_app/src/screens/experimental/organization/joined_organizations/view/widgets/organizations_list_view.dart';
 import 'package:union_app/src/screens/experimental/organization/view_organization/bloc/view_organization_bloc.dart';
 import 'package:union_app/src/screens/experimental/organization/view_organization/view/components/view_organization_details.dart';
 import 'package:union_app/src/screens/widgets/app_bottom_nav_bar/app_bottom_nav_bar.dart';
@@ -13,9 +12,10 @@ class ViewOrganizationPage extends StatelessWidget {
 
   static Route<void> route(String organizationId) {
     return MaterialPageRoute<void>(
-        builder: (_) => ViewOrganizationPage(
-              organizationId: organizationId,
-            ));
+      builder: (_) => ViewOrganizationPage(
+        organizationId: organizationId,
+      ),
+    );
   }
 
   final String organizationId;
@@ -28,7 +28,7 @@ class ViewOrganizationPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
-        title: const Text('View Organization', style: AppStyles.textStyleBodyBig),
+        title: const Text('Organization', style: AppStyles.textStyleBodyBig),
       ),
       body: BlocProvider<ViewOrganizationBloc>(
         create: (_) => ViewOrganizationBloc(

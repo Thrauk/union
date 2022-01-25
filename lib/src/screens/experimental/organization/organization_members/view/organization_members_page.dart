@@ -48,6 +48,7 @@ class OrganizationMembersPage extends StatelessWidget {
             } else {
               return OrganizationsMembersListView(
                 memberList: state.members,
+                isOwner: state.isOwned,
               );
             }
           },
