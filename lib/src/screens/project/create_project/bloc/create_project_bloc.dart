@@ -20,6 +20,7 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
     on<AddTagButtonPressed>(_addTagPressed);
     on<RemoveTagButtonPressed>(_removeTagPressed);
     on<CreateButtonPressed>(_createButtonPressed);
+    on<CreateButtonPressedOrganization>(_createButtonPressedOrganization);
   }
 
   final FirebaseProjectRepository _projectRepository;
@@ -72,6 +73,29 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
           details: state.details.value,
           tags: tags,
           ownerId: event.ownerId,
+          timestamp: DateTime.now().microsecondsSinceEpoch,
+        );
+        _projectRepository.createProject(project);
+        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+        print(state.status);
+      } catch (_) {
+        print(_);
+        emit(state.copyWith(status: FormzStatus.submissionFailure));
+      }
+    }
+  }
+
+  void _createButtonPressedOrganization(CreateButtonPressedOrganization event, Emitter<CreateProjectState> emit) {
+    if (state.status.isValid) {
+      final List<String> tags = state.tagItems.map((TagName e) => e.value).toList();
+      try {
+        final Project project = Project(
+          title: state.title.value,
+          shortDescription: state.shortDescription.value,
+          details: state.details.value,
+          tags: tags,
+          ownerId: event.ownerId,
+          organizationId: event.organizationId,
           timestamp: DateTime.now().microsecondsSinceEpoch,
         );
         _projectRepository.createProject(project);

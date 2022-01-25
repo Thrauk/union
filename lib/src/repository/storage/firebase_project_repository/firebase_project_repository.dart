@@ -28,6 +28,7 @@ class FirebaseProjectRepository {
       firestoreUserInstance.doc(project.ownerId).update({
         'projects_ids': FieldValue.arrayRemove([project.id])
       });
+      // add delete open roles.
     } catch (e) {
       print('deleteProject $e');
     }
@@ -100,6 +101,22 @@ class FirebaseProjectRepository {
     try {
       final List<Project> projects = (await firestoreProjectsCollection.orderBy('timestamp', descending: true)
           .limit(limit)
+          .get())
+          .docs
+          .map((QueryDocumentSnapshot<Map<String, dynamic>> e) => Project.fromJson(e.data()))
+          .toList();
+      return projects;
+    }catch(e) {
+      print('getProjects $e');
+    }
+    return <Project>[];
+  }
+
+  Future<List<Project>> getProjectsOrganization(int limit, String organizationId) async {
+    try {
+      final List<Project> projects = (await firestoreProjectsCollection.orderBy('timestamp', descending: true)
+          .limit(limit)
+          .where('organization_id', isEqualTo: organizationId)
           .get())
           .docs
           .map((QueryDocumentSnapshot<Map<String, dynamic>> e) => Project.fromJson(e.data()))

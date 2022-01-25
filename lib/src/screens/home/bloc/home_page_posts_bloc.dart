@@ -33,6 +33,7 @@ class HomePagePostsBloc extends Bloc<HomePagePostsEvent, HomePagePostsState> {
   Future<FutureOr<void>> _getProjects(GetProjects event, Emitter<HomePagePostsState> emit) async {
     try {
       final List<Project> projects = await _projectRepository.getProjects(20);
+      projects.removeWhere((Project project) => project.organizationId != '');
       emit(state.copyWith(postType: PostType.PROJECT, posts: projects));
     } catch (e) {
       print('_getProjects $e');

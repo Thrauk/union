@@ -6,11 +6,13 @@ import 'package:union_app/src/screens/project/create_project/create_project.dart
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
 
 class CreateProjectPage extends StatelessWidget {
-  const CreateProjectPage({Key? key}) : super(key: key);
+  const CreateProjectPage({Key? key, this.organizationId = ''}) : super(key: key);
 
-  static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const CreateProjectPage());
+  static Route<void> route({String? organizationId}) {
+    return MaterialPageRoute<void>(builder: (_) => CreateProjectPage(organizationId: organizationId ?? '',));
   }
+
+  final String organizationId;
 
   @override
   Widget build(BuildContext context) {

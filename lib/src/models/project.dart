@@ -9,7 +9,8 @@ class Project extends Equatable {
       this.timestamp = 0,
       this.tags = const <String>[],
       this.openRoles = const <dynamic>[],
-      this.id = ''});
+      this.id = '',
+      this.organizationId = ''});
 
   Project.fromJson(Map<String, dynamic> json)
       : ownerId = json['owner_id'] as String,
@@ -19,7 +20,8 @@ class Project extends Equatable {
         tags = json['tags'] as List<dynamic>,
         openRoles = json['open_roles'] as List<dynamic>,
         timestamp = json['timestamp'] as int,
-        title = json['title'] as String;
+        title = json['title'] as String,
+        organizationId = (json['organization_id'] ?? '') as String;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
@@ -29,7 +31,8 @@ class Project extends Equatable {
         'short_description': shortDescription,
         'tags': tags,
         'open_roles': openRoles,
-        'timestamp': timestamp
+        'timestamp': timestamp,
+        'organization_id': organizationId,
       };
 
   final String? title;
@@ -38,6 +41,7 @@ class Project extends Equatable {
   final String shortDescription;
   final String details;
   final int timestamp;
+  final String organizationId;
   final List<dynamic>? tags;
   final List<dynamic>? openRoles;
 
@@ -45,15 +49,17 @@ class Project extends Equatable {
 
   bool get isEmpty => this == Project.empty;
 
-  Project copyWith(
-      {String? id,
-      String? ownerId,
-      String? title,
-      String? shortDescription,
-      String? details,
-      int? timestamp,
-      List<dynamic>? openRoles,
-      List<dynamic>? tags}) {
+  Project copyWith({
+    String? id,
+    String? ownerId,
+    String? title,
+    String? shortDescription,
+    String? details,
+    int? timestamp,
+    List<dynamic>? openRoles,
+    List<dynamic>? tags,
+    String? organizationId,
+  }) {
     return Project(
       id: id ?? this.id,
       ownerId: ownerId ?? this.ownerId,
@@ -63,6 +69,7 @@ class Project extends Equatable {
       timestamp: timestamp ?? this.timestamp,
       openRoles: openRoles ?? this.openRoles,
       tags: tags ?? this.tags,
+      organizationId: organizationId ?? this.organizationId,
     );
   }
 
@@ -75,5 +82,6 @@ class Project extends Equatable {
         ownerId,
         id,
         openRoles,
+        organizationId,
       ];
 }

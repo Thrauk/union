@@ -45,3 +45,12 @@ class CreateButtonPressed extends CreateProjectEvent {
   final String ownerId;
   final String ownerDisplayName;
 }
+
+class CreateButtonPressedOrganization extends CreateProjectEvent {
+  CreateButtonPressedOrganization(this.ownerId, this.ownerDisplayName, this.organizationId,);
+
+  final String ownerId;
+  final String ownerDisplayName;
+  final String organizationId;
+}
+

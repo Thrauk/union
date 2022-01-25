@@ -10,7 +10,9 @@ import 'package:union_app/src/screens/project/create_project/bloc/bloc.dart';
 import 'package:union_app/src/theme.dart';
 
 class CreateButtonWidget extends StatelessWidget {
-  const CreateButtonWidget({Key? key}) : super(key: key);
+  const CreateButtonWidget({Key? key, this.organizationId = ''}) : super(key: key);
+
+  final String organizationId;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,11 @@ class CreateButtonWidget extends StatelessWidget {
       builder: (BuildContext context, CreateProjectState state) {
         return ElevatedButton(
           onPressed: () {
-            context.read<CreateProjectBloc>().add(CreateButtonPressed(user.id, user.displayName ?? ''));
+            if(organizationId != '') {
+              context.read<CreateProjectBloc>().add(CreateButtonPressedOrganization(user.id, user.displayName ?? '', organizationId));
+            } else {
+              context.read<CreateProjectBloc>().add(CreateButtonPressed(user.id, user.displayName ?? ''));
+            }
           },
           style: ElevatedButton.styleFrom(
             primary: AppColors.primaryColor,
