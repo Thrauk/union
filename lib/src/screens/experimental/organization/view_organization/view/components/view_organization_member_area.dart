@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
+import 'package:union_app/src/screens/experimental/organization/manage_organization/add_member/view/add_member_organization.dart';
 import 'package:union_app/src/screens/experimental/organization/view_organization/bloc/view_organization_bloc.dart';
 
 import '../../../../../../theme.dart';
@@ -32,8 +33,10 @@ class ViewOrganizationMemberArea extends StatelessWidget {
               isMember ? 'Leave' : 'Join',
               style: AppStyles.textStyleBodyPrimary,
             ),
-          ),
+          )
       ],
     );
   }
 }
+
+

@@ -73,15 +73,7 @@ class FirebaseOrganizationRepository {
     }
   }
 
-  Future<List<Organization>> getAllOrganizations() async {
-    final List<Organization> users = (await firestoreInstance.get())
-        .docs
-        .map((QueryDocumentSnapshot<Map<String, dynamic>> userJson) => Organization.fromJson(userJson.data()))
-        .toList();
-    return users;
-  }
-
-  Future<bool> joinOrganization(String organizationId, String memberUid) async {
+  Future<bool> addMemberByUid(String organizationId, String memberUid) async {
     try {
       await firestoreInstance.doc(organizationId).update(
         {
@@ -94,7 +86,25 @@ class FirebaseOrganizationRepository {
     }
   }
 
+  Future<List<Organization>> getAllOrganizations() async {
+    final List<Organization> users = (await firestoreInstance.get())
+        .docs
+        .map((QueryDocumentSnapshot<Map<String, dynamic>> userJson) => Organization.fromJson(userJson.data()))
+        .toList();
+    return users;
+  }
+
+  Future<bool> joinOrganization(String organizationId, String memberUid) async {
+    return addMemberByUid(organizationId, memberUid);
+  }
+
   Future<bool> leaveOrganization(String organizationId, String memberUid) async {
     return removeMemberByUid(organizationId, memberUid);
   }
+
+  Future<void> deleteOrganization(String organizationId) async {
+    await firestoreInstance.doc(organizationId).delete();
+  }
+
+
 }

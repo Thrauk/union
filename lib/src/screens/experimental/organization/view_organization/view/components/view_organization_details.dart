@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 import 'package:union_app/src/screens/experimental/models/organization.dart';
+import 'package:union_app/src/screens/experimental/organization/manage_organization/add_member/view/add_member_organization.dart';
 import 'package:union_app/src/screens/experimental/organization/organization_members/view/organization_members_page.dart';
+import 'package:union_app/src/screens/experimental/organization/view_organization/bloc/view_organization_bloc.dart';
 import 'package:union_app/src/screens/experimental/organization/view_organization/view/components/view_organization_member_area.dart';
 
 import '../../../../../../theme.dart';
@@ -97,6 +100,15 @@ class ViewOrganizationDetails extends StatelessWidget {
                   ViewOrganizationMemberArea(
                     isMember: isMember,
                     isOwner: isOwned,
+                  ),
+                if (isOwned)
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(AddMemberOrganization.route(organization.id)).then( (dynamic response) =>
+                          context.read<ViewOrganizationBloc>().add(LoadData())
+                      );
+                    },
+                    child: const Text('Add member'),
                   ),
               ],
             ),
