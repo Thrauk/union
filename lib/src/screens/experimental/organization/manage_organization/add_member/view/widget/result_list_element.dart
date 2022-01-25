@@ -28,11 +28,16 @@ class ResultListElement extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Avatar(
-                photo: user.photo,
-                avatarSize: 24,
-              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Avatar(
+                    photo: user.photo,
+                    avatarSize: 24,
+                  ),
               const SizedBox(
                 width: 8,
               ),
@@ -50,6 +55,8 @@ class ResultListElement extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+                ],
               ),
               if (!isMember)
                 Align(
