@@ -33,24 +33,21 @@ class AddMemberOrganization extends StatelessWidget {
           organizationId: organizationId,
           uid: uid,
         )..add(LoadOrganization(organizationId: organizationId)),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: BlocBuilder<AddMemberOrganizationBloc, AddMemberOrganizationState>(
-            builder: (BuildContext context, AddMemberOrganizationState state) {
-              if (!state.isOrganizationLoaded) {
-                return const Align(
-                  alignment: Alignment.center,
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return Column(
-                children: <Widget>[
-                  const SearchBarWidget(),
-                  if (state.isLoaded) ResultListView(memberList: state.userList,) else const CircularProgressIndicator(),
-                ],
+        child: BlocBuilder<AddMemberOrganizationBloc, AddMemberOrganizationState>(
+          builder: (BuildContext context, AddMemberOrganizationState state) {
+            if (!state.isOrganizationLoaded) {
+              return const Align(
+                alignment: Alignment.center,
+                child: CircularProgressIndicator(),
               );
-            },
-          ),
+            }
+            return Column(
+              children: <Widget>[
+                const SearchBarWidget(),
+                if (state.isLoaded) ResultListView(memberList: state.userList,) else const CircularProgressIndicator(),
+              ],
+            );
+          },
         ),
       ),
     );

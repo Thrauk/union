@@ -57,7 +57,7 @@ class OrganizationMembersListElement extends StatelessWidget {
                   ),
                 ],
               ),
-              if (isOwner)
+              if (isOwner && loggedUid != user.id)
                 Align(
                   alignment: Alignment.centerRight,
                   child: GestureDetector(

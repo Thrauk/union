@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/experimental/organization/view_organization/bloc/view_organization_bloc.dart';
 import 'package:union_app/src/screens/experimental/organization/view_organization/view/components/view_organization_details.dart';
+import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
 import 'package:union_app/src/screens/widgets/app_bottom_nav_bar/app_bottom_nav_bar.dart';
 
 import '../../../../../theme.dart';
@@ -25,11 +26,7 @@ class ViewOrganizationPage extends StatelessWidget {
     final String uid = context.select((AppBloc bloc) => bloc.state.user.id);
     return Scaffold(
       bottomNavigationBar: const CustomNavBar(),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        title: const Text('Organization', style: AppStyles.textStyleBodyBig),
-      ),
+      appBar: const SimpleAppBar(title: 'Organization'),
       body: BlocProvider<ViewOrganizationBloc>(
         create: (_) => ViewOrganizationBloc(
           uid: uid,

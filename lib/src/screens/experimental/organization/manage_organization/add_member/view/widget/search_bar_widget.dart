@@ -9,34 +9,37 @@ class SearchBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        GestureDetector(
-            onTap: () {
-              final FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
-              }
-              context.read<AddMemberOrganizationBloc>().add(SearchPressed());
-            },
-            child: const Icon(Icons.search, color: Colors.white)),
-        const SizedBox(width: 6),
-        Expanded(
-          child: TextField(
-            onChanged: (String value) => context.read<AddMemberOrganizationBloc>().add(SearchValueChanged(value: value)),
-            style: AppStyles.textStyleBody,
-            cursorColor: AppColors.white07,
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              hintText: 'Search something...',
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          GestureDetector(
+              onTap: () {
+                final FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus) {
+                  currentFocus.unfocus();
+                }
+                context.read<AddMemberOrganizationBloc>().add(SearchPressed());
+              },
+              child: const Icon(Icons.search, color: Colors.white)),
+          const SizedBox(width: 6),
+          Expanded(
+            child: TextField(
+              onChanged: (String value) => context.read<AddMemberOrganizationBloc>().add(SearchValueChanged(value: value)),
+              style: AppStyles.textStyleBody,
+              cursorColor: AppColors.white07,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                hintText: 'Search something...',
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
