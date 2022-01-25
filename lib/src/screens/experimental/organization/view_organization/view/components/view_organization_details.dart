@@ -6,6 +6,7 @@ import 'package:union_app/src/screens/experimental/organization/manage_organizat
 import 'package:union_app/src/screens/experimental/organization/organization_members/view/organization_members_page.dart';
 import 'package:union_app/src/screens/experimental/organization/view_organization/bloc/view_organization_bloc.dart';
 import 'package:union_app/src/screens/experimental/organization/view_organization/view/components/view_organization_member_area.dart';
+import 'package:union_app/src/screens/project/create_project/create_project.dart';
 
 import '../../../../../../theme.dart';
 
@@ -102,13 +103,25 @@ class ViewOrganizationDetails extends StatelessWidget {
                     isOwner: isOwned,
                   ),
                 if (isOwned)
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(AddMemberOrganization.route(organization.id)).then( (dynamic response) =>
-                          context.read<ViewOrganizationBloc>().add(LoadData())
-                      );
-                    },
-                    child: const Text('Add member'),
+                  Column(
+                    children: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(AddMemberOrganization.route(organization.id)).then( (dynamic response) =>
+                              context.read<ViewOrganizationBloc>().add(LoadData())
+                          );
+                        },
+                        child: const Text('Add member'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(CreateProjectPage.route()).then( (dynamic response) =>
+                              context.read<ViewOrganizationBloc>().add(LoadData())
+                          );
+                        },
+                        child: const Text('Create project'),
+                      ),
+                    ],
                   ),
               ],
             ),
