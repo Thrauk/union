@@ -30,7 +30,7 @@ class FirebaseOrganizationRepository {
       await uploadTask.then((TaskSnapshot taskSnapshot) async {
         url = await taskSnapshot.ref.getDownloadURL();
       });
-      retOrganization = organization.copyWith(photoUrl: url);
+      retOrganization = retOrganization.copyWith(photoUrl: url);
     }
     await firestoreInstance.doc(documentReference.id).set(retOrganization.toJson());
   }

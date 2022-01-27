@@ -38,7 +38,7 @@ class MultiSearchPage extends StatelessWidget {
             children: <Widget>[
               _SearchBarWidget(),
               _SearchTypeChips(),
-              _ResultListView(),
+              Flexible(child: _ResultListView()),
             ],
           ),
         ),

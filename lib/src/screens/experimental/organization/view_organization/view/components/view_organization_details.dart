@@ -116,8 +116,9 @@ class ViewOrganizationDetails extends StatelessWidget {
                           Navigator.of(context).push(OrganizationMembersPage.route(organization.id));
                         },
                         child: Text(
-                          organization.members.length > 1 ?
-                          '${organization.members.length} members' : '${organization.members.length} member',
+                          organization.members.length > 1
+                              ? '${organization.members.length} members'
+                              : '${organization.members.length} member',
                           style: AppStyles.textStyleBodySmallW08,
                         ),
                       ),
@@ -180,27 +181,58 @@ class ViewOrganizationDetails extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
-                  if(isOwned) ElevatedButton.icon(
-                    icon: const Icon(
-                      Icons.delete,
-                      color: AppColors.primaryColor,
-                      size: 20.0,
-                    ),
-                    label: const Text(
-                      'Delete project',
-                      style: AppStyles.textStyleBodySmallW08,
-                    ),
-                    onPressed: () {
-                      context.read<ViewOrganizationBloc>().add(DeleteOrganization());
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: AppColors.backgroundLight1,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                    )
+                  else if(isMember)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: Row(
+                        children: <Widget>[
+                          ElevatedButton.icon(
+                            icon: const Icon(
+                              Icons.analytics,
+                              color: AppColors.primaryColor,
+                              size: 20.0,
+                            ),
+                            label: const Text(
+                              'Create project',
+                              style: AppStyles.textStyleBodySmallW08,
+                            ),
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .push(CreateProjectPage.route(organizationId: organization.id))
+                                  .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: AppColors.backgroundLight1,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
+                  if (isOwned)
+                    ElevatedButton.icon(
+                      icon: const Icon(
+                        Icons.delete,
+                        color: AppColors.primaryColor,
+                        size: 20.0,
+                      ),
+                      label: const Text(
+                        'Delete organization',
+                        style: AppStyles.textStyleBodySmallW08,
+                      ),
+                      onPressed: () {
+                        context.read<ViewOrganizationBloc>().add(DeleteOrganization());
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: AppColors.backgroundLight1,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -236,8 +268,7 @@ class ViewOrganizationDetails extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: const <Widget>[
-                      Icon(Icons.lock,
-                      color: AppColors.primaryColor),
+                      Icon(Icons.lock, color: AppColors.primaryColor),
                       SizedBox(height: 8),
                       Text('The posts of this organizations are private', style: AppStyles.textStyleBody),
                     ],

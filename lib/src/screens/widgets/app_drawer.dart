@@ -7,9 +7,11 @@ import 'package:union_app/src/screens/app/bloc/app_bloc.dart';
 import 'package:union_app/src/screens/article/user_articles/view/user_articles_page.dart';
 import 'package:union_app/src/screens/experimental/organization/joined_organizations/view/joined_organizations_page.dart';
 import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/screens/messaging/conversations/view/conversations_page.dart';
 import 'package:union_app/src/screens/open_roles/view_user_applications/view/user_applications_page.dart';
 import 'package:union_app/src/screens/profile/profile.dart';
 import 'package:union_app/src/screens/project/user_projects/user_projects.dart';
+import 'package:union_app/src/screens/search_results/multi_search/view/multi_search_page.dart';
 import 'package:union_app/src/theme.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -51,6 +53,19 @@ class AppDrawer extends StatelessWidget {
           }),
           ListTile(
             onTap: () {
+              Navigator.push(context, ConversationsPage.route());
+            },
+            leading: const Icon(
+              Icons.message,
+              color: Colors.white70,
+            ),
+            title: const Text(
+              'Messages',
+              style: AppStyles.textStyleBody,
+            ),
+          ),
+          ListTile(
+            onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -87,6 +102,19 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
+              Navigator.push(context, UserApplicationsPage.route(context.read<AppBloc>().state.user.id));
+            },
+            leading: const Icon(
+              Icons.analytics_outlined,
+              color: Colors.white70,
+            ),
+            title: const Text(
+              'My applications',
+              style: AppStyles.textStyleBody,
+            ),
+          ),
+          ListTile(
+            onTap: () {
               Navigator.push(context, JoinedOrganizationsPage.route());
             },
             leading: const Icon(
@@ -100,14 +128,14 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              Navigator.push(context, UserApplicationsPage.route(context.read<AppBloc>().state.user.id));
+              Navigator.push(context, MultiSearchPage.route());
             },
             leading: const Icon(
-              Icons.analytics_outlined,
+              Icons.search,
               color: Colors.white70,
             ),
             title: const Text(
-              'My applications',
+              'Search',
               style: AppStyles.textStyleBody,
             ),
           ),

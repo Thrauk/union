@@ -44,7 +44,7 @@ class AddMemberOrganization extends StatelessWidget {
             return Column(
               children: <Widget>[
                 const SearchBarWidget(),
-                if (state.isLoaded) ResultListView(memberList: state.userList,) else const CircularProgressIndicator(),
+                if (state.isLoaded) Flexible(child: ResultListView(memberList: state.userList,)) else const CircularProgressIndicator(),
               ],
             );
           },
