@@ -3,9 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/models/project_open_role_application.dart';
-import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_open_role_repository.dart';
-import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 
 part 'open_role_details_event.dart';
 

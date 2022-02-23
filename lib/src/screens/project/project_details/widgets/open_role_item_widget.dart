@@ -5,7 +5,7 @@ import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/screens/open_roles/open_role_details/view/open_role_details_page.dart';
 import 'package:union_app/src/screens/project/project_details/bloc/project_details_bloc.dart';
 import 'package:union_app/src/theme.dart';
-import 'package:union_app/src/util/date_format_utils.dart';
+import 'package:union_app/src/utils/date_format_utils.dart';
 
 class OpenRoleItemWidget extends StatelessWidget {
   const OpenRoleItemWidget(

@@ -1,11 +1,10 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:union_app/src/models/article.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:union_app/src/models/article/article.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
-import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 
 part 'home_page_posts_event.dart';
 

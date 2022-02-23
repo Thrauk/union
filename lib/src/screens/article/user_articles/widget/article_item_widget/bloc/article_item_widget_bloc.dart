@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 
 part 'article_item_widget_event.dart';
 part 'article_item_widget_state.dart';

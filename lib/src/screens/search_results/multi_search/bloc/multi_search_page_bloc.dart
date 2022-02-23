@@ -1,16 +1,13 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
-import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
-import 'package:union_app/src/repository/storage/firebase_user/firebase_user.dart';
-import 'package:union_app/src/screens/experimental/models/organization.dart';
-import 'package:union_app/src/screens/experimental/repository/organization/firebase_organization_repository.dart';
+import 'package:union_app/src/models/organization/organization.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
+import 'package:union_app/src/repository/organization/firebase_organization_repository.dart';
 
 part 'multi_search_page_event.dart';
-
 part 'multi_search_page_state.dart';
 
 class MultiSearchPageBloc extends Bloc<MultiSearchPageEvent, MultiSearchPageState> {

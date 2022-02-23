@@ -4,7 +4,7 @@ import 'package:formz/formz.dart';
 import 'package:union_app/src/models/form_inputs/article_body.dart';
 import 'package:union_app/src/models/form_inputs/tag_name.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 
 part 'create_article_event.dart';
 

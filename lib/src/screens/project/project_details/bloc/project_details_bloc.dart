@@ -1,7 +1,7 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_open_role_repository.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 
 part 'project_details_event.dart';
 

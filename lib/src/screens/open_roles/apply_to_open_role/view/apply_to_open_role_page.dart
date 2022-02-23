@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_open_role_repository.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/open_roles/apply_to_open_role/bloc/apply_to_open_role_bloc.dart';
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';

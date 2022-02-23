@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/article/create_article/view/create_article_page.dart';
 import 'package:union_app/src/screens/article/user_articles/bloc/user_articles_page_bloc.dart';
 import 'package:union_app/src/screens/article/user_articles/widget/article_item_widget/view/article_item_widget.dart';

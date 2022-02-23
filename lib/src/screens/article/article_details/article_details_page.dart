@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/article/edit_article/view/edit_article_page.dart';
 import 'package:union_app/src/screens/home/home.dart';

@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/authentication/auth.dart';
-import 'package:union_app/src/repository/storage/firebase_storage/firebase_storage_repository.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 
 import 'failures/failures.dart';
 

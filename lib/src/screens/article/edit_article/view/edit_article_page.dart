@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/article/edit_article/bloc/edit_article_bloc.dart';
 import 'package:union_app/src/screens/article/edit_article/widgets/buttons/save_button_widget.dart';
 import 'package:union_app/src/screens/article/edit_article/widgets/containers/tags_container.dart';

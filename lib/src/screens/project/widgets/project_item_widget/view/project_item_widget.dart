@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/project/project_details/view/project_details_page.dart';
 import 'package:union_app/src/screens/project/widgets/project_item_widget/bloc/project_item_widget_bloc.dart';
 import 'package:union_app/src/theme.dart';
-import 'package:union_app/src/util/date_format_utils.dart';
+import 'package:union_app/src/utils/date_format_utils.dart';
 
 class ProjectItemWidget extends StatelessWidget {
   const ProjectItemWidget({Key? key, required this.project}) : super(key: key);

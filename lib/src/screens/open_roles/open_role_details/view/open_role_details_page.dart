@@ -2,15 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_open_role_repository.dart';
-import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/messaging/chat/view/chat_page.dart';
 import 'package:union_app/src/screens/open_roles/open_role_details/bloc/open_role_details_bloc.dart';
 import 'package:union_app/src/screens/open_roles/open_role_details/widgets/buttons/apply_button_widget.dart';
 import 'package:union_app/src/screens/open_roles/open_role_details/widgets/buttons/view_applicants_button_widget.dart';
 import 'package:union_app/src/theme.dart';
-import 'package:union_app/src/util/date_format_utils.dart';
+import 'package:union_app/src/utils/date_format_utils.dart';
 
 class OpenRolesDetailsPage extends StatelessWidget {
   const OpenRolesDetailsPage({Key? key, required this.projectOpenRole}) : super(key: key);

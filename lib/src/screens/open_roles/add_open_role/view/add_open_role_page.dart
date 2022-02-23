@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_open_role_repository.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/open_roles/add_open_role/bloc/add_open_role_bloc.dart';
 import 'package:union_app/src/screens/open_roles/add_open_role/widgets/dropdown/experience_level_dropdown_widget.dart';

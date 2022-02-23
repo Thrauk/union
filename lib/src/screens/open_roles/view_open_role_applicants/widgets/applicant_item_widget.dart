@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/models/project_open_role_application_item.dart';
 import 'package:union_app/src/screens/home/widgets/avatar.dart';
 import 'package:union_app/src/screens/messaging/chat/view/chat_page.dart';
 import 'package:union_app/src/screens/open_roles/view_open_role_applicants/bloc/open_role_applicants_bloc.dart';

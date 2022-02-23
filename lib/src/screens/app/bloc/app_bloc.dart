@@ -5,8 +5,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/authentication/auth.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/repository/notification/notification_repository.dart';
-import 'package:union_app/src/repository/storage/firebase_user/firebase_user.dart';
 
 part 'app_event.dart';
 part 'app_state.dart';

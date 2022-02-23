@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
+import 'package:union_app/src/models/organization/organization.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/article/article_details/article_details_page.dart';
-import 'package:union_app/src/screens/experimental/models/organization.dart';
-import 'package:union_app/src/screens/experimental/organization/joined_organizations/view/widgets/organizations_list_view_element.dart';
 import 'package:union_app/src/screens/home/home.dart';
-import 'package:union_app/src/screens/profile/profile.dart';
+import 'package:union_app/src/screens/organization/joined_organizations/view/widgets/organizations_list_view_element.dart';
 import 'package:union_app/src/screens/project/project_details/view/project_details_page.dart';
 import 'package:union_app/src/screens/search_results/multi_search/bloc/multi_search_page_bloc.dart';
+import 'package:union_app/src/screens/user_profile/profile/profile.dart';
 import 'package:union_app/src/screens/widgets/app_bottom_nav_bar/app_bottom_nav_bar.dart';
-import 'package:union_app/src/util/date_format_utils.dart';
+import 'package:union_app/src/utils/date_format_utils.dart';
 
 import '../../../../theme.dart';
 

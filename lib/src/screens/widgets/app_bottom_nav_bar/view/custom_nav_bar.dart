@@ -5,7 +5,7 @@ import 'package:provider/src/provider.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/messaging/conversations/view/conversations_page.dart';
-import 'package:union_app/src/screens/profile/profile.dart';
+import 'package:union_app/src/screens/user_profile/profile/profile.dart';
 import 'package:union_app/src/screens/widgets/app_bottom_nav_bar/widgets/plus_button.dart';
 import 'package:union_app/src/theme.dart';
 

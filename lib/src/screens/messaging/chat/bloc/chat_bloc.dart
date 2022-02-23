@@ -1,17 +1,15 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/chat/chat_message.dart';
 import 'package:union_app/src/models/chat/conversation.dart';
 import 'package:union_app/src/models/models.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/repository/messaging/conversation_repository.dart';
 import 'package:union_app/src/repository/messaging/message_repository.dart';
-import 'package:union_app/src/repository/storage/firebase_user/firebase_user.dart';
 
 part 'chat_event.dart';
-
 part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {

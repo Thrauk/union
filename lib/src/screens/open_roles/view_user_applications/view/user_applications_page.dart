@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_open_role_applications_repository.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/open_roles/view_user_applications/bloc/view_user_applications_bloc.dart';
 import 'package:union_app/src/screens/project/project_details/widgets/open_role_item_widget.dart';

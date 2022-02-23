@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
-import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/article/user_articles/widget/article_item_widget/view/article_item_widget.dart';
 import 'package:union_app/src/screens/home/bloc/home_page_posts_bloc.dart';
 import 'package:union_app/src/screens/home/widgets/choose_posts_type_widget.dart';

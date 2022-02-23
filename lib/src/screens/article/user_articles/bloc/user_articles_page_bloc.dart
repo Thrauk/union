@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:union_app/src/models/article.dart';
-import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
+import 'package:union_app/src/models/article/article.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 
 part 'user_articles_page_event.dart';
 part 'user_articles_page_state.dart';

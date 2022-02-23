@@ -2,10 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:meta/meta.dart';
-import 'package:union_app/src/models/article.dart';
+import 'package:union_app/src/models/article/article.dart';
 import 'package:union_app/src/models/form_inputs/article_body.dart';
 import 'package:union_app/src/models/form_inputs/tag_name.dart';
-import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 
 part 'edit_article_event.dart';
 
