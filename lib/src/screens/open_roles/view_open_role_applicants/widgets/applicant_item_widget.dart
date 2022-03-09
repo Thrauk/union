@@ -10,9 +10,10 @@ import 'package:union_app/src/screens/open_roles/view_open_role_applicants/view/
 import 'package:union_app/src/theme.dart';
 
 class ApplicantItemWidget extends StatelessWidget {
-  const ApplicantItemWidget({Key? key, required this.applicationItem}) : super(key: key);
+  const ApplicantItemWidget({Key? key, required this.applicationItem, required this.openRole}) : super(key: key);
 
   final ProjectOpenRoleApplicationItem applicationItem;
+  final ProjectOpenRole openRole;
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +31,13 @@ class ApplicantItemWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Avatar(photo:applicationItem.user.photo, avatarSize: 28),
+                    Avatar(photo: applicationItem.user.photo, avatarSize: 28),
                     const SizedBox(width: 12),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(applicationItem.user.displayName ?? '', style: AppStyles.textStyleBody,
-                        overflow: TextOverflow.ellipsis),
+                        Text(applicationItem.user.displayName ?? '',
+                            style: AppStyles.textStyleBody, overflow: TextOverflow.ellipsis),
                         const SizedBox(height: 8),
                         if (applicationItem.user.location != null)
                           Row(
@@ -135,31 +136,54 @@ class ApplicantItemWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                if (applicationItem.cvUrl.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: ElevatedButton.icon(
-                      icon: const Icon(
-                        Icons.insert_drive_file_sharp,
-                        color: AppColors.primaryColor,
-                        size: 20.0,
+                Row(
+                  children: [
+                    if (applicationItem.cvUrl.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0, right: 4),
+                        child: ElevatedButton.icon(
+                          icon: const Icon(
+                            Icons.insert_drive_file_sharp,
+                            color: AppColors.primaryColor,
+                            size: 20.0,
+                          ),
+                          label: const Text(
+                            'View resume',
+                            style: AppStyles.textStyleBodySmallW08,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                                context, ApplicantCvPage.route(applicationItem.cvUrl, applicationItem.user.displayName ?? ''));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: AppColors.backgroundLight1,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                        ),
                       ),
-                      label: const Text(
-                        'View resume',
-                        style: AppStyles.textStyleBodySmallW08,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context, ApplicantCvPage.route(applicationItem.cvUrl, applicationItem.user.displayName ?? ''));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: AppColors.backgroundLight1,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          context.read<OpenRoleApplicantsBloc>().add(AcceptApplicationPressed(openRole, applicationItem));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          side: const BorderSide(width: 0.8, color: AppColors.primaryColor),
+                          primary: AppColors.backgroundLight,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                        child: const Text(
+                          'Accept application',
+                          style: AppStyles.textStyleBodySmallW08,
                         ),
                       ),
                     ),
-                  ),
+                  ],
+                ),
               ],
             ),
           ),

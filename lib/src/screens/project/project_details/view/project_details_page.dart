@@ -7,8 +7,11 @@ import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/open_roles/add_open_role/view/add_open_role_page.dart';
 import 'package:union_app/src/screens/project/edit_project/edit_project.dart';
+import 'package:union_app/src/screens/project/members_list/view/members_list_page.dart';
 import 'package:union_app/src/screens/project/project_details/bloc/project_details_bloc.dart';
 import 'package:union_app/src/screens/project/project_details/widgets/open_role_item_widget.dart';
+import 'package:union_app/src/screens/project/widgets/members_widget/members_widget.dart';
+import 'package:union_app/src/screens/widgets/dialogs/two_option_dialog.dart';
 import 'package:union_app/src/theme.dart';
 
 class ProjectDetailsPage extends StatelessWidget {
@@ -19,36 +22,35 @@ class ProjectDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) =>
-          ProjectDetailsBloc(FirebaseProjectOpenRoleRepository())
-            ..add(GetOpenRoles(project.id!)),
+      create: (BuildContext context) => ProjectDetailsBloc(FirebaseProjectOpenRoleRepository(), FirebaseProjectRepository())
+        ..add(GetOpenRoles(project.id!))
+        ..add(GetMembers(project.id ?? '')),
       child: Scaffold(
         appBar: AppBar(
           actions: [
-            if(context.read<AppBloc>().state.user.id == project.ownerId)
-            Theme(
-              data: Theme.of(context).copyWith(
-                cardColor: AppColors.backgroundLight1,
-                iconTheme: const IconThemeData(color: AppColors.white09),
-              ),
-              child: PopupMenuButton<String>(
-                onSelected: (String choice) =>
-                    manageChoices(choice, context, project),
-                itemBuilder: (BuildContext context) {
-                  return Choices.choices.map(
-                    (String choice) {
-                      return PopupMenuItem<String>(
-                        value: choice,
-                        child: Text(
-                          choice,
-                          style: const TextStyle(color: AppColors.white09),
-                        ),
-                      );
-                    },
-                  ).toList();
-                },
-              ),
-            )
+            if (context.read<AppBloc>().state.user.id == project.ownerId)
+              Theme(
+                data: Theme.of(context).copyWith(
+                  cardColor: AppColors.backgroundLight1,
+                  iconTheme: const IconThemeData(color: AppColors.white09),
+                ),
+                child: PopupMenuButton<String>(
+                  onSelected: (String choice) => manageChoices(choice, context, project),
+                  itemBuilder: (BuildContext context) {
+                    return Choices.choices.map(
+                      (String choice) {
+                        return PopupMenuItem<String>(
+                          value: choice,
+                          child: Text(
+                            choice,
+                            style: const TextStyle(color: AppColors.white09),
+                          ),
+                        );
+                      },
+                    ).toList();
+                  },
+                ),
+              )
           ],
           backgroundColor: AppColors.backgroundLight,
           title: Text(project.title ?? ''),
@@ -60,8 +62,7 @@ class ProjectDetailsPage extends StatelessWidget {
 }
 
 class _ProjectDetailsPage extends StatelessWidget {
-  const _ProjectDetailsPage({Key? key, required this.project})
-      : super(key: key);
+  const _ProjectDetailsPage({Key? key, required this.project}) : super(key: key);
 
   final Project project;
 
@@ -69,7 +70,7 @@ class _ProjectDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProjectDetailsBloc, ProjectDetailsState>(
       buildWhen: (ProjectDetailsState previous, ProjectDetailsState current) {
-        return previous.openRoles != current.openRoles;
+        return previous.openRoles != current.openRoles || previous.membersList != current.membersList;
       },
       builder: (BuildContext context, ProjectDetailsState state) {
         return Padding(
@@ -81,8 +82,25 @@ class _ProjectDetailsPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const SizedBox(height: 16),
-                const Text('Short Description',
-                    style: AppStyles.textStyleHeading1),
+                if (state.membersList.isNotEmpty &&
+                    state.membersList.where((FullUser element) => element.id == context.read<AppBloc>().state.user.id) != null)
+                  Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MembersListPage.route(state.membersList, project)).then(
+                            (_) {
+                              if (project.membersUid != null) context.read<ProjectDetailsBloc>().add(GetMembers(project.id!));
+                            },
+                          );
+                        },
+                        child: MembersWidget(
+                          membersList: state.membersList,
+                        ),
+                      ),
+                    ],
+                  ),
+                const Text('Short Description', style: AppStyles.textStyleHeading1),
                 const SizedBox(height: 16),
                 Text(project.shortDescription, style: AppStyles.textStyleBody),
                 const SizedBox(height: 24),
@@ -122,11 +140,6 @@ class _ProjectDetailsPage extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: state.openRoles.length,
                     itemBuilder: (BuildContext context, int index) {
-                      /*return OpenRoleItemWidget(
-                    projectOpenRole: ProjectOpenRole.fromJson(
-                        project.openRoles![index] as Map<String, dynamic>),
-                    showApplyButton: true,
-                  );*/
                       return OpenRoleItemWidget(
                           projectOpenRole: state.openRoles[index],
                           showApplyButton: isNotProjectOwner(project.ownerId, context.read<AppBloc>().state.user.id));
@@ -152,8 +165,7 @@ class TagWidget extends StatelessWidget {
     return Chip(
       label: Text(
         label,
-        style: const TextStyle(
-            color: AppColors.backgroundDark, fontWeight: FontWeight.w600),
+        style: const TextStyle(color: AppColors.backgroundDark, fontWeight: FontWeight.w600),
       ),
       labelPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
       backgroundColor: AppColors.primaryColor,
@@ -164,7 +176,14 @@ class TagWidget extends StatelessWidget {
 void manageChoices(String choice, BuildContext context, Project project) {
   switch (choice) {
     case Choices.delete:
-      showDeleteDialog(context, project);
+      // showDeleteDialog(context, project);
+      TwoOptionsDialog.showTwoOptionsDialog(
+          context: context,
+          optionOneFunction: () {
+            FirebaseProjectRepository().deleteProject(project);
+            Navigator.of(context).pushAndRemoveUntil(HomePage.route(), (Route<dynamic> route) => false);
+          },
+          dialogSubtitle: 'Are you sure you want to delete this project?');
       break;
     case Choices.edit:
       Navigator.push(
@@ -180,8 +199,7 @@ void manageChoices(String choice, BuildContext context, Project project) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) =>
-              AddOpenRolePage(projectId: project.id!),
+          builder: (BuildContext context) => AddOpenRolePage(projectId: project.id!),
         ),
       );
   }
@@ -202,8 +220,7 @@ void showDeleteDialog(BuildContext context, Project project) {
             onPressed: () {
               try {
                 FirebaseProjectRepository().deleteProject(project);
-                Navigator.of(context).pushAndRemoveUntil(
-                    HomePage.route(), (Route<dynamic> route) => false);
+                Navigator.of(context).pushAndRemoveUntil(HomePage.route(), (Route<dynamic> route) => false);
               } catch (e) {
                 print('showDeleteDialog $e');
               }
@@ -211,9 +228,7 @@ void showDeleteDialog(BuildContext context, Project project) {
             child: Text(
               'Yes',
               style: AppStyles.textStyleBody.merge(
-                const TextStyle(
-                    color: AppColors.backgroundLight,
-                    fontWeight: FontWeight.w700),
+                const TextStyle(color: AppColors.backgroundLight, fontWeight: FontWeight.w700),
               ),
             ),
           ),
@@ -230,8 +245,7 @@ void showDeleteDialog(BuildContext context, Project project) {
         ],
         backgroundColor: AppColors.backgroundLight,
         title: const Text('Hold on!', style: AppStyles.textStyleHeading1),
-        content: const Text('Are you sure you want to delete this project?',
-            style: AppStyles.textStyleBody),
+        content: const Text('Are you sure you want to delete this project?', style: AppStyles.textStyleBody),
       ),
     ),
   );

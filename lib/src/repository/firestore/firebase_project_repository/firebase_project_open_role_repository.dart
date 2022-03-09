@@ -138,7 +138,7 @@ class FirebaseProjectOpenRoleRepository {
         final Map<String, dynamic>? userJson = (await firestoreUsersCollection.doc(application.uid).get()).data();
         if (userJson != null) {
           final FullUser user = FullUser.fromJson(userJson);
-          applicationsListItems.add(ProjectOpenRoleApplicationItem(application.notice, user, cvUrl: application.cvUrl));
+          applicationsListItems.add(ProjectOpenRoleApplicationItem(application.notice, user, application.id, cvUrl: application.cvUrl));
         }
       }
       return applicationsListItems;
@@ -226,5 +226,21 @@ class FirebaseProjectOpenRoleRepository {
     final QuerySnapshot<Map<String, dynamic>> applicationsSnapshot =
         await (firestoreProjectsApplicationsCollection.where('open_role_id', isEqualTo: openRole.id)).get();
     applicationsSnapshot.docs.clear();
+  }
+
+  void acceptApplication(ProjectOpenRole openRole, ProjectOpenRoleApplicationItem application) {
+    try {
+      firestoreProjectsCollection.doc(openRole.projectId).update({
+        'members_uid': FieldValue.arrayUnion([application.user.id])
+      });
+      deleteApplication(application);
+    } catch (e) {
+      print("deleteOpenRole $e");
+    }
+  }
+
+  void deleteApplication(ProjectOpenRoleApplicationItem application) {
+    print("applicationid ${application.id}");
+    firestoreProjectsApplicationsCollection.doc(application.id).delete();
   }
 }

@@ -9,6 +9,7 @@ class Project extends Equatable {
       this.timestamp = 0,
       this.tags = const <String>[],
       this.openRoles = const <dynamic>[],
+      this.membersUid = const <String>[],
       this.id = '',
       this.organizationId = ''});
 
@@ -19,6 +20,7 @@ class Project extends Equatable {
         shortDescription = json['short_description'] as String,
         tags = json['tags'] as List<dynamic>,
         openRoles = json['open_roles'] as List<dynamic>,
+        membersUid = json['members_uid'] as List<dynamic>,
         timestamp = json['timestamp'] as int,
         title = json['title'] as String,
         organizationId = (json['organization_id'] ?? '') as String;
@@ -33,6 +35,7 @@ class Project extends Equatable {
         'open_roles': openRoles,
         'timestamp': timestamp,
         'organization_id': organizationId,
+        'members_uid': membersUid,
       };
 
   final String? title;
@@ -44,6 +47,7 @@ class Project extends Equatable {
   final String organizationId;
   final List<dynamic>? tags;
   final List<dynamic>? openRoles;
+  final List<dynamic>? membersUid;
 
   static const Project empty = Project();
 
@@ -58,6 +62,7 @@ class Project extends Equatable {
     int? timestamp,
     List<dynamic>? openRoles,
     List<dynamic>? tags,
+    List<String>? membersUid,
     String? organizationId,
   }) {
     return Project(
@@ -70,18 +75,11 @@ class Project extends Equatable {
       openRoles: openRoles ?? this.openRoles,
       tags: tags ?? this.tags,
       organizationId: organizationId ?? this.organizationId,
+      membersUid: membersUid ?? this.membersUid,
     );
   }
 
   @override
-  List<Object?> get props => <Object?>[
-        title,
-        shortDescription,
-        details,
-        tags,
-        ownerId,
-        id,
-        openRoles,
-        organizationId,
-      ];
+  List<Object?> get props =>
+      <Object?>[title, shortDescription, details, tags, ownerId, id, openRoles, organizationId, membersUid];
 }

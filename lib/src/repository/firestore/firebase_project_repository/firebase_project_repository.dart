@@ -14,6 +14,8 @@ class FirebaseProjectRepository {
 
   final CollectionReference<Map<String, dynamic>> firestoreUserInstance = FirebaseFirestore.instance.collection('users');
 
+  FirebaseUserRepository userRepository = FirebaseUserRepository();
+
   void createProject(Project project) {
     final Project projectToSave = project.copyWith(id: firestoreProjectsDocument.id);
     firestoreUserInstance.doc(project.ownerId).update({
@@ -32,7 +34,7 @@ class FirebaseProjectRepository {
       firestoreUserInstance.doc(project.ownerId).update({
         'projects_ids': FieldValue.arrayRemove([project.id])
       });
-      for(final dynamic openRoleId in project.openRoles ?? <dynamic>[]) {
+      for (final dynamic openRoleId in project.openRoles ?? <dynamic>[]) {
         final String id = openRoleId as String;
         _firebaseProjectOpenRoleRepository.deleteOpenRole(ProjectOpenRole(id: id));
       }
@@ -140,5 +142,32 @@ class FirebaseProjectRepository {
         .map((QueryDocumentSnapshot<Map<String, dynamic>> projectJson) => Project.fromJson(projectJson.data()))
         .toList();
     return projects;
+  }
+
+  void deleteMemberFromProject(String userId, String projectId) {
+    firestoreProjectsCollection.doc(projectId).update({
+      'members_uid': FieldValue.arrayRemove(<String>[userId])
+    });
+  }
+
+  Future<List<FullUser>> getMembers(String projectId) async {
+    final List<FullUser> users = List<FullUser>.empty(growable: true);
+    final Map<String, dynamic>? projectData;
+    final List<String> usersIds;
+    try {
+      projectData = (await firestoreProjectsCollection.doc(projectId).get()).data();
+
+      usersIds = (projectData!['members_uid'] as List<dynamic>).map((el) => el as String).toList();
+
+      for (final String id in usersIds) {
+        final FullUser user = await userRepository.getFullUserByUid(id);
+        if (user != null) {
+          users.add(user);
+        }
+      }
+    } catch (e) {
+      print('getMembers $e');
+    }
+    return users;
   }
 }

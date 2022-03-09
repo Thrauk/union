@@ -20,7 +20,7 @@ class OpenRoleApplicantsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<OpenRoleApplicantsBloc>(
-      child: const _OpenRoleApplicantsPage(),
+      child: _OpenRoleApplicantsPage(openRole: openRole),
       create: (BuildContext context) {
         return OpenRoleApplicantsBloc(FirebaseProjectOpenRoleRepository())..add(GetApplicantsList(openRole.id));
       },
@@ -29,7 +29,9 @@ class OpenRoleApplicantsPage extends StatelessWidget {
 }
 
 class _OpenRoleApplicantsPage extends StatelessWidget {
-  const _OpenRoleApplicantsPage({Key? key}) : super(key: key);
+  const _OpenRoleApplicantsPage({Key? key, required this.openRole}) : super(key: key);
+
+  final ProjectOpenRole openRole;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,10 @@ class _OpenRoleApplicantsPage extends StatelessWidget {
                       child: ListView.builder(
                         itemCount: state.applicationsItems.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return ApplicantItemWidget(applicationItem: state.applicationsItems[index]);
+                          return ApplicantItemWidget(
+                            applicationItem: state.applicationsItems[index],
+                            openRole: openRole,
+                          );
                         },
                       ),
                     )

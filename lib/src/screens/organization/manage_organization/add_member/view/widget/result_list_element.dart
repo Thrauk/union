@@ -4,8 +4,8 @@ import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/organization/manage_organization/add_member/bloc/add_member_organization_bloc.dart';
 import 'package:union_app/src/screens/user_profile/profile/profile.dart';
+import 'package:union_app/src/theme.dart';
 
-import '../../../../../../theme.dart';
 
 
 class ResultListElement extends StatelessWidget {
