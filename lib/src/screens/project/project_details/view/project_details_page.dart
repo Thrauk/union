@@ -7,10 +7,8 @@ import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/open_roles/add_open_role/view/add_open_role_page.dart';
 import 'package:union_app/src/screens/project/edit_project/edit_project.dart';
-import 'package:union_app/src/screens/project/members_list/view/members_list_page.dart';
 import 'package:union_app/src/screens/project/project_details/bloc/project_details_bloc.dart';
-import 'package:union_app/src/screens/project/project_details/widgets/open_role_item_widget.dart';
-import 'package:union_app/src/screens/project/widgets/members_widget/members_widget.dart';
+import 'package:union_app/src/screens/project/project_details/widgets/tabs/barrel.dart';
 import 'package:union_app/src/screens/widgets/dialogs/two_option_dialog.dart';
 import 'package:union_app/src/theme.dart';
 
@@ -21,136 +19,69 @@ class ProjectDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<ProjectDetailsBloc>(
       create: (BuildContext context) => ProjectDetailsBloc(FirebaseProjectOpenRoleRepository(), FirebaseProjectRepository())
         ..add(GetOpenRoles(project.id!))
         ..add(GetMembers(project.id ?? '')),
       child: Scaffold(
-        appBar: AppBar(
-          actions: [
-            if (context.read<AppBloc>().state.user.id == project.ownerId)
-              Theme(
-                data: Theme.of(context).copyWith(
-                  cardColor: AppColors.backgroundLight1,
-                  iconTheme: const IconThemeData(color: AppColors.white09),
+        body: DefaultTabController(
+          length: 3,
+          child: Scaffold(
+            appBar: AppBar(
+              bottom: const TabBar(
+                indicatorColor: AppColors.primaryColor,
+                  labelColor: AppColors.white09,
+                  unselectedLabelColor: AppColors.white05,
+                  labelStyle: AppStyles.textStyleBody,
+                  tabs: [
+                Tab(
+                  text: 'Details',
                 ),
-                child: PopupMenuButton<String>(
-                  onSelected: (String choice) => manageChoices(choice, context, project),
-                  itemBuilder: (BuildContext context) {
-                    return Choices.choices.map(
-                      (String choice) {
-                        return PopupMenuItem<String>(
-                          value: choice,
-                          child: Text(
-                            choice,
-                            style: const TextStyle(color: AppColors.white09),
-                          ),
-                        );
+                Tab(
+                  text: 'Open Roles',
+                ),
+                Tab(
+                  text: 'Posts',
+                ),
+              ]),
+              actions: [
+                if (context.read<AppBloc>().state.user.id == project.ownerId)
+                  Theme(
+                    data: Theme.of(context).copyWith(
+                      cardColor: AppColors.backgroundLight1,
+                      iconTheme: const IconThemeData(color: AppColors.white09),
+                    ),
+                    child: PopupMenuButton<String>(
+                      onSelected: (String choice) => manageChoices(choice, context, project),
+                      itemBuilder: (BuildContext context) {
+                        return Choices.choices.map(
+                          (String choice) {
+                            return PopupMenuItem<String>(
+                              value: choice,
+                              child: Text(
+                                choice,
+                                style: const TextStyle(color: AppColors.white09),
+                              ),
+                            );
+                          },
+                        ).toList();
                       },
-                    ).toList();
-                  },
-                ),
-              )
-          ],
-          backgroundColor: AppColors.backgroundLight,
-          title: Text(project.title ?? ''),
-        ),
-        body: _ProjectDetailsPage(project: project),
-      ),
-    );
-  }
-}
-
-class _ProjectDetailsPage extends StatelessWidget {
-  const _ProjectDetailsPage({Key? key, required this.project}) : super(key: key);
-
-  final Project project;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ProjectDetailsBloc, ProjectDetailsState>(
-      buildWhen: (ProjectDetailsState previous, ProjectDetailsState current) {
-        return previous.openRoles != current.openRoles || previous.membersList != current.membersList;
-      },
-      builder: (BuildContext context, ProjectDetailsState state) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const SizedBox(height: 16),
-                if (state.membersList.isNotEmpty &&
-                    state.membersList.where((FullUser element) => element.id == context.read<AppBloc>().state.user.id) != null)
-                  Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MembersListPage.route(state.membersList, project)).then(
-                            (_) {
-                              if (project.membersUid != null) context.read<ProjectDetailsBloc>().add(GetMembers(project.id!));
-                            },
-                          );
-                        },
-                        child: MembersWidget(
-                          membersList: state.membersList,
-                        ),
-                      ),
-                    ],
-                  ),
-                const Text('Short Description', style: AppStyles.textStyleHeading1),
-                const SizedBox(height: 16),
-                Text(project.shortDescription, style: AppStyles.textStyleBody),
-                const SizedBox(height: 24),
-                const Text('Details', style: AppStyles.textStyleHeading1),
-                const SizedBox(height: 16),
-                Text(project.details, style: AppStyles.textStyleBody),
-                const SizedBox(height: 16),
-                if (project.tags!.isNotEmpty)
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
-                    child: Text(
-                      'Tags',
-                      style: AppStyles.textStyleHeading1,
                     ),
                   ),
-                if (project.tags!.isNotEmpty)
-                  Wrap(
-                    spacing: 4,
-                    children: project.tags!
-                        .map(
-                          (dynamic tag) => TagWidget(label: tag as String),
-                        )
-                        .toList()
-                        .cast<Widget>(),
-                  ),
-                if (state.openRoles.isNotEmpty)
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
-                    child: Text(
-                      'Open roles',
-                      style: AppStyles.textStyleHeading1,
-                    ),
-                  ),
-                Flexible(
-                  child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: state.openRoles.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return OpenRoleItemWidget(
-                          projectOpenRole: state.openRoles[index],
-                          showApplyButton: isNotProjectOwner(project.ownerId, context.read<AppBloc>().state.user.id));
-                    },
-                  ),
-                ),
+              ],
+              backgroundColor: AppColors.backgroundLight,
+              title: Text(project.title ?? ''),
+            ),
+            body: TabBarView(
+              children: [
+                DetailsTabWidget(project: project),
+                OpenRolesTabWidget(project: project),
+                PostsTabWidget(projectId: project.id ?? ''),
               ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
@@ -176,7 +107,6 @@ class TagWidget extends StatelessWidget {
 void manageChoices(String choice, BuildContext context, Project project) {
   switch (choice) {
     case Choices.delete:
-      // showDeleteDialog(context, project);
       TwoOptionsDialog.showTwoOptionsDialog(
           context: context,
           optionOneFunction: () {

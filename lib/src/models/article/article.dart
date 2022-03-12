@@ -7,7 +7,8 @@ class Article extends Equatable {
       this.tags = const <String>[],
       this.likesUsersIds = const <String>[],
       this.date = 0,
-      this.id = ''});
+      this.id = '',
+      this.isPublic = false});
 
   Article.fromJson(Map<String, dynamic> json)
       : ownerId = json['owner_id'] as String,
@@ -15,6 +16,7 @@ class Article extends Equatable {
         body = json['body'] as String,
         date = json['date'] as int,
         tags = json['tags'] as List<dynamic>,
+        isPublic = json['is_public'] as bool,
         likesUsersIds = json['likes_user_ids'] as List<dynamic>;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -23,7 +25,8 @@ class Article extends Equatable {
         'body': body,
         'date': date,
         'tags': tags,
-        'likes_user_ids' : likesUsersIds,
+        'is_public': isPublic,
+        'likes_user_ids': likesUsersIds,
       };
 
   final String? id;
@@ -32,6 +35,7 @@ class Article extends Equatable {
   final List<dynamic>? tags;
   final List<dynamic>? likesUsersIds;
   final int date;
+  final bool isPublic;
 
   static const Article empty = Article();
 
@@ -43,6 +47,7 @@ class Article extends Equatable {
       String? body,
       List<dynamic>? tags,
       List<dynamic>? likesUsersIds,
+      bool? isPublic,
       int? date}) {
     return Article(
       id: id ?? this.id,
@@ -50,10 +55,11 @@ class Article extends Equatable {
       ownerId: ownerId ?? this.ownerId,
       body: body ?? this.body,
       tags: tags ?? this.tags,
+      isPublic: isPublic ?? this.isPublic,
       likesUsersIds: likesUsersIds ?? this.likesUsersIds,
     );
   }
 
   @override
-  List<Object?> get props => <Object?>[body, tags, ownerId, id, date, likesUsersIds];
+  List<Object?> get props => <Object?>[body, tags, ownerId, id, date, likesUsersIds, isPublic];
 }

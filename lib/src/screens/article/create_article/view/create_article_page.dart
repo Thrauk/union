@@ -7,28 +7,29 @@ import 'package:union_app/src/screens/article/create_article/widgets/widgets.dar
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
 
 class CreateArticlePage extends StatelessWidget {
-  const CreateArticlePage({Key? key}) : super(key: key);
+  const CreateArticlePage({Key? key, this.projectId = ''}) : super(key: key);
 
-  static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const CreateArticlePage());
+  static Route<void> route({String projectId = ''}) {
+    return MaterialPageRoute<void>(builder: (_) => CreateArticlePage(projectId: projectId));
   }
+
+  final String projectId;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CreateArticleBloc>(
-      create: (BuildContext context) =>
-          CreateArticleBloc(FirebaseArticleRepository()),
+      create: (BuildContext context) => CreateArticleBloc(FirebaseArticleRepository()),
       child: Scaffold(
         appBar: const SimpleAppBar(title: 'Create article'),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            children: const <Widget>[
-              Expanded(
+            children: <Widget>[
+              const Expanded(
                 child: BodyInputWidget(),
               ),
-              TagsContainer(),
-              PublishButtonWidget(),
+              const TagsContainer(),
+              PublishButtonWidget(projectId: projectId),
             ],
           ),
         ),

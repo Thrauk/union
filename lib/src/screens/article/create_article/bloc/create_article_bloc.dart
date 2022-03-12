@@ -11,8 +11,7 @@ part 'create_article_event.dart';
 part 'create_article_state.dart';
 
 class CreateArticleBloc extends Bloc<CreateArticleEvent, CreateArticleState> {
-  CreateArticleBloc(this._articleRepository)
-      : super(const CreateArticleState()) {
+  CreateArticleBloc(this._articleRepository) : super(const CreateArticleState()) {
     on<BodyChanged>(_bodyChanged);
     on<AddTagButtonPressed>(_addTagPressed);
     on<RemoveTagButtonPressed>(_removeTagPressed);
@@ -26,38 +25,35 @@ class CreateArticleBloc extends Bloc<CreateArticleEvent, CreateArticleState> {
     emit(state.copyWith(body: body, status: Formz.validate([body])));
   }
 
-  void _addTagPressed(
-      AddTagButtonPressed event, Emitter<CreateArticleState> emit) {
+  void _addTagPressed(AddTagButtonPressed event, Emitter<CreateArticleState> emit) {
     final TagName tag = TagName.dirty(event.value);
     if (!Formz.validate([tag]).isInvalid && !state.tagItems.contains(tag)) {
       final List<TagName> tagList = state.tagItems + [tag];
-      emit(state.copyWith(
-          tagItems: tagList, tag: tag, status: Formz.validate([tag])));
+      emit(state.copyWith(tagItems: tagList, tag: tag, status: Formz.validate([tag])));
     } else {
       emit(state.copyWith(tag: tag, status: Formz.validate([tag])));
     }
   }
 
-  void _removeTagPressed(
-      RemoveTagButtonPressed event, Emitter<CreateArticleState> emit) {
+  void _removeTagPressed(RemoveTagButtonPressed event, Emitter<CreateArticleState> emit) {
     final List<TagName> tagList = List.from(state.tagItems);
     tagList.removeWhere((TagName element) => element.value == event.value);
     emit(state.copyWith(tagItems: tagList));
   }
 
-  void _publishButtonPressed(
-      PublishButtonPressed event, Emitter<CreateArticleState> emit) {
+  void _publishButtonPressed(PublishButtonPressed event, Emitter<CreateArticleState> emit) {
     if (state.status.isValid) {
-      final List<String> tags =
-          state.tagItems.map((TagName e) => e.value).toList();
+      final bool isPublic = event.projectId.isEmpty;
+      final List<String> tags = state.tagItems.map((TagName e) => e.value).toList();
       try {
         final Article article = Article(
           body: state.body.value,
           tags: tags,
           ownerId: event.ownerId,
-          date: DateTime.now().microsecondsSinceEpoch
+          date: DateTime.now().microsecondsSinceEpoch,
+          isPublic: isPublic,
         );
-        _articleRepository.createArticle(article);
+        _articleRepository.createArticle(article, projectId: event.projectId);
         emit(state.copyWith(status: FormzStatus.submissionSuccess));
       } catch (_) {
         // TODO display on screen it's submission failure

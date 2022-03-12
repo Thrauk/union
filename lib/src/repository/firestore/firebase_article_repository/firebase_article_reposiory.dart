@@ -9,13 +9,28 @@ class FirebaseArticleRepository {
       FirebaseFirestore.instance.collection('articles');
 
   final CollectionReference<Map<String, dynamic>> firestoreUserInstance = FirebaseFirestore.instance.collection('users');
+  final CollectionReference<Map<String, dynamic>> firestoreProjectInstance = FirebaseFirestore.instance.collection('projects');
 
-  void createArticle(Article article) {
-    final Article articleToSave = article.copyWith(id: firestoreArticleDocument.id);
-    firestoreUserInstance.doc(article.ownerId).update({
-      'articles_ids': FieldValue.arrayUnion([articleToSave.id])
+  void createArticle(Article article, {String projectId = ''}) {
+    try {
+      final Article articleToSave = article.copyWith(id: firestoreArticleDocument.id);
+      firestoreUserInstance.doc(article.ownerId).update({
+        'articles_ids': FieldValue.arrayUnion([articleToSave.id])
+      });
+
+      if (!article.isPublic)
+        _addArticleToProject(firestoreArticleDocument.id, projectId);
+
+      firestoreArticleDocument.set(articleToSave.toJson());
+    } catch (e) {
+      print('createArticle $e');
+    }
+  }
+
+  void _addArticleToProject(String articleId, String projectId) {
+    firestoreProjectInstance.doc(projectId).update({
+      'articles_id': FieldValue.arrayUnion(<String>[articleId])
     });
-    firestoreArticleDocument.set(articleToSave.toJson());
   }
 
   Future<Map<String, String>?> getArticleUserDetails(String ownerId) async {

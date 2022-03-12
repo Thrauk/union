@@ -29,7 +29,8 @@ class RemoveTagButtonPressed extends CreateArticleEvent {
 }
 
 class PublishButtonPressed extends CreateArticleEvent {
-  PublishButtonPressed(this.ownerId);
+  PublishButtonPressed({required this.ownerId, this.projectId = ''});
 
   final String ownerId;
+  final String projectId;
 }

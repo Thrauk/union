@@ -10,7 +10,9 @@ import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/theme.dart';
 
 class PublishButtonWidget extends StatelessWidget {
-  const PublishButtonWidget({Key? key}) : super(key: key);
+  const PublishButtonWidget({Key? key, this.projectId = ''}) : super(key: key);
+
+  final String projectId;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class PublishButtonWidget extends StatelessWidget {
           onPressed: () {
             context
                 .read<CreateArticleBloc>()
-                .add(PublishButtonPressed(user.id));
+                .add(PublishButtonPressed( ownerId: user.id, projectId: projectId));
           },
           style: ElevatedButton.styleFrom(
             primary: AppColors.primaryColor,
