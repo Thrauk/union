@@ -42,7 +42,7 @@ class Project extends Equatable {
       };
 
   final String? title;
-  final String? id;
+  final String id;
   final String ownerId;
   final String shortDescription;
   final String details;

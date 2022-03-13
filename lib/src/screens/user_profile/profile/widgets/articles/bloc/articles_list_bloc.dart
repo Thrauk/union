@@ -20,7 +20,7 @@ class ArticlesListBloc extends Bloc<ArticlesListEvent, ArticlesListState> {
   final FirebaseArticleRepository _firebaseArticleRepository = FirebaseArticleRepository();
 
   Future<void> _onInitialize(Initialize event, Emitter<ArticlesListState> emit) async {
-    final List<Article> articleList = await _firebaseArticleRepository.getQueryArticlesByUid(_uid);
+    final List<Article> articleList = await _firebaseArticleRepository.getQueryArticlesByUid(_uid, true);
     emit(
       state.copyWith(articleList: articleList, loaded: true),
     );

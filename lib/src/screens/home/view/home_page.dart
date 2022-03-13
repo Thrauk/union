@@ -34,7 +34,7 @@ class _HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomePagePostsBloc, HomePagePostsState>(
       buildWhen: (HomePagePostsState previous, HomePagePostsState current) {
-        return previous.postType != current.postType;
+        return previous.postType != current.postType || previous.posts != current.posts;
       },
       builder: (BuildContext context, HomePagePostsState state) {
         return Scaffold(

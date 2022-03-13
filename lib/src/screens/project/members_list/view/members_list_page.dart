@@ -35,7 +35,7 @@ class MembersListPage extends StatelessWidget {
                   itemCount: state.users.length,
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
-                    return MemberItemWidget(user: state.users[index], ownerId: project.ownerId, projectId: project.id ?? '');
+                    return MemberItemWidget(user: state.users[index], ownerId: project.ownerId, projectId: project.id);
                   },
                 ),
               ],

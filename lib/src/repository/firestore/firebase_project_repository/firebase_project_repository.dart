@@ -15,6 +15,7 @@ class FirebaseProjectRepository {
   final CollectionReference<Map<String, dynamic>> firestoreUserInstance = FirebaseFirestore.instance.collection('users');
 
   FirebaseUserRepository userRepository = FirebaseUserRepository();
+  FirebaseArticleRepository articleRepository = FirebaseArticleRepository();
 
   void createProject(Project project) {
     final Project projectToSave = project.copyWith(id: firestoreProjectsDocument.id);
@@ -34,11 +35,16 @@ class FirebaseProjectRepository {
       firestoreUserInstance.doc(project.ownerId).update({
         'projects_ids': FieldValue.arrayRemove([project.id])
       });
+
       for (final dynamic openRoleId in project.openRoles ?? <dynamic>[]) {
         final String id = openRoleId as String;
         _firebaseProjectOpenRoleRepository.deleteOpenRole(ProjectOpenRole(id: id));
       }
-      // add delete open roles.
+
+      for (final dynamic articleId in project.articlesId ?? <dynamic>[]) {
+        articleRepository.deleteArticle(articleId as String);
+      }
+
     } catch (e) {
       print('deleteProject $e');
     }

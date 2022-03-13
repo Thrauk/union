@@ -14,6 +14,10 @@ class AddOpenRolePage extends StatelessWidget {
 
   final String projectId;
 
+  static Route<void> route(String projectId) {
+    return MaterialPageRoute<void>(builder: (_) => AddOpenRolePage(projectId: projectId));
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AddOpenRoleBloc>(
@@ -61,8 +65,7 @@ class AddOpenRolePage extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: GestureDetector(
-                        onTap: () =>
-                            Navigator.of(context).push(HomePage.route()),
+                        onTap: () => Navigator.of(context).push(HomePage.route()),
                         child: const Center(
                           child: Text(
                             'Cancel',

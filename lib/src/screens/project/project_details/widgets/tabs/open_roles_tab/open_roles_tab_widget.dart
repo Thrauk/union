@@ -20,27 +20,31 @@ class OpenRolesTabWidget extends StatelessWidget {
       },
       builder: (BuildContext context, ProjectDetailsState state) {
         return SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              if (state.openRoles.isNotEmpty)
-                Flexible(
-                  child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: state.openRoles.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return OpenRoleItemWidget(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                if (state.openRoles.isNotEmpty)
+                  Flexible(
+                    child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: state.openRoles.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return OpenRoleItemWidget(
                           projectOpenRole: state.openRoles[index],
-                          showApplyButton: isNotProjectOwner(project.ownerId, context.read<AppBloc>().state.user.id));
-                    },
-                  ),
-                )
-              else
-                const EmptyPageWidget(message: 'No open roles yet!')
-            ],
+                          showApplyButton: isNotProjectOwner(project.ownerId, context.read<AppBloc>().state.user.id),
+                        );
+                      },
+                    ),
+                  )
+                else
+                  const EmptyPageWidget(message: 'No open roles yet!')
+              ],
+            ),
           ),
         );
       },

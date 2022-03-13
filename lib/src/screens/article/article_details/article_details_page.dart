@@ -135,7 +135,7 @@ void showDeleteDialog(BuildContext context, Article article) {
             ),
             onPressed: () {
               try {
-                FirebaseArticleRepository().deleteArticle(article);
+                FirebaseArticleRepository().deleteArticle(article.id);
                 Navigator.of(context).pushAndRemoveUntil(HomePage.route(), (Route<dynamic> route) => false);
               } catch (e) {
                 print('showDeleteDialog $e');

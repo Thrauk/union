@@ -22,7 +22,7 @@ class HomePagePostsBloc extends Bloc<HomePagePostsEvent, HomePagePostsState> {
 
   Future<FutureOr<void>> _getArticles(GetArticles event, Emitter<HomePagePostsState> emit) async {
     try {
-      final List<Article> articles = await _articleRepository.getArticles(20);
+      final List<Article> articles = await _articleRepository.getPublicArticles(20);
         emit(state.copyWith(postType: PostType.ARTICLE, posts: articles));
     } catch (e) {
       print('_getArticles $e');

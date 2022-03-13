@@ -19,33 +19,37 @@ class ProjectDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String _loggedUserId = context.read<AppBloc>().state.user.id;
+    final bool? isMember = project.membersUid?.contains(_loggedUserId);
+
     return BlocProvider<ProjectDetailsBloc>(
       create: (BuildContext context) => ProjectDetailsBloc(FirebaseProjectOpenRoleRepository(), FirebaseProjectRepository())
-        ..add(GetOpenRoles(project.id!))
-        ..add(GetMembers(project.id ?? '')),
+        ..add(GetOpenRoles(project.id))
+        ..add(GetMembers(project.id)),
       child: Scaffold(
         body: DefaultTabController(
-          length: 3,
+          length: isMember == true ? 3 : 2,
           child: Scaffold(
             appBar: AppBar(
-              bottom: const TabBar(
-                indicatorColor: AppColors.primaryColor,
+              bottom: TabBar(
+                  indicatorColor: AppColors.primaryColor,
                   labelColor: AppColors.white09,
                   unselectedLabelColor: AppColors.white05,
                   labelStyle: AppStyles.textStyleBody,
-                  tabs: [
-                Tab(
-                  text: 'Details',
-                ),
-                Tab(
-                  text: 'Open Roles',
-                ),
-                Tab(
-                  text: 'Posts',
-                ),
-              ]),
+                  tabs: <Widget>[
+                    const Tab(
+                      text: 'Details',
+                    ),
+                    const Tab(
+                      text: 'Open Roles',
+                    ),
+                    if (isMember == true)
+                      const Tab(
+                        text: 'Posts',
+                      ),
+                  ]),
               actions: [
-                if (context.read<AppBloc>().state.user.id == project.ownerId)
+                if (_loggedUserId == project.ownerId)
                   Theme(
                     data: Theme.of(context).copyWith(
                       cardColor: AppColors.backgroundLight1,
@@ -76,7 +80,7 @@ class ProjectDetailsPage extends StatelessWidget {
               children: [
                 DetailsTabWidget(project: project),
                 OpenRolesTabWidget(project: project),
-                PostsTabWidget(projectId: project.id ?? ''),
+                if (isMember == true) PostsTabWidget(project: project),
               ],
             ),
           ),
@@ -116,22 +120,10 @@ void manageChoices(String choice, BuildContext context, Project project) {
           dialogSubtitle: 'Are you sure you want to delete this project?');
       break;
     case Choices.edit:
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => EditProjectPage(
-            project: project,
-          ),
-        ),
-      );
+      Navigator.push(context, EditProjectPage.route(project));
       break;
     case Choices.add_open_role:
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => AddOpenRolePage(projectId: project.id!),
-        ),
-      );
+      Navigator.push(context, AddOpenRolePage.route(project.id));
   }
 }
 

@@ -20,7 +20,7 @@ class UserArticlesPageBloc extends Bloc<UserArticlesPageEvent, UserArticlesPageS
     emit(state.copyWith(status: PageStatus.loading));
     try {
       final List<Article> articles =
-      await _articleRepository.getArticlesByUid(event.uid);
+      await _articleRepository.getQueryArticlesByUid(event.uid, true);
       print('articles $articles');
       emit(state.copyWith(articles: articles, status: PageStatus.success));
     } catch (e) {

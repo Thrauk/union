@@ -50,7 +50,6 @@ class FirebaseArticleRepository {
   Future<Article?> getArticleById(String id) async {
     try {
       final DocumentSnapshot<Map<String, dynamic>> json = await firestoreArticleCollection.doc(id).get();
-      print(json.data());
       final Article article = Article.fromJson(json.data()!);
       return article;
     } catch (e) {
@@ -59,30 +58,11 @@ class FirebaseArticleRepository {
     return null;
   }
 
-  Future<List<Article>> getArticlesByUid(String uid) async {
-    final List<Article> articles = List<Article>.empty(growable: true);
-    final Map<String, dynamic>? articlesData;
-    final List<String> articlesIds;
-    try {
-      articlesData = (await firestoreUserInstance.doc(uid).get()).data();
-
-      articlesIds = (articlesData!['articles_ids'] as List<dynamic>).map((el) => el as String).toList();
-      print(articlesIds);
-      for (final String id in articlesIds) {
-        final Article? article = await getArticleById(id);
-        if (article != null) {
-          articles.add(article);
-        }
-      }
-    } catch (e) {
-      print('getArticlesByUid $e');
-    }
-    return articles;
-  }
-
-  Future<List<Article>> getQueryArticlesByUid(String uid) async {
-    final QuerySnapshot<Map<String, dynamic>> query = await firestoreArticleCollection.where('owner_id', isEqualTo: uid).get();
-    return _userArticlesFromQuery(query);
+  Future<List<Article>> getQueryArticlesByUid(String uid, bool isPublic) async {
+    final Query<Map<String, dynamic>> query = firestoreArticleCollection.where('owner_id', isEqualTo: uid);
+      final QuerySnapshot<Map<String, dynamic>> finalQuery =
+          isPublic == true ? await query.where('is_public', isEqualTo: true).get() : await query.get();
+    return _userArticlesFromQuery(finalQuery);
   }
 
   List<Article> _userArticlesFromQuery(QuerySnapshot<Map<String, dynamic>> query) {
@@ -97,12 +77,9 @@ class FirebaseArticleRepository {
       ..sort((Article a, Article b) => b.date.compareTo(a.date));
   }
 
-  void deleteArticle(Article article) {
+  void deleteArticle(String articleId) {
     try {
-      firestoreArticleCollection.doc(article.id).delete();
-      firestoreUserInstance.doc(article.ownerId).update({
-        'articles_ids': FieldValue.arrayRemove([article.id])
-      });
+      firestoreArticleCollection.doc(articleId).delete();
     } catch (e) {
       print('deleteArticle $e');
     }
@@ -112,8 +89,12 @@ class FirebaseArticleRepository {
     firestoreArticleCollection.doc(article.id).update(article.toJson());
   }
 
-  Future<List<Article>> getArticles(int limit) async {
-    final List<Article> articles = (await firestoreArticleCollection.orderBy('date', descending: true).limit(limit).get())
+  Future<List<Article>> getPublicArticles(int limit) async {
+    final List<Article> articles = (await firestoreArticleCollection
+            .where('is_public', isEqualTo: true)
+            .orderBy('date', descending: true)
+            .limit(limit)
+            .get())
         .docs
         .map((QueryDocumentSnapshot<Map<String, dynamic>> e) => Article.fromJson(e.data()))
         .toList();

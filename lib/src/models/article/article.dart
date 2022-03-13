@@ -29,7 +29,7 @@ class Article extends Equatable {
         'likes_user_ids': likesUsersIds,
       };
 
-  final String? id;
+  final String id;
   final String? body;
   final String ownerId;
   final List<dynamic>? tags;

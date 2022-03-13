@@ -13,6 +13,11 @@ class EditProjectPage extends StatelessWidget {
 
   final Project project;
 
+  static Route<void> route(Project project) {
+    return MaterialPageRoute<void>(builder: (_) =>  EditProjectPage(project: project));
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<EditProjectBloc>(

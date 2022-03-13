@@ -33,10 +33,7 @@ class ProjectDetailsBloc extends Bloc<ProjectDetailsEvent, ProjectDetailsState> 
   Future<FutureOr<void>> _getMembers(GetMembers event, Emitter<ProjectDetailsState> emit) async {
     try {
       final List<FullUser> membersList;
-
       membersList = await _projectRepository.getMembers(event.projectId);
-
-      print(membersList);
 
       emit(state.copyWith(membersList: membersList));
     } catch (e) {

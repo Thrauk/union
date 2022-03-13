@@ -38,7 +38,7 @@ class DetailsTabWidget extends StatelessWidget {
                           Navigator.of(context).push(MembersListPage.route(state.membersList, project)).then(
                             (_) {
                               if (project.membersUid != null)
-                                context.read<ProjectDetailsBloc>().add(GetMembers(project.id!));
+                                context.read<ProjectDetailsBloc>().add(GetMembers(project.id));
                             },
                           );
                         },
