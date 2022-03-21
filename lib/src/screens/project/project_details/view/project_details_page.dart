@@ -17,6 +17,10 @@ class ProjectDetailsPage extends StatelessWidget {
 
   final Project project;
 
+  static Route<void> route(Project project) {
+    return MaterialPageRoute<void>(builder: (_) => ProjectDetailsPage(project: project));
+  }
+
   @override
   Widget build(BuildContext context) {
     final String _loggedUserId = context.read<AppBloc>().state.user.id;
