@@ -120,8 +120,8 @@ class _ProjectItemWidget extends StatelessWidget {
                       ),
                       const Spacer(),
                       Text(
-                      '${state.likesNr} likes',
-                      style: AppStyles.textStyleBody,
+                        state.likesNr == 1 ? '${state.likesNr} like' : '${state.likesNr} likes',
+                        style: AppStyles.textStyleBody,
                       ),
                     ],
                   ),

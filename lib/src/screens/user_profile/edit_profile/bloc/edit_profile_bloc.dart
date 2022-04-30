@@ -9,11 +9,11 @@ import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/firestore/firestore.dart';
 
 part 'edit_profile_event.dart';
+
 part 'edit_profile_state.dart';
 
 class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
-  EditProfileBloc({required FirebaseUserRepository userServiceRepository,
-    required String uid})
+  EditProfileBloc({required FirebaseUserRepository userServiceRepository, required String uid})
       : _userServiceRepository = userServiceRepository,
         _uid = uid,
         super(const EditProfileState()) {
@@ -24,6 +24,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     on<DescriptionChanged>(_onDescriptionChanged);
     on<SelectImage>(_onSelectImage);
     on<UpdateProfile>(_onUpdateProfile);
+    on<IsOpenForCollaborationChanged>(_onIsOpenForCollaborationChanged);
     add(LoadProfile());
   }
 
@@ -38,6 +39,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
       jobTitle: ShortText.dirty(fullUser.jobTitle ?? ''),
       location: ShortText.dirty(fullUser.location ?? ''),
       description: LongText.dirty(fullUser.description ?? ''),
+      isOpenForCollaborations: fullUser.isOpenForCollaborations,
       profileLoaded: true,
       photoUrl: fullUser.photo,
     ));
@@ -59,7 +61,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     ));
   }
 
-  void _onLocationChanged(LocationChanged event, Emitter<EditProfileState> emit)  {
+  void _onLocationChanged(LocationChanged event, Emitter<EditProfileState> emit) {
     final ShortText location = ShortText.dirty(event.value);
     emit(state.copyWith(
       location: location,
@@ -75,36 +77,37 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     ));
   }
 
-  Future<void> _onUpdateProfile(UpdateProfile event, Emitter<EditProfileState> emit) async {
-    if(state.status.isValidated) {
-      try {
-        await _userServiceRepository.updateUserDetails(state.fullUser.copyWith(
-          displayName: state.displayName.value,
-          jobTitle: state.jobTitle.value,
-          location: state.location.value,
-          description: state.description.value,
-        ));
-        emit(state.copyWith(status: FormzStatus.submissionSuccess));
-      } catch(_) {
-        emit(state.copyWith(status: FormzStatus.submissionFailure));
-      }
-
-    }
+  FutureOr<void> _onIsOpenForCollaborationChanged(IsOpenForCollaborationChanged event, Emitter<EditProfileState> emit) {
+    emit(state.copyWith(isOpenForCollaborations: event.value));
   }
 
   Future<void> _onSelectImage(SelectImage event, Emitter<EditProfileState> emit) async {
     final ImagePicker imagePicker = ImagePicker();
-    XFile? selectedImage = await imagePicker.pickImage(source: ImageSource.gallery);
-    if(selectedImage != null) {
-      String url = await _userServiceRepository.updateUserImage(state.fullUser, File(selectedImage.path));
+    final XFile? selectedImage = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (selectedImage != null) {
+      final String url = await _userServiceRepository.updateUserImage(state.fullUser, File(selectedImage.path));
       emit(state.copyWith(photoUrl: url));
     }
   }
 
+  Future<void> _onUpdateProfile(UpdateProfile event, Emitter<EditProfileState> emit) async {
+    if (state.status.isValidated) {
+      try {
+        await _userServiceRepository.updateUserDetails(state.fullUser.copyWith(
+            displayName: state.displayName.value,
+            jobTitle: state.jobTitle.value,
+            location: state.location.value,
+            description: state.description.value,
+            isOpenForCollaborations: state.isOpenForCollaborations));
+        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+      } catch (_) {
+        emit(state.copyWith(status: FormzStatus.submissionFailure));
+      }
+    }
+  }
 
   @override
   Future<void> close() {
     return super.close();
   }
-
 }

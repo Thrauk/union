@@ -44,15 +44,7 @@ class ProfilePage extends StatelessWidget {
               ProfileStatisticsWidget(),
               ProfileDescriptionWidget(),
               //InteractionMenuWidget(),
-
               ProfilePostsWidget(),
-
-              // TestingProfileWidget(),
-              // Flexible(
-              //   child: ProjectListWidget(
-              //     uid: uid,
-              //   ),
-              // ),
             ],
           ),
         ),

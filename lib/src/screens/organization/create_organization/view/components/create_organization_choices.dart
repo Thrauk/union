@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:union_app/src/screens/widgets/switch/simple_switch.dart';
 import 'package:union_app/src/theme.dart';
 
 import '../../barrel.dart';
-
 
 class CreateOrganizationChoices extends StatelessWidget {
   const CreateOrganizationChoices({Key? key}) : super(key: key);
@@ -60,12 +60,11 @@ class CreateOrganizationChoices extends StatelessWidget {
                   style: AppStyles.textStyleBody,
                 ),
                 SizedBox(width: 60, child: Text(state.isPublic ? 'Public' : 'Private', style: AppStyles.textStyleBodyPrimary)),
-                Switch(
+                SimpleSwitch(
                   value: state.isPublic,
-                  onChanged: (bool value) {
+                  onChange: (bool value) {
                     context.read<CreateOrganizationBloc>().add(TypeChanged(isPublic: value));
                   },
-                  activeColor: AppColors.primaryColor,
                 ),
               ],
             ),

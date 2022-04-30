@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/app/bloc/app_bloc.dart';
-
+import 'package:union_app/src/screens/user_profile/edit_profile/edit_profile.dart';
+import 'package:union_app/src/screens/user_profile/edit_profile/widgets/toggle/open_for_collaboration_switch.dart';
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
 import 'package:union_app/src/theme.dart';
 
-import '../edit_profile.dart';
 
 class EditProfilePage extends StatelessWidget {
   const EditProfilePage({Key? key}) : super(key: key);
@@ -71,7 +71,12 @@ class _EditProfilePage extends StatelessWidget {
                       const LocationInputWidget(),
                       const SizedBox(height: 15),
                       const DescriptionInputWidget(),
-                      const SizedBox(height: 15),
+                      OpenForCollaborationSwitch(
+                        value: state.isOpenForCollaborations,
+                        onChange: (bool switchValue) {
+                          context.read<EditProfileBloc>().add(IsOpenForCollaborationChanged(switchValue));
+                        },
+                      ),
                       const Align(alignment: Alignment.centerLeft, child: Text('Resume', style: AppStyles.textStyleHeading1)),
                       FileUploader(userId: state.fullUser.id),
                       const SizedBox(height: 15),
