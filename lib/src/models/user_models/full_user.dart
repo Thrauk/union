@@ -11,7 +11,8 @@ class FullUser extends Equatable {
       this.jobTitle,
       this.projectsIds,
       this.followers,
-      this.following});
+      this.following,
+      this.isOpenForCollaborations = false});
 
   FullUser.fromJson(Map<String, dynamic> json)
       : photo = json['photo'] as String?,
@@ -23,7 +24,8 @@ class FullUser extends Equatable {
         jobTitle = json['jobTitle'] as String?,
         projectsIds = json['projects_ids'] as List<dynamic>?,
         followers = json['followers'] as List<dynamic>?,
-        following = json['following'] as List<dynamic>?;
+        following = json['following'] as List<dynamic>?,
+        isOpenForCollaborations = json['is_open_for_collaborations'] as bool;
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -36,6 +38,7 @@ class FullUser extends Equatable {
         'projects_ids': projectsIds,
         'following': following,
         'followers': followers,
+        'is_open_for_collaborations': isOpenForCollaborations
       }..removeWhere((String key, dynamic value) => value == null);
 
   final String? email;
@@ -57,6 +60,8 @@ class FullUser extends Equatable {
   final List<dynamic>? followers;
   final List<dynamic>? following;
 
+  final bool isOpenForCollaborations;
+
   static const FullUser empty = FullUser(id: '');
 
   bool get isEmpty => this == FullUser.empty;
@@ -74,18 +79,21 @@ class FullUser extends Equatable {
     List<dynamic>? projectsIds,
     List<dynamic>? followers,
     List<dynamic>? following,
+    bool? isOpenForCollaborations,
   }) {
     return FullUser(
-        id: id ?? this.id,
-        email: email ?? this.email,
-        displayName: displayName ?? this.displayName,
-        photo: photo ?? this.photo,
-        description: description ?? this.description,
-        location: location ?? this.location,
-        jobTitle: jobTitle ?? this.jobTitle,
-        projectsIds: projectsIds ?? this.projectsIds,
-        followers: followers ?? this.followers,
-        following: following ?? this.following,);
+      id: id ?? this.id,
+      email: email ?? this.email,
+      displayName: displayName ?? this.displayName,
+      photo: photo ?? this.photo,
+      description: description ?? this.description,
+      location: location ?? this.location,
+      jobTitle: jobTitle ?? this.jobTitle,
+      projectsIds: projectsIds ?? this.projectsIds,
+      followers: followers ?? this.followers,
+      following: following ?? this.following,
+      isOpenForCollaborations: isOpenForCollaborations ?? this.isOpenForCollaborations,
+    );
   }
 
   @override
@@ -99,6 +107,7 @@ class FullUser extends Equatable {
         jobTitle,
         projectsIds,
         following,
-        followers
+        followers,
+        isOpenForCollaborations
       ];
 }

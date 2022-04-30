@@ -1,16 +1,16 @@
 part of 'edit_profile_bloc.dart';
 
 class EditProfileState extends Equatable {
-  const EditProfileState({
-    this.fullUser = FullUser.empty,
-    this.displayName = const DisplayName.pure(),
-    this.jobTitle = const ShortText.pure(),
-    this.location = const ShortText.pure(),
-    this.description = const LongText.pure(),
-    this.status = FormzStatus.pure,
-    this.profileLoaded = false,
-    this.photoUrl,
-  });
+  const EditProfileState(
+      {this.fullUser = FullUser.empty,
+      this.displayName = const DisplayName.pure(),
+      this.jobTitle = const ShortText.pure(),
+      this.location = const ShortText.pure(),
+      this.description = const LongText.pure(),
+      this.status = FormzStatus.pure,
+      this.profileLoaded = false,
+      this.photoUrl,
+      this.isOpenForCollaborations = false});
 
   final FullUser fullUser;
   final DisplayName displayName;
@@ -20,6 +20,7 @@ class EditProfileState extends Equatable {
   final FormzStatus status;
   final bool profileLoaded;
   final String? photoUrl;
+  final bool isOpenForCollaborations;
 
   EditProfileState copyWith({
     FullUser? fullUser,
@@ -30,6 +31,7 @@ class EditProfileState extends Equatable {
     FormzStatus? status,
     bool? profileLoaded,
     String? photoUrl,
+    bool? isOpenForCollaborations,
   }) {
     return EditProfileState(
       fullUser: fullUser ?? this.fullUser,
@@ -40,9 +42,20 @@ class EditProfileState extends Equatable {
       status: status ?? this.status,
       profileLoaded: profileLoaded ?? this.profileLoaded,
       photoUrl: photoUrl ?? this.photoUrl,
+      isOpenForCollaborations: isOpenForCollaborations ?? this.isOpenForCollaborations,
     );
   }
 
   @override
-  List<Object?> get props => <Object?>[fullUser, displayName, jobTitle, location, description, status, profileLoaded, photoUrl];
+  List<Object?> get props => <Object?>[
+        fullUser,
+        displayName,
+        jobTitle,
+        location,
+        description,
+        status,
+        profileLoaded,
+        photoUrl,
+        isOpenForCollaborations
+      ];
 }

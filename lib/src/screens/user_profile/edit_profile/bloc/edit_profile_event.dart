@@ -7,7 +7,7 @@ abstract class EditProfileEvent extends Equatable {
   List<Object> get props => <Object>[];
 }
 
-class LoadProfile extends EditProfileEvent{}
+class LoadProfile extends EditProfileEvent {}
 
 class DisplayNameChanged extends EditProfileEvent {
   const DisplayNameChanged({required this.value});
@@ -43,6 +43,12 @@ class DescriptionChanged extends EditProfileEvent {
 
   @override
   List<Object> get props => <Object>[value];
+}
+
+class IsOpenForCollaborationChanged extends EditProfileEvent {
+  const IsOpenForCollaborationChanged(this.value);
+
+  final bool value;
 }
 
 class SelectImage extends EditProfileEvent {}
