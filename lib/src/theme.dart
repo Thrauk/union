@@ -82,6 +82,13 @@ class AppStyles {
     fontSize: 16,
   );
 
+  static const TextStyle textStyleBodyPrimarySmall = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.normal,
+    color: AppColors.primaryColor,
+    fontSize: 14,
+  );
+
   static const TextStyle textStyleBodyRed = TextStyle(
     fontFamily: 'Lato',
     fontWeight: FontWeight.normal,

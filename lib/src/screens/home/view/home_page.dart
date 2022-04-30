@@ -42,13 +42,15 @@ class _HomePage extends StatelessWidget {
           bottomNavigationBar: const CustomNavBar(),
           appBar: const AppBarWithSearchBar(),
           body: Column(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               const ChoosePostTypeWidget(),
+              // if(state.postType == PostType.PROJECT)
+              //         Container(height: 100,child: PopularProjectsListWidget()),
               Expanded(
                 child: ListView.builder(
                   itemCount: state.posts.length,
                   itemBuilder: (BuildContext context, int index) {
-                    print(state.postType);
                     return state.postType == PostType.PROJECT
                         ? ProjectItemWidget(project: state.posts[index] as Project)
                         : ArticleItemWidget(article: state.posts[index] as Article);

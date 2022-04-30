@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/form_inputs/tag_name.dart';
 import 'package:union_app/src/screens/article/edit_article/bloc/edit_article_bloc.dart';
+import 'package:union_app/src/screens/widgets/chips/chip_with_text_and_delete_button.dart';
 import 'package:union_app/src/theme.dart';
 
 class TagsContainer extends StatelessWidget {
@@ -15,8 +16,7 @@ class TagsContainer extends StatelessWidget {
 
     return BlocBuilder<EditArticleBloc, EditArticleState>(
       buildWhen: (EditArticleState previous, EditArticleState current) =>
-          (previous.article.tags!.length != current.article.tags!.length) ||
-          (previous.tag != current.tag),
+          (previous.article.tags!.length != current.article.tags!.length) || (previous.tag != current.tag),
       builder: (BuildContext context, EditArticleState state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,9 +33,7 @@ class TagsContainer extends StatelessWidget {
                 _currentTag = val,
                 _errorText = state.article.tags!.contains(_currentTag)
                     ? 'Tag already added'
-                    : (TagName.dirty(_currentTag).invalid
-                        ? 'Invalid tag'
-                        : null),
+                    : (TagName.dirty(_currentTag).invalid ? 'Invalid tag' : null),
                 // context.read<CreateProjectBloc>().add(TagChanged(val)),
               },
               cursorColor: AppColors.primaryColor,
@@ -46,9 +44,7 @@ class TagsContainer extends StatelessWidget {
                   onTap: () {
                     _controller.clear();
                     _errorText = null;
-                    context
-                        .read<EditArticleBloc>()
-                        .add(AddTagButtonPressed(_currentTag));
+                    context.read<EditArticleBloc>().add(AddTagButtonPressed(_currentTag));
                     _errorText = null;
                   },
                   child: const Icon(
@@ -63,7 +59,12 @@ class TagsContainer extends StatelessWidget {
               spacing: 4,
               children: state.article.tags!
                   .map(
-                    (tag) => TagItemWidget(label: tag as String),
+                    (tag) => ChipWithTextAndDeleteButton(
+                      label: tag as String,
+                      onDeleted: () {
+                        context.read<EditArticleBloc>().add(RemoveTagButtonPressed(tag));
+                      },
+                    ),
                   )
                   .toList()
                   .cast<Widget>(),
@@ -71,27 +72,6 @@ class TagsContainer extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-class TagItemWidget extends StatelessWidget {
-  const TagItemWidget({Key? key, required this.label}) : super(key: key);
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Chip(
-      label: Text(
-        label,
-        style: const TextStyle(
-            color: AppColors.backgroundDark, fontWeight: FontWeight.w600),
-      ),
-      labelPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
-      onDeleted: () =>
-          context.read<EditArticleBloc>().add(RemoveTagButtonPressed(label)),
-      backgroundColor: AppColors.primaryColor,
     );
   }
 }

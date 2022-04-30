@@ -102,7 +102,7 @@ class _ProjectItemWidget extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Container(height: 0.2, color: AppColors.white08),
+                  Container(height: 0.3, color: AppColors.white08),
                   const SizedBox(height: 8),
                   Row(
                     children: <Widget>[
