@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/form_inputs/tag_name.dart';
 import 'package:union_app/src/screens/project/edit_project/bloc/edit_project_bloc.dart';
+import 'package:union_app/src/screens/widgets/chips/chip_with_text_and_delete_button.dart';
 import 'package:union_app/src/theme.dart';
 
 class TagsContainer extends StatelessWidget {
@@ -15,8 +16,7 @@ class TagsContainer extends StatelessWidget {
 
     return BlocBuilder<EditProjectBloc, EditProjectState>(
       buildWhen: (EditProjectState previous, EditProjectState current) =>
-          (previous.project.tags!.length != current.project.tags!.length) ||
-          (previous.tag != current.tag),
+          (previous.project.tags!.length != current.project.tags!.length) || (previous.tag != current.tag),
       builder: (BuildContext context, EditProjectState state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,9 +33,7 @@ class TagsContainer extends StatelessWidget {
                 _currentTag = val,
                 _errorText = state.project.tags!.contains(_currentTag)
                     ? 'Tag already added'
-                    : (TagName.dirty(_currentTag).invalid
-                        ? 'Invalid tag'
-                        : null),
+                    : (TagName.dirty(_currentTag).invalid ? 'Invalid tag' : null),
               },
               cursorColor: AppColors.primaryColor,
               decoration: InputDecoration(
@@ -45,9 +43,7 @@ class TagsContainer extends StatelessWidget {
                   onTap: () {
                     _controller.clear();
                     _errorText = null;
-                    context
-                        .read<EditProjectBloc>()
-                        .add(AddTagButtonPressed(_currentTag));
+                    context.read<EditProjectBloc>().add(AddTagButtonPressed(_currentTag));
                     _errorText = null;
                   },
                   child: const Icon(
@@ -61,34 +57,20 @@ class TagsContainer extends StatelessWidget {
             Wrap(
               spacing: 4,
               children: state.project.tags!
-                  .map((e) => TagItemWidget(label: e as String))
+                  .map(
+                    (tagName) => ChipWithTextAndDeleteButton(
+                      label: tagName as String,
+                      onDeleted: () {
+                        context.read<EditProjectBloc>().add(RemoveTagButtonPressed(tagName));
+                      },
+                    ),
+                  )
                   .toList()
                   .cast<Widget>(),
             ),
           ],
         );
       },
-    );
-  }
-}
-
-class TagItemWidget extends StatelessWidget {
-  const TagItemWidget({Key? key, required this.label}) : super(key: key);
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Chip(
-      label: Text(
-        label,
-        style: const TextStyle(
-            color: AppColors.backgroundDark, fontWeight: FontWeight.w600),
-      ),
-      labelPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
-      onDeleted: () =>
-          context.read<EditProjectBloc>().add(RemoveTagButtonPressed(label)),
-      backgroundColor: AppColors.primaryColor,
     );
   }
 }
