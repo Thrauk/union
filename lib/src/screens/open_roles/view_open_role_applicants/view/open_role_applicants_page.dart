@@ -6,6 +6,7 @@ import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/open_roles/view_open_role_applicants/bloc/open_role_applicants_bloc.dart';
 import 'package:union_app/src/screens/open_roles/view_open_role_applicants/widgets/applicant_item_widget.dart';
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
+import 'package:union_app/src/screens/widgets/empty_page/empty_page_widget.dart';
 import 'package:union_app/src/theme.dart';
 
 class OpenRoleApplicantsPage extends StatelessWidget {
@@ -66,27 +67,7 @@ class _OpenRoleApplicantsPage extends StatelessWidget {
                         color: AppColors.primaryColor,
                       ),
                     )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const <Widget>[
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 34),
-                          child: Image(
-                            image: AssetImage('assets/icons/empty.png'),
-                          ),
-                        ),
-                        SizedBox(height: 32),
-                        Text(
-                          'No applicants yet!',
-                          style: TextStyle(
-                            fontFamily: 'Lato',
-                            color: AppColors.white07,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ],
-                    ),
+                  : const EmptyPageWidget(message: 'No applicants yet!'),
         );
       },
     );
