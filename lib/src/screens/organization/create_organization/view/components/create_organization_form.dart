@@ -13,7 +13,7 @@ class CreateOrganizationForm extends StatelessWidget {
       builder: (BuildContext context, CreateOrganizationState state) {
         return Column(
           children: <Widget>[
-            SingleLineGenericField(
+            SingleLineField(
                 key: const Key(FieldKeys.nameKey),
                 errorText: state.validators.validateSingle(FieldKeys.nameKey) ? 'Invalid name' : null,
                 labelText: 'Name',
@@ -23,7 +23,7 @@ class CreateOrganizationForm extends StatelessWidget {
             const SizedBox(
               height: 15,
             ),
-            SingleLineGenericField(
+            SingleLineField(
                 key: const Key(FieldKeys.locationKey),
                 errorText: state.validators.validateSingle(FieldKeys.locationKey) ? 'Invalid location' : null,
                 labelText: 'Location',
@@ -33,7 +33,7 @@ class CreateOrganizationForm extends StatelessWidget {
             const SizedBox(
               height: 15,
             ),
-            MultiLineGenericField(
+            MultiLineField(
               key: const Key(FieldKeys.descriptionKey),
               labelText: 'Description',
               errorText: state.validators.validateSingle(FieldKeys.descriptionKey) ? 'Invalid description' : null,

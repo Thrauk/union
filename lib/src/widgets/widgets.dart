@@ -1,1 +1,1 @@
-export 'fields/barrel.dart';
+export 'fields/fields.dart';
