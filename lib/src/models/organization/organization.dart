@@ -59,6 +59,7 @@ class Organization extends Equatable {
     String? location,
     List<String>? members,
     String? photoUrl,
+    File? photo,
   }) {
     return Organization(
       name: name ?? this.name,
@@ -70,6 +71,7 @@ class Organization extends Equatable {
       location: location ?? this.location,
       members: members ?? this.members,
       photoUrl: photoUrl ?? this.photoUrl,
+      photo:  photo ?? this.photo,
     );
   }
 

@@ -2,22 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:union_app/src/theme.dart';
 
 
-class SingleLineGenericField extends StatelessWidget {
-  const SingleLineGenericField({
+class MultiLineField extends StatelessWidget {
+  const MultiLineField({
     Key? key,
     required this.labelText,
-    required this.onChanged,
+    this.onChanged,
     this.errorText,
+    this.initialText,
   }) : super(key: key);
 
-  final Function(String) onChanged;
+  final Function(String)? onChanged;
   final String labelText;
   final String? errorText;
+  final String? initialText;
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      //keyboardType: TextInputType.multiline,
+    return TextFormField(
+      minLines: 1,
+      maxLines: 10,
+      initialValue: initialText,
+      keyboardType: TextInputType.multiline,
       style: AppStyles.textStyleBody,
       onChanged: onChanged,
       cursorColor: AppColors.primaryColor,

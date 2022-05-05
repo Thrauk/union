@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/models/organization/organization.dart';
+import 'package:union_app/src/screens/organization/edit_organization/view/edit_organization_page.dart';
 import 'package:union_app/src/screens/organization/manage_organization/add_member/view/add_member_organization.dart';
 import 'package:union_app/src/screens/organization/organization_members/view/organization_members_page.dart';
 import 'package:union_app/src/screens/organization/view_organization/bloc/view_organization_bloc.dart';
@@ -132,7 +133,8 @@ class ViewOrganizationDetails extends StatelessWidget {
                   if (isOwned)
                     Padding(
                       padding: const EdgeInsets.only(top: 12.0),
-                      child: Row(
+                      child: Wrap(
+                        spacing: 8,
                         children: <Widget>[
                           ElevatedButton.icon(
                             icon: const Icon(
@@ -156,7 +158,6 @@ class ViewOrganizationDetails extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 8),
                           ElevatedButton.icon(
                             icon: const Icon(
                               Icons.person_add_alt_1_sharp,
@@ -171,6 +172,48 @@ class ViewOrganizationDetails extends StatelessWidget {
                               Navigator.of(context)
                                   .push(AddMemberOrganization.route(organization.id))
                                   .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: AppColors.backgroundLight1,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                            ),
+                          ),
+                          ElevatedButton.icon(
+                            icon: const Icon(
+                              Icons.edit,
+                              color: AppColors.primaryColor,
+                              size: 20.0,
+                            ),
+                            label: const Text(
+                              'Edit',
+                              style: AppStyles.textStyleBodySmallW08,
+                            ),
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .push(EditOrganizationPage.route(organization.id))
+                                  .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: AppColors.backgroundLight1,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                            ),
+                          ),
+                          ElevatedButton.icon(
+                            icon: const Icon(
+                              Icons.delete,
+                              color: AppColors.primaryColor,
+                              size: 20.0,
+                            ),
+                            label: const Text(
+                              'Delete organization',
+                              style: AppStyles.textStyleBodySmallW08,
+                            ),
+                            onPressed: () {
+                              context.read<ViewOrganizationBloc>().add(DeleteOrganization());
                             },
                             style: ElevatedButton.styleFrom(
                               primary: AppColors.backgroundLight1,
@@ -212,27 +255,7 @@ class ViewOrganizationDetails extends StatelessWidget {
                         ],
                       ),
                     ),
-                  if (isOwned)
-                    ElevatedButton.icon(
-                      icon: const Icon(
-                        Icons.delete,
-                        color: AppColors.primaryColor,
-                        size: 20.0,
-                      ),
-                      label: const Text(
-                        'Delete organization',
-                        style: AppStyles.textStyleBodySmallW08,
-                      ),
-                      onPressed: () {
-                        context.read<ViewOrganizationBloc>().add(DeleteOrganization());
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: AppColors.backgroundLight1,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
-                    ),
+
                 ],
               ),
             ),

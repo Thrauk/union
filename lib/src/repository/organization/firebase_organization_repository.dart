@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:union_app/src/models/models.dart';
@@ -45,8 +47,20 @@ class FirebaseOrganizationRepository {
   }
 
   Future<void> updateOrganization(String id, Organization organization) async {
-    await firestoreInstance.doc(id).update(organization.toJson());
+    Organization retOrganization = organization;
+
+    if (organization.photo != null) {
+      late String url;
+      final Reference reference = storageReference.child(id).child('picture');
+      final UploadTask uploadTask = reference.putFile(organization.photo!);
+      await uploadTask.then((TaskSnapshot taskSnapshot) async {
+        url = await taskSnapshot.ref.getDownloadURL();
+      });
+      retOrganization = organization.copyWith(photoUrl: url);
+    }
+    await firestoreInstance.doc(id).update(retOrganization.toJson());
   }
+
 
   Future<List<Organization>> getUserOrganizations(String uid) async {
     return _userOrganizationsFromQuery(await firestoreInstance.where('members', arrayContains: uid).get());
