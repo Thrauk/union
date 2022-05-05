@@ -6,7 +6,7 @@ import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/open_roles/view_user_applications/bloc/view_user_applications_bloc.dart';
 import 'package:union_app/src/screens/project/project_details/widgets/open_role_item_widget.dart';
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
-import 'package:union_app/src/theme.dart';
+import 'package:union_app/src/screens/widgets/empty_page/empty_page_widget.dart';
 
 class UserApplicationsPage extends StatelessWidget {
   const UserApplicationsPage({Key? key, required this.uid}) : super(key: key);
@@ -58,27 +58,7 @@ class _UserApplicationsPage extends StatelessWidget {
                                 );
                               },
                             )
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 34),
-                                  child: Image(
-                                    image: AssetImage('assets/icons/empty.png'),
-                                  ),
-                                ),
-                                SizedBox(height: 32),
-                                Text(
-                                  'No applications yet!',
-                                  style: TextStyle(
-                                    fontFamily: 'Lato',
-                                    color: AppColors.white07,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ],
-                            ),
+                          : const EmptyPageWidget(message: 'No applications yet!'),
                     )
                   ],
                 )
