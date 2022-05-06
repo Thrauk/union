@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/user_profile/profile/profile.dart';
+import 'package:union_app/src/screens/user_profile/statistics/followers/view/followers_page.dart';
 import 'package:union_app/src/theme.dart';
 
 class ProfileStatisticsWidget extends StatelessWidget {
@@ -22,16 +23,23 @@ class ProfileStatisticsWidget extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Expanded(
-                    child: ProfileStatElementWidget(
-                      onPressed: () {},
-                      title: 'Followers',
-                      data: state.fullUser.followers?.length.toString(),
-                      buttonType: StatButton.LeftRounded,
-                    )),
+                  child: ProfileStatElementWidget(
+                    onPressed: () {
+                      Navigator.of(context).push(FollowersPage.route(
+                          state.fullUser.followers?.map((dynamic e) => e.toString()).toList() ?? <String>[]));
+                    },
+                    title: 'Followers',
+                    data: state.fullUser.followers?.length.toString(),
+                    buttonType: StatButton.LeftRounded,
+                  ),
+                ),
                 const VerticalDividerWidget(),
                 Expanded(
                   child: ProfileStatElementWidget(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(FollowersPage.route(
+                          state.fullUser.following?.map((dynamic e) => e.toString()).toList() ?? <String>[]));
+                    },
                     title: 'Following',
                     data: state.fullUser.following?.length.toString(),
                     buttonType: StatButton.NoRounded,

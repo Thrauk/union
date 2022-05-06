@@ -5,7 +5,7 @@ import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/project/project_details/bloc/project_details_bloc.dart';
 import 'package:union_app/src/screens/project/project_details/view/project_details_page.dart';
 import 'package:union_app/src/screens/project/project_details/widgets/open_role_item_widget.dart';
-import 'package:union_app/src/screens/widgets/empty_page/empty_page_widget.dart';
+import 'package:union_app/src/screens/widgets/exceptions/empty_page_widget.dart';
 
 class OpenRolesTabWidget extends StatelessWidget {
   const OpenRolesTabWidget({Key? key, required this.project}) : super(key: key);

@@ -7,7 +7,7 @@ import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/project/create_project/create_project.dart';
 import 'package:union_app/src/screens/project/user_projects/bloc/user_projects_page_bloc.dart';
 import 'package:union_app/src/screens/project/widgets/project_item_widget/view/project_item_widget.dart';
-import 'package:union_app/src/screens/widgets/empty_page/empty_page_widget.dart';
+import 'package:union_app/src/screens/widgets/exceptions/empty_page_widget.dart';
 import 'package:union_app/src/screens/widgets/widgets.dart';
 import 'package:union_app/src/theme.dart';
 
