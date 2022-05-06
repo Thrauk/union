@@ -5,6 +5,7 @@ import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/article/create_article/view/create_article_page.dart';
 import 'package:union_app/src/screens/article/user_articles/bloc/user_articles_page_bloc.dart';
 import 'package:union_app/src/screens/article/user_articles/widget/article_item_widget/view/article_item_widget.dart';
+import 'package:union_app/src/screens/widgets/empty_page/empty_page_widget.dart';
 import 'package:union_app/src/screens/widgets/widgets.dart';
 import 'package:union_app/src/theme.dart';
 
@@ -57,21 +58,7 @@ class _UserArticlesPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 34),
-                            child: Image(
-                              image: AssetImage('assets/icons/empty.png'),
-                            ),
-                          ),
-                          const SizedBox(height: 32),
-                          const Text(
-                            "You haven\'t created any articles yet!",
-                            style: TextStyle(
-                              fontFamily: 'Lato',
-                              color: AppColors.white07,
-                              fontSize: 18,
-                            ),
-                          ),
+                          const EmptyPageWidget(message: "You haven't created any articles yet!"),
                           const SizedBox(height: 16),
                           ElevatedButton(
                             onPressed: () {
