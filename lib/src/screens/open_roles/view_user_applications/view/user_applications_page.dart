@@ -6,7 +6,7 @@ import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/open_roles/view_user_applications/bloc/view_user_applications_bloc.dart';
 import 'package:union_app/src/screens/project/project_details/widgets/open_role_item_widget.dart';
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
-import 'package:union_app/src/screens/widgets/empty_page/empty_page_widget.dart';
+import 'package:union_app/src/screens/widgets/exceptions/empty_page_widget.dart';
 
 class UserApplicationsPage extends StatelessWidget {
   const UserApplicationsPage({Key? key, required this.uid}) : super(key: key);

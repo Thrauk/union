@@ -6,7 +6,7 @@ import 'package:union_app/src/repository/firestore/firebase_article_repository/f
 import 'package:union_app/src/screens/article/create_article/view/create_article_page.dart';
 import 'package:union_app/src/screens/article/user_articles/widget/article_item_widget/view/article_item_widget.dart';
 import 'package:union_app/src/screens/project/project_details/widgets/tabs/posts_tab/bloc/project_posts_bloc.dart';
-import 'package:union_app/src/screens/widgets/empty_page/empty_page_widget.dart';
+import 'package:union_app/src/screens/widgets/exceptions/empty_page_widget.dart';
 import 'package:union_app/src/theme.dart';
 
 class PostsTabWidget extends StatelessWidget {
