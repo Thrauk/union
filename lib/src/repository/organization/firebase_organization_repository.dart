@@ -19,6 +19,9 @@ class FirebaseOrganizationRepository {
 
   final CollectionReference<Map<String, dynamic>> firestoreInstance = FirebaseFirestore.instance.collection('organizations');
 
+  final CollectionReference<Map<String, dynamic>> firestoreRequestInstance =
+      FirebaseFirestore.instance.collection('organizations_requests');
+
   final Reference storageReference = FirebaseStorage.instance.ref().child('organization');
 
   Future<void> saveOrganization(Organization organization) async {
@@ -60,7 +63,6 @@ class FirebaseOrganizationRepository {
     }
     await firestoreInstance.doc(id).update(retOrganization.toJson());
   }
-
 
   Future<List<Organization>> getUserOrganizations(String uid) async {
     return _userOrganizationsFromQuery(await firestoreInstance.where('members', arrayContains: uid).get());
@@ -129,5 +131,50 @@ class FirebaseOrganizationRepository {
     }
   }
 
+  Future<void> requestJoinOrganization(OrganizationJoinRequest request) async {
+    final DocumentReference<Map<String, dynamic>> documentReference = firestoreInstance.doc();
+    final OrganizationJoinRequest joinRequest = request.copyWith(id: documentReference.id);
+    await firestoreRequestInstance.doc(documentReference.id).set(joinRequest.toJson());
+  }
 
+  Future<List<OrganizationJoinRequest>> getJoinOrganizationRequest(String organizationId, String uid) async {
+    final List<OrganizationJoinRequest> requests = _requestsFromQuery(
+        await firestoreRequestInstance.where('uid', isEqualTo: uid).where('organization_id', isEqualTo: organizationId).get());
+
+    return requests;
+  }
+
+  Future<List<OrganizationJoinRequest>> getAllJoinOrganizationRequests(String organizationId) async {
+    final List<OrganizationJoinRequest> requests = _requestsFromQuery(await firestoreRequestInstance.get());
+
+    return requests;
+  }
+
+  Future<bool> isJoinRequested(String organizationId, String uid) async {
+    final List<OrganizationJoinRequest> requests = _requestsFromQuery(
+        await firestoreRequestInstance.where('uid', isEqualTo: uid).where('organization_id', isEqualTo: organizationId).get());
+
+    return requests.isNotEmpty;
+  }
+
+  Future<void> removeJoinOrganizationRequest(String organizationId, String uid) async {
+    final List<OrganizationJoinRequest> requests = _requestsFromQuery(
+        await firestoreRequestInstance.where('uid', isEqualTo: uid).where('organization_id', isEqualTo: organizationId).get());
+
+    for (final OrganizationJoinRequest request in requests) {
+      await firestoreRequestInstance.doc(request.id).delete();
+    }
+  }
+
+  List<OrganizationJoinRequest> _requestsFromQuery(QuerySnapshot<Map<String, dynamic>> query) {
+    return query.docs.toList().map((QueryDocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
+      final Map<String, dynamic> json = documentSnapshot.data();
+      if (json != null) {
+        return OrganizationJoinRequest.fromJson(json);
+      } else {
+        return OrganizationJoinRequest.empty;
+      }
+    }).toList()
+      ..sort((OrganizationJoinRequest a, OrganizationJoinRequest b) => b.timestamp.compareTo(a.timestamp));
+  }
 }

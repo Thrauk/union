@@ -57,6 +57,7 @@ class ViewOrganizationPage extends StatelessWidget {
                   isOwned: state.isOwned,
                   isMember: state.isMember,
                   isPublic: state.organization.type == 'Public',
+                  isRequested: state.isRequested,
                   projects: state.projects,
                 );
               }

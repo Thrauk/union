@@ -12,3 +12,6 @@ class JoinOrganization extends ViewOrganizationEvent {}
 class LeaveOrganization extends ViewOrganizationEvent {}
 
 class DeleteOrganization extends ViewOrganizationEvent {}
+
+class RequestJoin extends ViewOrganizationEvent {}
+

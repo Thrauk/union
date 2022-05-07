@@ -8,6 +8,8 @@ class ViewOrganizationState extends Equatable {
     this.organization = Organization.empty,
     this.projects = const <Project>[],
     this.isDeleted = false,
+    this.isRequested = false,
+    this.joinRequests = const <OrganizationJoinRequest>[],
   });
 
   final bool isLoaded;
@@ -16,6 +18,8 @@ class ViewOrganizationState extends Equatable {
   final Organization organization;
   final List<Project> projects;
   final bool isDeleted;
+  final bool isRequested;
+  final List<OrganizationJoinRequest> joinRequests;
 
   ViewOrganizationState copyWith({
     bool? isLoaded,
@@ -24,6 +28,8 @@ class ViewOrganizationState extends Equatable {
     Organization? organization,
     List<Project>? projects,
     bool? isDeleted,
+    bool? isRequested,
+    List<OrganizationJoinRequest>? joinRequests,
   }) {
     return ViewOrganizationState(
       isLoaded: isLoaded ?? this.isLoaded,
@@ -32,6 +38,8 @@ class ViewOrganizationState extends Equatable {
       isMember: isMember ?? this.isMember,
       projects: projects ?? this.projects,
       isDeleted: isDeleted ?? this.isDeleted,
+      isRequested: isRequested ?? this.isRequested,
+      joinRequests: joinRequests ?? this.joinRequests,
     );
   }
 
@@ -43,5 +51,7 @@ class ViewOrganizationState extends Equatable {
         organization,
         projects,
         isDeleted,
+        isRequested,
+        joinRequests,
       ];
 }
