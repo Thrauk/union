@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
- import 'package:union_app/src/models/authentication/app_user.dart';
+import 'package:union_app/src/models/authentication/app_user.dart';
 import 'package:union_app/src/models/models.dart';
 
 import '../firestore.dart';
@@ -70,6 +70,18 @@ class FirebaseUserRepository {
     });
     await updateUserDetails(user.copyWith(photo: url));
     return url;
+  }
+
+  Future<List<FullUser>> getUsersByUids(List<String> uids) async {
+    final List<FullUser> users = <FullUser>[];
+
+    for (final String id in uids) {
+      final FullUser user = await getFullUserByUid(id);
+      if (user != null) {
+        users.add(user);
+      }
+    }
+    return users;
   }
 
   // DEMO FUNCTION, SHOULD NOT BE USED OTHERWISE

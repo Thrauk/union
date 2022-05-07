@@ -6,7 +6,7 @@ import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/open_roles/view_open_role_applicants/bloc/open_role_applicants_bloc.dart';
 import 'package:union_app/src/screens/open_roles/view_open_role_applicants/widgets/applicant_item_widget.dart';
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
-import 'package:union_app/src/screens/widgets/empty_page/empty_page_widget.dart';
+import 'package:union_app/src/screens/widgets/exceptions/empty_page_widget.dart';
 import 'package:union_app/src/theme.dart';
 
 class OpenRoleApplicantsPage extends StatelessWidget {

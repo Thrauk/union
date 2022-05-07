@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/src/provider.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/screens/app/app.dart';
-import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/screens/widgets/user_item/user_item_widget.dart';
 import 'package:union_app/src/theme.dart';
 
 import 'bloc/project_members_bloc.dart';
@@ -24,60 +24,24 @@ class MemberItemWidget extends StatelessWidget {
         return previous.users.length == current.users.length;
       },
       builder: (BuildContext context, ProjectMembersState state) {
-        return Card(
-          color: AppColors.backgroundDark,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Avatar(
-                      photo: user.photo,
-                      avatarSize: 24,
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Flexible(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            user.displayName ?? '',
-                            style: AppStyles.textStyleBody,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            user.jobTitle ?? '',
-                            style: AppStyles.textStyleBodySmall,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+        if ((loggedUid == ownerId) && (loggedUid != user.id))
+          return UserItemWidget(
+            user: user,
+            endWidget: Align(
+              alignment: Alignment.centerRight,
+              child: GestureDetector(
+                onTap: () {
+                  showDeleteDialog(context, user, projectId);
+                },
+                child: const Icon(
+                  Icons.person_remove_alt_1,
+                  color: AppColors.redLight,
                 ),
-                if ((loggedUid == ownerId) && (loggedUid != user.id))
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () {
-                        showDeleteDialog(context, user, projectId);
-                      },
-                      child: const Icon(
-                        Icons.person_remove_alt_1,
-                        color: AppColors.redLight,
-                      ),
-                    ),
-                  )
-              ],
+              ),
             ),
-          ),
-        );
+          );
+        else
+          return UserItemWidget(user: user);
       },
     );
   }
