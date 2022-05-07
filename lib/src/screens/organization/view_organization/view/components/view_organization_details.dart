@@ -21,6 +21,7 @@ class ViewOrganizationDetails extends StatelessWidget {
     required this.isOwned,
     required this.isMember,
     required this.isPublic,
+    this.isRequested = false,
     this.projects = const <Project>[],
   }) : super(key: key);
 
@@ -28,6 +29,7 @@ class ViewOrganizationDetails extends StatelessWidget {
   final bool isOwned;
   final bool isMember;
   final bool isPublic;
+  final bool isRequested;
   final List<Project> projects;
 
   @override
@@ -48,46 +50,31 @@ class ViewOrganizationDetails extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   OrganizationInfo(organization: organization),
-                    ViewOrganizationMemberArea(
-                      isMember: isMember,
-                      isOwner: isOwned,
+                  ViewOrganizationMemberArea(
+                    isMember: isMember,
+                    isOwner: isOwned,
+                    isPublic: isPublic,
+                    isRequested: isRequested,
+                    onLeaveJoinPressed: () {
+                      if (isMember) {
+                        context.read<ViewOrganizationBloc>().add(LeaveOrganization());
+                      } else {
+                        context.read<ViewOrganizationBloc>().add(JoinOrganization());
+                      }
+                    },
+                    onRequestPressed: () {
+                      context.read<ViewOrganizationBloc>().add(RequestJoin());
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12.0),
+                    child: _MenuSelect(
+                      organization: organization,
+                      isOwned: isOwned,
                       isPublic: isPublic,
+                      isMember: isMember,
                     ),
-                  if (isOwned)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12.0),
-                      child: OrganizationOwnerMenu(
-                        onCreateProjectPressed: () {
-                          Navigator.of(context)
-                              .push(CreateProjectPage.route(organizationId: organization.id))
-                              .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
-                        },
-                        onAddMemberPressed: () {
-                          Navigator.of(context)
-                              .push(AddMemberOrganization.route(organization.id))
-                              .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
-                        },
-                        onEditPressed: () {
-                          Navigator.of(context)
-                              .push(EditOrganizationPage.route(organization.id))
-                              .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
-                        },
-                        onDeletePressed: () {
-                          context.read<ViewOrganizationBloc>().add(DeleteOrganization());
-                        },
-                      ),
-                    )
-                  else if (isMember)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12.0),
-                      child: OrganizationMemberMenu(
-                        onCreateProjectPressed: () {
-                          Navigator.of(context)
-                              .push(CreateProjectPage.route(organizationId: organization.id))
-                              .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
-                        },
-                      ),
-                    ),
+                  ),
                 ],
               ),
             ),
@@ -100,5 +87,55 @@ class ViewOrganizationDetails extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _MenuSelect extends StatelessWidget {
+  const _MenuSelect({
+    Key? key,
+    required this.organization,
+    required this.isOwned,
+    required this.isMember,
+    required this.isPublic,
+  }) : super(key: key);
+
+  final Organization organization;
+  final bool isOwned;
+  final bool isMember;
+  final bool isPublic;
+
+  @override
+  Widget build(BuildContext context) {
+    if (isOwned)
+      return OrganizationOwnerMenu(
+        onCreateProjectPressed: () {
+          Navigator.of(context)
+              .push(CreateProjectPage.route(organizationId: organization.id))
+              .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
+        },
+        onAddMemberPressed: () {
+          Navigator.of(context)
+              .push(AddMemberOrganization.route(organization.id))
+              .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
+        },
+        onEditPressed: () {
+          Navigator.of(context)
+              .push(EditOrganizationPage.route(organization.id))
+              .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
+        },
+        onDeletePressed: () {
+          context.read<ViewOrganizationBloc>().add(DeleteOrganization());
+        },
+      );
+    else if (isMember)
+      return OrganizationMemberMenu(
+        onCreateProjectPressed: () {
+          Navigator.of(context)
+              .push(CreateProjectPage.route(organizationId: organization.id))
+              .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
+        },
+      );
+    else
+      return Container();
   }
 }

@@ -137,11 +137,31 @@ class FirebaseOrganizationRepository {
     await firestoreRequestInstance.doc(documentReference.id).set(joinRequest.toJson());
   }
 
+  Future<List<OrganizationJoinRequest>> getJoinOrganizationRequest(String organizationId, String uid) async {
+    final List<OrganizationJoinRequest> requests = _requestsFromQuery(
+        await firestoreRequestInstance.where('uid', isEqualTo: uid).where('organization_id', isEqualTo: organizationId).get());
+
+    return requests;
+  }
+
+  Future<List<OrganizationJoinRequest>> getAllJoinOrganizationRequests(String organizationId) async {
+    final List<OrganizationJoinRequest> requests = _requestsFromQuery(await firestoreRequestInstance.get());
+
+    return requests;
+  }
+
+  Future<bool> isJoinRequested(String organizationId, String uid) async {
+    final List<OrganizationJoinRequest> requests = _requestsFromQuery(
+        await firestoreRequestInstance.where('uid', isEqualTo: uid).where('organization_id', isEqualTo: organizationId).get());
+
+    return requests.isNotEmpty;
+  }
+
   Future<void> removeJoinOrganizationRequest(String organizationId, String uid) async {
     final List<OrganizationJoinRequest> requests = _requestsFromQuery(
         await firestoreRequestInstance.where('uid', isEqualTo: uid).where('organization_id', isEqualTo: organizationId).get());
 
-    for(final OrganizationJoinRequest request in requests) {
+    for (final OrganizationJoinRequest request in requests) {
       await firestoreRequestInstance.doc(request.id).delete();
     }
   }

@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class OrganizationJoinRequest extends Equatable {
   const OrganizationJoinRequest({
-    required this.id,
+    this.id = '',
     required this.uid,
     required this.organizationId,
     this.requestMessage = '',
