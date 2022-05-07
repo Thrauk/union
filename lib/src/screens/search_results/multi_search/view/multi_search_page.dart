@@ -10,9 +10,8 @@ import 'package:union_app/src/screens/project/project_details/view/project_detai
 import 'package:union_app/src/screens/search_results/multi_search/bloc/multi_search_page_bloc.dart';
 import 'package:union_app/src/screens/user_profile/profile/profile.dart';
 import 'package:union_app/src/screens/widgets/app_bottom_nav_bar/app_bottom_nav_bar.dart';
+import 'package:union_app/src/theme.dart';
 import 'package:union_app/src/utils/date_format_utils.dart';
-
-import '../../../../theme.dart';
 
 class MultiSearchPage extends StatelessWidget {
   const MultiSearchPage({Key? key}) : super(key: key);

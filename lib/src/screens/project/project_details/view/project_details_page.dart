@@ -7,6 +7,7 @@ import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/open_roles/add_open_role/view/add_open_role_page.dart';
 import 'package:union_app/src/screens/project/edit_project/edit_project.dart';
+import 'package:union_app/src/screens/project/invite_users/view/invite_users_to_project_page.dart';
 import 'package:union_app/src/screens/project/project_details/bloc/project_details_bloc.dart';
 import 'package:union_app/src/screens/project/project_details/widgets/tabs/barrel.dart';
 import 'package:union_app/src/screens/widgets/dialogs/two_option_dialog.dart';
@@ -118,8 +119,12 @@ void manageChoices(String choice, BuildContext context, Project project) {
       TwoOptionsDialog.showTwoOptionsDialog(
           context: context,
           optionOneFunction: () {
-            FirebaseProjectRepository().deleteProject(project);
-            Navigator.of(context).pushAndRemoveUntil(HomePage.route(), (Route<dynamic> route) => false);
+            try {
+              FirebaseProjectRepository().deleteProject(project);
+              Navigator.of(context).pushAndRemoveUntil(HomePage.route(), (Route<dynamic> route) => false);
+            } catch (e) {
+              print(e);
+            }
           },
           dialogSubtitle: 'Are you sure you want to delete this project?');
       break;
@@ -128,6 +133,9 @@ void manageChoices(String choice, BuildContext context, Project project) {
       break;
     case Choices.add_open_role:
       Navigator.push(context, AddOpenRolePage.route(project.id));
+      break;
+    case Choices.add_members:
+      Navigator.push(context, InviteUsersToProjectPage.route(project));
   }
 }
 
@@ -181,8 +189,9 @@ class Choices {
   static const String edit = 'Edit';
   static const String delete = 'Delete';
   static const String add_open_role = 'Add an open role';
+  static const String add_members = 'Add members';
 
-  static const List<String> choices = <String>[edit, delete, add_open_role];
+  static const List<String> choices = <String>[edit, delete, add_open_role, add_members];
 }
 
 bool isNotProjectOwner(String projectOwnerId, String userId) {
