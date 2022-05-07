@@ -8,9 +8,12 @@ import 'package:union_app/src/screens/organization/manage_organization/add_membe
 import 'package:union_app/src/screens/organization/organization_members/view/organization_members_page.dart';
 import 'package:union_app/src/screens/organization/view_organization/bloc/view_organization_bloc.dart';
 import 'package:union_app/src/screens/organization/view_organization/view/components/view_organization_member_area.dart';
+import 'package:union_app/src/screens/organization/view_organization/view/widgets/organization_info.dart';
 import 'package:union_app/src/screens/project/create_project/create_project.dart';
 import 'package:union_app/src/screens/project/widgets/project_item_widget/view/project_item_widget.dart';
 import 'package:union_app/src/theme.dart';
+
+import '../widgets/organization_header_image.dart';
 
 
 class ViewOrganizationDetails extends StatelessWidget {
@@ -38,93 +41,15 @@ class ViewOrganizationDetails extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            if (organization.photoUrl != '')
-              SizedBox(
-                height: 120,
-                width: double.infinity,
-                child: CachedNetworkImage(
-                  imageUrl: organization.photoUrl,
-                  fit: BoxFit.fitWidth,
-                ),
-              )
-            else
-              Stack(
-                alignment: Alignment.center,
-                children: <Widget>[
-                  Container(
-                    height: 120,
-                    width: double.infinity,
-                    color: AppColors.primaryColor,
-                  ),
-                  const Align(
-                    alignment: Alignment.center,
-                    child: Icon(
-                      Icons.group,
-                      color: AppColors.black09,
-                      size: 35,
-                    ),
-                  ),
-                ],
-              ),
+            OrganizationHeaderImage(
+              photoUrl: organization.photoUrl,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        organization.name,
-                        style: AppStyles.textStyleHeading2,
-                      ),
-                      // if (isOwned)
-                      //   const Icon(
-                      //     Icons.person,
-                      //     color: AppColors.primaryColor,
-                      //   ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(organization.description, style: AppStyles.textStyleBody),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: <Widget>[
-                      if (organization.type == 'Public')
-                        const Icon(
-                          Icons.lock_open,
-                          color: AppColors.white07,
-                          size: 20,
-                        )
-                      else
-                        const Icon(
-                          Icons.lock_outlined,
-                          color: AppColors.white07,
-                          size: 20,
-                        ),
-                      const SizedBox(width: 2),
-                      Text(
-                        organization.type,
-                        style: AppStyles.textStyleBodySmall,
-                      ),
-                      const Text(' • ', style: AppStyles.textStyleBodySmall),
-                      Text(
-                        organization.category,
-                        style: AppStyles.textStyleBodySmall,
-                      ),
-                      const Text(' • ', style: AppStyles.textStyleBodySmall),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(OrganizationMembersPage.route(organization.id));
-                        },
-                        child: Text(
-                          organization.members.length > 1
-                              ? '${organization.members.length} members'
-                              : '${organization.members.length} member',
-                          style: AppStyles.textStyleBodySmallW08,
-                        ),
-                      ),
-                    ],
-                  ),
+                  OrganizationInfo(organization: organization),
                   if (isMember || isPublic)
                     ViewOrganizationMemberArea(
                       isMember: isMember,
