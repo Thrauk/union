@@ -8,12 +8,14 @@ class OrganizationOwnerMenu extends StatelessWidget {
     this.onAddMemberPressed,
     this.onEditPressed,
     this.onDeletePressed,
+    this.onViewRequests,
   }) : super(key: key);
 
   final void Function()? onCreateProjectPressed;
   final void Function()? onAddMemberPressed;
   final void Function()? onEditPressed;
   final void Function()? onDeletePressed;
+  final void Function()? onViewRequests;
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +78,24 @@ class OrganizationOwnerMenu extends StatelessWidget {
         ),
         ElevatedButton.icon(
           icon: const Icon(
+            Icons.article,
+            color: AppColors.primaryColor,
+            size: 20.0,
+          ),
+          label: const Text(
+            'View requests',
+            style: AppStyles.textStyleBodySmallW08,
+          ),
+          onPressed: onViewRequests,
+          style: ElevatedButton.styleFrom(
+            primary: AppColors.backgroundLight1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+          ),
+        ),
+        ElevatedButton.icon(
+          icon: const Icon(
             Icons.delete,
             color: AppColors.primaryColor,
             size: 20.0,
@@ -92,6 +112,7 @@ class OrganizationOwnerMenu extends StatelessWidget {
             ),
           ),
         ),
+
       ],
     );
   }

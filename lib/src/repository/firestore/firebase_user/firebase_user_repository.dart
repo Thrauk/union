@@ -84,6 +84,25 @@ class FirebaseUserRepository {
     return users;
   }
 
+  Future<List<FullUser>> queryUsersByUids(List<String> uids) async {
+    if(uids.isEmpty) {
+      return <FullUser>[];
+    }
+    final QuerySnapshot<Map<String, dynamic>> usersQuery = await firestoreInstance.where('id', whereIn: uids).get();
+    return _usersFromQuery(usersQuery);
+  }
+
+  List<FullUser> _usersFromQuery(QuerySnapshot<Map<String, dynamic>> query) {
+    return query.docs.toList().map((QueryDocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
+      final Map<String, dynamic> json = documentSnapshot.data();
+      if (json != null) {
+        return FullUser.fromJson(json);
+      } else {
+        return FullUser.empty;
+      }
+    }).toList();
+  }
+
   // DEMO FUNCTION, SHOULD NOT BE USED OTHERWISE
   Future<List<FullUser>> getAllUsers() async {
     final List<FullUser> users = (await firestoreInstance.get())

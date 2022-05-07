@@ -51,9 +51,9 @@ class ViewOrganizationBloc extends Bloc<ViewOrganizationEvent, ViewOrganizationS
       final List<Project> projectList = await _firebaseProjectRepository.getProjectsOrganization(20, _organizationId);
       projectList.sort((Project A, Project B) => B.timestamp.compareTo(A.timestamp));
 
-      if (isOwned) {
-        joinRequests = await _firebaseOrganizationRepository.getAllJoinOrganizationRequests(_organizationId);
-      }
+      // if (isOwned) {
+      //   joinRequests = await _firebaseOrganizationRepository.getAllJoinOrganizationRequests(_organizationId);
+      // }
 
       emit(state.copyWith(
         isLoaded: true,
@@ -61,7 +61,7 @@ class ViewOrganizationBloc extends Bloc<ViewOrganizationEvent, ViewOrganizationS
         isMember: isMember,
         organization: organization,
         projects: projectList,
-        joinRequests: joinRequests,
+        //joinRequests: joinRequests,
       ));
     } else if (!organization.isPublic) {
       emit(state.copyWith(

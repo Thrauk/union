@@ -145,7 +145,7 @@ class FirebaseOrganizationRepository {
   }
 
   Future<List<OrganizationJoinRequest>> getAllJoinOrganizationRequests(String organizationId) async {
-    final List<OrganizationJoinRequest> requests = _requestsFromQuery(await firestoreRequestInstance.get());
+    final List<OrganizationJoinRequest> requests = _requestsFromQuery(await firestoreRequestInstance.where('organization_id', isEqualTo: organizationId).get());
 
     return requests;
   }

@@ -10,6 +10,7 @@ import 'package:union_app/src/screens/organization/view_organization/view/widget
 import 'package:union_app/src/screens/organization/view_organization/view/widgets/organization_owner_menu.dart';
 import 'package:union_app/src/screens/organization/view_organization/view/widgets/organization_posts_area.dart';
 import 'package:union_app/src/screens/organization/view_organization/view/widgets/widgets.dart';
+import 'package:union_app/src/screens/organization/view_organization_requests/view/view_organization_requests.dart';
 import 'package:union_app/src/screens/project/create_project/create_project.dart';
 
 import '../widgets/organization_header_image.dart';
@@ -125,6 +126,11 @@ class _MenuSelect extends StatelessWidget {
         },
         onDeletePressed: () {
           context.read<ViewOrganizationBloc>().add(DeleteOrganization());
+        },
+        onViewRequests: () {
+          Navigator.of(context)
+              .push(ViewOrganizationRequests.route(organization.id))
+              .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
         },
       );
     else if (isMember)
