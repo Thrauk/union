@@ -10,13 +10,16 @@ class ViewOrganizationMemberArea extends StatelessWidget {
     Key? key,
     required this.isMember,
     required this.isOwner,
+    required this.isPublic,
   }) : super(key: key);
 
   final bool isMember;
   final bool isOwner;
+  final bool isPublic;
 
   @override
   Widget build(BuildContext context) {
+    if(isMember || isPublic)
     return Padding(
       padding: const EdgeInsets.only(top: 16.0),
       child: Column(
@@ -44,5 +47,7 @@ class ViewOrganizationMemberArea extends StatelessWidget {
         ],
       ),
     );
+    else
+      return Container();
   }
 }

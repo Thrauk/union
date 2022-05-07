@@ -1,20 +1,18 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/models/organization/organization.dart';
 import 'package:union_app/src/screens/organization/edit_organization/view/edit_organization_page.dart';
 import 'package:union_app/src/screens/organization/manage_organization/add_member/view/add_member_organization.dart';
-import 'package:union_app/src/screens/organization/organization_members/view/organization_members_page.dart';
 import 'package:union_app/src/screens/organization/view_organization/bloc/view_organization_bloc.dart';
 import 'package:union_app/src/screens/organization/view_organization/view/components/view_organization_member_area.dart';
 import 'package:union_app/src/screens/organization/view_organization/view/widgets/organization_info.dart';
+import 'package:union_app/src/screens/organization/view_organization/view/widgets/organization_owner_menu.dart';
+import 'package:union_app/src/screens/organization/view_organization/view/widgets/organization_posts_area.dart';
+import 'package:union_app/src/screens/organization/view_organization/view/widgets/widgets.dart';
 import 'package:union_app/src/screens/project/create_project/create_project.dart';
-import 'package:union_app/src/screens/project/widgets/project_item_widget/view/project_item_widget.dart';
-import 'package:union_app/src/theme.dart';
 
 import '../widgets/organization_header_image.dart';
-
 
 class ViewOrganizationDetails extends StatelessWidget {
   const ViewOrganizationDetails({
@@ -50,179 +48,54 @@ class ViewOrganizationDetails extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   OrganizationInfo(organization: organization),
-                  if (isMember || isPublic)
                     ViewOrganizationMemberArea(
                       isMember: isMember,
                       isOwner: isOwned,
+                      isPublic: isPublic,
                     ),
                   if (isOwned)
                     Padding(
                       padding: const EdgeInsets.only(top: 12.0),
-                      child: Wrap(
-                        spacing: 8,
-                        children: <Widget>[
-                          ElevatedButton.icon(
-                            icon: const Icon(
-                              Icons.analytics,
-                              color: AppColors.primaryColor,
-                              size: 20.0,
-                            ),
-                            label: const Text(
-                              'Create project',
-                              style: AppStyles.textStyleBodySmallW08,
-                            ),
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .push(CreateProjectPage.route(organizationId: organization.id))
-                                  .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: AppColors.backgroundLight1,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                            ),
-                          ),
-                          ElevatedButton.icon(
-                            icon: const Icon(
-                              Icons.person_add_alt_1_sharp,
-                              color: AppColors.primaryColor,
-                              size: 20.0,
-                            ),
-                            label: const Text(
-                              'Add members',
-                              style: AppStyles.textStyleBodySmallW08,
-                            ),
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .push(AddMemberOrganization.route(organization.id))
-                                  .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: AppColors.backgroundLight1,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                            ),
-                          ),
-                          ElevatedButton.icon(
-                            icon: const Icon(
-                              Icons.edit,
-                              color: AppColors.primaryColor,
-                              size: 20.0,
-                            ),
-                            label: const Text(
-                              'Edit',
-                              style: AppStyles.textStyleBodySmallW08,
-                            ),
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .push(EditOrganizationPage.route(organization.id))
-                                  .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: AppColors.backgroundLight1,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                            ),
-                          ),
-                          ElevatedButton.icon(
-                            icon: const Icon(
-                              Icons.delete,
-                              color: AppColors.primaryColor,
-                              size: 20.0,
-                            ),
-                            label: const Text(
-                              'Delete organization',
-                              style: AppStyles.textStyleBodySmallW08,
-                            ),
-                            onPressed: () {
-                              context.read<ViewOrganizationBloc>().add(DeleteOrganization());
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: AppColors.backgroundLight1,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                            ),
-                          ),
-                        ],
+                      child: OrganizationOwnerMenu(
+                        onCreateProjectPressed: () {
+                          Navigator.of(context)
+                              .push(CreateProjectPage.route(organizationId: organization.id))
+                              .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
+                        },
+                        onAddMemberPressed: () {
+                          Navigator.of(context)
+                              .push(AddMemberOrganization.route(organization.id))
+                              .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
+                        },
+                        onEditPressed: () {
+                          Navigator.of(context)
+                              .push(EditOrganizationPage.route(organization.id))
+                              .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
+                        },
+                        onDeletePressed: () {
+                          context.read<ViewOrganizationBloc>().add(DeleteOrganization());
+                        },
                       ),
                     )
-                  else if(isMember)
+                  else if (isMember)
                     Padding(
                       padding: const EdgeInsets.only(top: 12.0),
-                      child: Row(
-                        children: <Widget>[
-                          ElevatedButton.icon(
-                            icon: const Icon(
-                              Icons.analytics,
-                              color: AppColors.primaryColor,
-                              size: 20.0,
-                            ),
-                            label: const Text(
-                              'Create project',
-                              style: AppStyles.textStyleBodySmallW08,
-                            ),
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .push(CreateProjectPage.route(organizationId: organization.id))
-                                  .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: AppColors.backgroundLight1,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                            ),
-                          ),
-                        ],
+                      child: OrganizationMemberMenu(
+                        onCreateProjectPressed: () {
+                          Navigator.of(context)
+                              .push(CreateProjectPage.route(organizationId: organization.id))
+                              .then((dynamic response) => context.read<ViewOrganizationBloc>().add(LoadData()));
+                        },
                       ),
                     ),
-
                 ],
               ),
             ),
-            if (isMember || isPublic)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 8.0),
-                      child: Text('Projects', style: AppStyles.textStyleHeading1),
-                    ),
-                    const SizedBox(height: 8),
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: projects.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ProjectItemWidget(
-                          project: projects[index],
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              )
-            else
-              Padding(
-                padding: const EdgeInsets.only(top: 32),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const <Widget>[
-                      Icon(Icons.lock, color: AppColors.primaryColor),
-                      SizedBox(height: 8),
-                      Text('The posts of this organizations are private', style: AppStyles.textStyleBody),
-                    ],
-                  ),
-                ),
-              ),
+            OrganizationPostsArea(
+              projects: projects,
+              isPublic: isPublic,
+              isMember: isMember,
+            )
           ],
         ),
       ),
