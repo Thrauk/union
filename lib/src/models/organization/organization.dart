@@ -86,6 +86,8 @@ class Organization extends Equatable {
   final String photoUrl;
   final File? photo;
 
+  bool get isPublic => type == 'Public';
+
   @override
   List<Object?> get props => <Object?>[
         name,

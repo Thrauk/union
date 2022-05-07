@@ -103,6 +103,7 @@ class EditOrganizationBloc extends Bloc<EditOrganizationEvent, EditOrganizationS
         description: state.description.value,
         photo: state.selectedImage,
         category: state.selectedCategory,
+        type: state.isPublic ? 'Public' : 'Private',
       );
       await _organizationRepository.updateOrganization(organizationId, updatedOrganization);
       emit(state.copyWith(submissionSuccess: true));

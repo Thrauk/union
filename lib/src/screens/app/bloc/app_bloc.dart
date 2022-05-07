@@ -45,10 +45,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   final AuthenticationRepository _authenticationRepository;
   final FirebaseUserRepository _firebaseUserRepository = FirebaseUserRepository();
   final NotificationRepository _notificationRepository = NotificationRepository();
-  late final StreamSubscription<AppUser> _userSubscription;
-  late final StreamSubscription<FullUser> _userDetailsSubscription;
-  late final StreamSubscription<RemoteMessage> _firebaseOnMessageSubscription;
-  late final StreamSubscription<RemoteMessage> _firebaseOnMessageOpenedAppSubscription;
+  late StreamSubscription<AppUser> _userSubscription;
+  late StreamSubscription<FullUser> _userDetailsSubscription;
+  late StreamSubscription<RemoteMessage> _firebaseOnMessageSubscription;
+  late StreamSubscription<RemoteMessage> _firebaseOnMessageOpenedAppSubscription;
 
 
 
@@ -78,9 +78,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     });
   }
 
-  void _onLogoutRequested(AppLogoutRequested event, Emitter<AppState> emit) {
-    _authenticationRepository.logOut();
-    _userDetailsSubscription.cancel();
+  Future<void> _onLogoutRequested(AppLogoutRequested event, Emitter<AppState> emit) async {
+    await _authenticationRepository.logOut();
+    await _userDetailsSubscription.cancel();
   }
 
   void _onUserDetailsChanged(UserDetailsChanged event, Emitter<AppState> emit) {
@@ -88,11 +88,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   }
 
   @override
-  Future<void> close() {
-    _userSubscription.cancel();
-    _firebaseOnMessageSubscription.cancel();
-    _firebaseOnMessageOpenedAppSubscription.cancel();
-    _userDetailsSubscription.cancel();
+  Future<void> close() async {
+    await _userSubscription.cancel();
+    await _firebaseOnMessageSubscription.cancel();
+    await _firebaseOnMessageOpenedAppSubscription.cancel();
+    await _userDetailsSubscription.cancel();
     return super.close();
   }
 }
