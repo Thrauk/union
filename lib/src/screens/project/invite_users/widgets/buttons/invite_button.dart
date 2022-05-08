@@ -13,6 +13,7 @@ class InviteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UnionClassicButton(
+      primaryColor: AppColors.backgroundLight,
       minimumSize: const Size(0, 28),
       text: 'Invite',
       textStyle: AppStyles.buttonTextStyle.copyWith(fontSize: 14),

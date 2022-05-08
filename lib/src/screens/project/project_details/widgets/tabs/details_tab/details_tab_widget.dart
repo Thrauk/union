@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/screens/app/app.dart';
-import 'package:union_app/src/screens/article/article_details/article_details_page.dart';
 import 'package:union_app/src/screens/project/members_list/view/members_list_page.dart';
 import 'package:union_app/src/screens/project/project_details/bloc/project_details_bloc.dart';
 import 'package:union_app/src/screens/project/widgets/members_widget/members_widget.dart';
+import 'package:union_app/src/screens/widgets/chips/chip_with_text.dart';
 import 'package:union_app/src/theme.dart';
 
 class DetailsTabWidget extends StatelessWidget {
@@ -69,7 +69,7 @@ class DetailsTabWidget extends StatelessWidget {
                     spacing: 4,
                     children: project.tags!
                         .map(
-                          (dynamic tag) => TagWidget(label: tag as String),
+                          (dynamic tag) => ChipWithText(label: tag as String),
                         )
                         .toList()
                         .cast<Widget>(),

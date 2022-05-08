@@ -95,24 +95,6 @@ class ProjectDetailsPage extends StatelessWidget {
   }
 }
 
-class TagWidget extends StatelessWidget {
-  const TagWidget({Key? key, required this.label}) : super(key: key);
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Chip(
-      label: Text(
-        label,
-        style: const TextStyle(color: AppColors.backgroundDark, fontWeight: FontWeight.w600),
-      ),
-      labelPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
-      backgroundColor: AppColors.primaryColor,
-    );
-  }
-}
-
 void manageChoices(String choice, BuildContext context, Project project) {
   switch (choice) {
     case Choices.delete:
