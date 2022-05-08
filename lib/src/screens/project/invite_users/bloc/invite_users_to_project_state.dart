@@ -7,20 +7,22 @@ class InviteUsersToProjectState extends Equatable {
       {this.pageStatus = PageStatus.INITIAL,
       this.query = '',
       this.resultedUsers = const <FullUser>[],
-      this.invites = const <ProjectInvite>[]});
+      this.invitedUsersUids = const <String>[]});
 
   final String query;
   final List<FullUser> resultedUsers;
   final PageStatus pageStatus;
-  final List<ProjectInvite> invites;
+  final List<String> invitedUsersUids;
 
-  InviteUsersToProjectState copyWith({String? query, List<FullUser>? resultedUsers, PageStatus? pageStatus}) {
+  InviteUsersToProjectState copyWith(
+      {String? query, List<FullUser>? resultedUsers, PageStatus? pageStatus, List<String>? invitedUsersUids}) {
     return InviteUsersToProjectState(
         query: query ?? this.query,
         resultedUsers: resultedUsers ?? this.resultedUsers,
-        pageStatus: pageStatus ?? this.pageStatus);
+        pageStatus: pageStatus ?? this.pageStatus,
+        invitedUsersUids: invitedUsersUids ?? this.invitedUsersUids);
   }
 
   @override
-  List<Object> get props => <Object>[query, resultedUsers];
+  List<Object> get props => <Object>[query, resultedUsers, pageStatus, invitedUsersUids];
 }

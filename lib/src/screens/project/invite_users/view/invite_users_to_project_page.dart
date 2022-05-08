@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
+import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/project/invite_users/bloc/invite_users_to_project_bloc.dart';
+import 'package:union_app/src/screens/project/invite_users/widgets/barrel.dart';
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
-import 'package:union_app/src/screens/widgets/buttons/union_classic_button.dart';
 import 'package:union_app/src/screens/widgets/exceptions/barrel.dart';
 import 'package:union_app/src/screens/widgets/search_bar_widget/search_bar_widget.dart';
 import 'package:union_app/src/screens/widgets/user_item/user_item_widget.dart';
-import 'package:union_app/src/theme.dart';
 
 class InviteUsersToProjectPage extends StatelessWidget {
   const InviteUsersToProjectPage({Key? key, required Project project})
@@ -26,7 +26,7 @@ class InviteUsersToProjectPage extends StatelessWidget {
     return Scaffold(
       appBar: SimpleAppBar(title: _project.title ?? ''),
       body: BlocProvider<InviteUsersToProjectBloc>(
-        create: (BuildContext context) => InviteUsersToProjectBloc(),
+        create: (BuildContext context) => InviteUsersToProjectBloc()..add(GetProjectInvites(_project.id)),
         child: _RequestJoinUsersPage(project: _project),
       ),
     );
@@ -42,9 +42,13 @@ class _RequestJoinUsersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List projectMembers = _project.membersUid ?? <FullUser>[];
+    final List projectMembersUids = _project.membersUid ?? <String>[];
+    final String loggedUid = context.read<AppBloc>().state.user.id;
 
     return BlocBuilder<InviteUsersToProjectBloc, InviteUsersToProjectState>(
+      buildWhen: (InviteUsersToProjectState previous, InviteUsersToProjectState current) {
+        return previous.invitedUsersUids != current.invitedUsersUids || previous.resultedUsers != current.resultedUsers;
+      },
       builder: (BuildContext context, InviteUsersToProjectState state) {
         return Column(
           children: <Widget>[
@@ -69,17 +73,21 @@ class _RequestJoinUsersPage extends StatelessWidget {
                           final FullUser user = state.resultedUsers[index];
                           return UserItemWidget(
                             user: user,
-                            endWidget: !projectMembers.contains(user.id)
-                                ? UnionClassicButton(
-                                    minimumSize: const Size(0, 28),
-                                    text: 'Send request',
-                                    textStyle: AppStyles.buttonTextStyle.copyWith(fontSize: 14),
-                                    onPressed: () {
-                                      context
-                                          .read<InviteUsersToProjectBloc>()
-                                          .add(InvitePressed(state.resultedUsers[index].id));
-                                    },
-                                  )
+                            endWidget: !projectMembersUids.contains(user.id)
+                                ? (!state.invitedUsersUids.contains(user.id)
+                                    ? InviteButton(
+                                        onPressed: () {
+                                          context.read<InviteUsersToProjectBloc>().add(
+                                                InvitePressed(
+                                                    receiverUid: user.id, senderUid: loggedUid, projectId: _project.id),
+                                              );
+                                        },
+                                      )
+                                    : DismissButton(onPressed: () {
+                                        context
+                                            .read<InviteUsersToProjectBloc>()
+                                            .add(DismissPressed(projectId: _project.id, receiverUid: user.id));
+                                      }))
                                 : Container(),
                           );
                         },

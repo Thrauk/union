@@ -18,7 +18,7 @@ class GetUsersBloc extends Bloc<GetUsersEvent, GetUsersState> {
 
   Future<FutureOr<void>> _getFollowers(GetUsers event, Emitter<GetUsersState> emit) async {
     try {
-      final List<FullUser> followers = await _userRepository.getUsersByUids(event.uids);
+      final List<FullUser> followers = await _userRepository.queryUsersByUids(event.uids);
       emit(state.copyWith(users: followers, pageStatus: PageStatus.SUCCESSFUL));
     } catch (e) {
       emit(state.copyWith(pageStatus: PageStatus.FAILED));

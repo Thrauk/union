@@ -72,20 +72,8 @@ class FirebaseUserRepository {
     return url;
   }
 
-  Future<List<FullUser>> getUsersByUids(List<String> uids) async {
-    final List<FullUser> users = <FullUser>[];
-
-    for (final String id in uids) {
-      final FullUser user = await getFullUserByUid(id);
-      if (user != null) {
-        users.add(user);
-      }
-    }
-    return users;
-  }
-
   Future<List<FullUser>> queryUsersByUids(List<String> uids) async {
-    if(uids.isEmpty) {
+    if (uids.isEmpty) {
       return <FullUser>[];
     }
     final QuerySnapshot<Map<String, dynamic>> usersQuery = await firestoreInstance.where('id', whereIn: uids).get();

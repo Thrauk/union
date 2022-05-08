@@ -240,7 +240,6 @@ class FirebaseProjectOpenRoleRepository {
   }
 
   void deleteApplication(ProjectOpenRoleApplicationItem application) {
-    print("applicationid ${application.id}");
     firestoreProjectsApplicationsCollection.doc(application.id).delete();
   }
 }

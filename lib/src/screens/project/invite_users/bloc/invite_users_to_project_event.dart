@@ -7,13 +7,28 @@ abstract class InviteUsersToProjectEvent {
 class SearchIconPressed extends InviteUsersToProjectEvent {}
 
 class InvitePressed extends InviteUsersToProjectEvent {
-  InvitePressed(this.uid);
+  InvitePressed({required this.receiverUid, required this.senderUid, required this.projectId});
 
-  String uid;
+  String receiverUid;
+  String senderUid;
+  String projectId;
+}
+
+class DismissPressed extends InviteUsersToProjectEvent {
+  DismissPressed({required this.projectId, required this.receiverUid});
+
+  String receiverUid;
+  String projectId;
 }
 
 class TextChanged extends InviteUsersToProjectEvent {
   TextChanged(this.value);
 
   String value;
+}
+
+class GetProjectInvites extends InviteUsersToProjectEvent {
+  GetProjectInvites(this.projectId);
+
+  String projectId;
 }
