@@ -63,7 +63,7 @@ class _ProjectItemWidget extends StatelessWidget {
                         color: AppColors.primaryColor,
                       ),
                       const SizedBox(width: 6),
-                      Text(project.title!, overflow: TextOverflow.ellipsis, style: AppStyles.buttonTextStylePrimaryColor),
+                      Text(project.title ?? '', overflow: TextOverflow.ellipsis, style: AppStyles.buttonTextStylePrimaryColor),
                     ],
                   ),
                   const SizedBox(

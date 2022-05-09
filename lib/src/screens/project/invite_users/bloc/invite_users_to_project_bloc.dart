@@ -75,7 +75,7 @@ class InviteUsersToProjectBloc extends Bloc<InviteUsersToProjectEvent, InviteUse
 
   FutureOr<void> _onDismissPressed(DismissPressed event, Emitter<InviteUsersToProjectState> emit) {
       final List<String> invitedUsers = List<String>.empty(growable: true);
-      _firebaseProjectInvitesRepository.deleteInvite(event.projectId, event.receiverUid);
+      _firebaseProjectInvitesRepository.deleteInviteByProjectAndReceiverIds(event.projectId, event.receiverUid);
 
       invitedUsers
         ..addAll(state.invitedUsersUids)

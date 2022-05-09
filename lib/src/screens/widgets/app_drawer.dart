@@ -9,10 +9,11 @@ import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/messaging/conversations/view/conversations_page.dart';
 import 'package:union_app/src/screens/open_roles/view_user_applications/view/user_applications_page.dart';
 import 'package:union_app/src/screens/organization/joined_organizations/view/joined_organizations_page.dart';
-import 'package:union_app/src/screens/project/user_projects/user_projects.dart';
 import 'package:union_app/src/screens/search_results/multi_search/view/multi_search_page.dart';
 import 'package:union_app/src/screens/user_profile/profile/profile.dart';
 import 'package:union_app/src/theme.dart';
+
+import '../project/projects_and_invites/view/projects_and_invites.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -28,9 +29,7 @@ class AppDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => ProfilePage(uid: user.id),
-                  ),
+                  ProfilePage.route(uid: user.id),
                 );
               },
               child: UserAccountsDrawerHeader(
@@ -66,12 +65,7 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => UserProjectsPage(uid: context.read<AppBloc>().state.user.id),
-                ),
-              );
+              Navigator.push(context, ProjectsAndInvitesPage.route());
             },
             leading: const Icon(
               Icons.analytics,

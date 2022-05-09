@@ -25,7 +25,7 @@ class ProjectDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String _loggedUserId = context.read<AppBloc>().state.user.id;
-    final bool? isMember = project.membersUid?.contains(_loggedUserId);
+    final bool isMember = project.membersUid?.contains(_loggedUserId) ?? false;
 
     return BlocProvider<ProjectDetailsBloc>(
       create: (BuildContext context) => ProjectDetailsBloc(FirebaseProjectOpenRoleRepository(), FirebaseProjectRepository())
@@ -83,7 +83,7 @@ class ProjectDetailsPage extends StatelessWidget {
             ),
             body: TabBarView(
               children: [
-                DetailsTabWidget(project: project),
+                DetailsTabWidget(project: project, isMember: isMember),
                 OpenRolesTabWidget(project: project),
                 if (isMember == true) PostsTabWidget(project: project),
               ],

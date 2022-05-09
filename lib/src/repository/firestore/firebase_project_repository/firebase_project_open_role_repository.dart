@@ -233,13 +233,13 @@ class FirebaseProjectOpenRoleRepository {
       firestoreProjectsCollection.doc(openRole.projectId).update({
         'members_uid': FieldValue.arrayUnion([application.user.id])
       });
-      deleteApplication(application);
+      _deleteApplication(application);
     } catch (e) {
-      print("deleteOpenRole $e");
+      print("acceptApplication $e");
     }
   }
 
-  void deleteApplication(ProjectOpenRoleApplicationItem application) {
+  void _deleteApplication(ProjectOpenRoleApplicationItem application) {
     firestoreProjectsApplicationsCollection.doc(application.id).delete();
   }
 }

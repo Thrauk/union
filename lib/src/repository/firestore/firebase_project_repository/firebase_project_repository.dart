@@ -67,7 +67,7 @@ class FirebaseProjectRepository {
     return null;
   }
 
-  Future<Project?> getProjectById(String id) async {
+  Future<Project> getProjectById(String id) async {
     try {
       final DocumentSnapshot<Map<String, dynamic>> json = await firestoreProjectsCollection.doc(id).get();
       final Project project = Project.fromJson(json.data()!);
@@ -75,7 +75,7 @@ class FirebaseProjectRepository {
     } catch (e) {
       print('getProjectById: ${e.toString()}');
     }
-    return null;
+    return Project.empty;
   }
 
   Future<List<Project>> getProjectsByUid(String uid) async {
@@ -183,7 +183,8 @@ class FirebaseProjectRepository {
   Future<bool> verifyIfUserLiked(String projectId, String uid) async {
     try {
       final int like =
-      (await firestoreProjectsLikesCollection.where('project_id', isEqualTo: projectId).where('uid', isEqualTo: uid).get()).size;
+          (await firestoreProjectsLikesCollection.where('project_id', isEqualTo: projectId).where('uid', isEqualTo: uid).get())
+              .size;
       return like != 0;
     } catch (e) {
       print('verifyIfUserLiked $e');
@@ -224,5 +225,24 @@ class FirebaseProjectRepository {
     } catch (e) {
       print('addLikeToProject $e');
     }
+  }
+
+  Future<List<Project>> getProjectsByIds(List<String> ids) async {
+    if (ids.isEmpty) {
+      return <Project>[];
+    }
+    final QuerySnapshot<Map<String, dynamic>> projectsQuery = await firestoreProjectsCollection.where('id', whereIn: ids).get();
+    return _projectFromQuery(projectsQuery);
+  }
+
+  List<Project> _projectFromQuery(QuerySnapshot<Map<String, dynamic>> query) {
+    return query.docs.toList().map((QueryDocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
+      final Map<String, dynamic> json = documentSnapshot.data();
+      if (json != null) {
+        return Project.fromJson(json);
+      } else {
+        return Project.empty;
+      }
+    }).toList();
   }
 }

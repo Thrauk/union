@@ -18,7 +18,6 @@ class UserProjectsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const SimpleAppBar(title: 'Projects'),
       body: BlocProvider<UserProjectsPageBloc>(
         child: _UserProjectsPage(uid: uid),
         create: (_) => UserProjectsPageBloc(FirebaseProjectRepository())..add(GetProjects(uid)),
