@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/project/create_project/create_project.dart';
-import 'package:union_app/src/screens/project/user_projects/bloc/user_projects_page_bloc.dart';
+import 'package:union_app/src/screens/project/user_projects/bloc/user_projects_bloc.dart';
+import 'package:union_app/src/screens/project/user_projects/widgets/choose_project_type_buttons.dart';
 import 'package:union_app/src/screens/project/widgets/project_item_widget/view/project_item_widget.dart';
 import 'package:union_app/src/screens/widgets/exceptions/empty_page_widget.dart';
 import 'package:union_app/src/screens/widgets/widgets.dart';
@@ -18,9 +19,9 @@ class UserProjectsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider<UserProjectsPageBloc>(
+      body: BlocProvider<UserProjectsBloc>(
         child: _UserProjectsPage(uid: uid),
-        create: (_) => UserProjectsPageBloc(FirebaseProjectRepository())..add(GetProjects(uid)),
+        create: (_) => UserProjectsBloc(FirebaseProjectRepository())..add(GetProjects(uid, ProjectType.OWNED)),
       ),
     );
   }
@@ -33,15 +34,19 @@ class _UserProjectsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserProjectsPageBloc, UserProjectsPageState>(
-      buildWhen: (UserProjectsPageState previous, UserProjectsPageState current) {
-        return previous.projects != current.projects;
+    return BlocBuilder<UserProjectsBloc, UserProjectsState>(
+      buildWhen: (UserProjectsState previous, UserProjectsState current) {
+        return previous.projects != current.projects ||
+            previous.projectType != current.projectType ||
+            previous.status != current.status;
       },
-      builder: (BuildContext context, UserProjectsPageState state) {
+      builder: (BuildContext context, UserProjectsState state) {
         return Column(
           children: <Widget>[
-            const SizedBox(
-              height: 6,
+            ChooseProjectTypeWidget(
+              projectType: state.projectType,
+              myProjectsPressed: () => context.read<UserProjectsBloc>().add(ProjectTypeChanged(ProjectType.OWNED, uid)),
+              joinedProjectsPressed: () => context.read<UserProjectsBloc>().add(ProjectTypeChanged(ProjectType.JOINED, uid)),
             ),
             state.status == PageStatus.loading || state.status == PageStatus.initial
                 ? const Center(

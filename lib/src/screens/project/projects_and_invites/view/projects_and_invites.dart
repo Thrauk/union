@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/project/projects_invites/view/projects_invites_page.dart';
-import 'package:union_app/src/screens/project/user_projects/user_projects.dart';
+import 'package:union_app/src/screens/project/user_projects/view/user_projects_page.dart';
 import 'package:union_app/src/theme.dart';
 
 class ProjectsAndInvitesPage extends StatelessWidget {
@@ -29,7 +29,7 @@ class ProjectsAndInvitesPage extends StatelessWidget {
               unselectedLabelColor: AppColors.white05,
               labelStyle: AppStyles.textStyleBody,
               tabs: <Widget>[
-                Tab(text: 'Projects'),
+                Tab(text: 'My projects'),
                 Tab(text: 'Invites'),
               ],
             ),

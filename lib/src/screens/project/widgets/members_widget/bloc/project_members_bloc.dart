@@ -25,7 +25,6 @@ class ProjectMembersBloc extends Bloc<ProjectMembersEvent, ProjectMembersState> 
       final List<FullUser> users = state.users.toList();
 
       users.removeWhere((FullUser element) => element.id == event.userId);
-      print("users $users ");
       emit(state.copyWith(users: users));
     } catch (e) {
       print('_deleteMemberPressed $e');

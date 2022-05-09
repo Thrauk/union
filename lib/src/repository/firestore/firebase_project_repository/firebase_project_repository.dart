@@ -59,7 +59,6 @@ class FirebaseProjectRepository {
 
       final String ownerName = data!['displayName'] != null ? data['displayName'] as String : '';
       final String ownerPhoto = data['photo'] != null ? data['photo'] as String : '';
-      print('Ownername $ownerName');
       return <String, String>{'owner_name': ownerName, 'owner_photo': ownerPhoto};
     } catch (e) {
       print('getProjectUserDetails $e');
@@ -78,29 +77,13 @@ class FirebaseProjectRepository {
     return Project.empty;
   }
 
-  Future<List<Project>> getProjectsByUid(String uid) async {
-    final List<Project> projects = List<Project>.empty(growable: true);
-    final Map<String, dynamic>? projectsData;
-    final List<String> projectsIds;
-    try {
-      projectsData = (await firestoreUserInstance.doc(uid).get()).data();
-
-      projectsIds = (projectsData!['projects_ids'] as List<dynamic>).map((el) => el as String).toList();
-      print(projectsIds);
-      for (final String id in projectsIds) {
-        final Project? project = await getProjectById(id);
-        if (project != null) {
-          projects.add(project);
-        }
-      }
-    } catch (e) {
-      print('getProjectsByUid $e');
-    }
-    return projects;
+  Future<List<Project>> getOwnedProjectsByUid(String uid) async {
+    final QuerySnapshot<Map<String, dynamic>> query = await firestoreProjectsCollection.where('owner_id', isEqualTo: uid).get();
+    return _userProjectFromQuery(query);
   }
 
-  Future<List<Project>> getQueryProjectsByUid(String uid) async {
-    final QuerySnapshot<Map<String, dynamic>> query = await firestoreProjectsCollection.where('owner_id', isEqualTo: uid).get();
+  Future<List<Project>> getJoinedProjectsByUid(String uid) async {
+    final QuerySnapshot<Map<String, dynamic>> query = await firestoreProjectsCollection.where('members_uid', arrayContains: uid).where('owner_id', isNotEqualTo: uid).get();
     return _userProjectFromQuery(query);
   }
 
