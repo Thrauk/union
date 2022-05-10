@@ -50,8 +50,12 @@ class AddMemberOrganizationBloc extends Bloc<AddMemberOrganizationEvent, AddMemb
 
   Future<void> _onAddMemberPressed(AddMemberPressed event, Emitter<AddMemberOrganizationState> emit) async {
     if (event.memberId != _uid && !state.organization.members.contains(event.memberId)) {
+      final bool hasRequest = await _firebaseOrganizationRepository.isJoinRequested(_organizationId, _uid);
       final bool response = await _firebaseOrganizationRepository.addMemberByUid(_organizationId, event.memberId);
       if (response) {
+        if(hasRequest) {
+          await _firebaseOrganizationRepository.removeJoinOrganizationRequest(_organizationId, _uid);
+        }
         final List<String> members = <String>[event.memberId, ...state.organization.members];
         emit(
           state.copyWith(
