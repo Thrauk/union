@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/firestore/firebase_project_repository/barrel.dart';
+import 'package:union_app/src/repository/firestore/firebase_project_repository/firebase_project_members_repository.dart';
 import 'package:union_app/src/screens/project/widgets/members_widget/bloc/project_members_bloc.dart';
 import 'package:union_app/src/screens/project/widgets/members_widget/member_item_widget.dart';
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
@@ -22,7 +22,7 @@ class MembersListPage extends StatelessWidget {
     return Scaffold(
       appBar: const SimpleAppBar(title: 'Members'),
       body: BlocProvider<ProjectMembersBloc>(
-        create: (BuildContext context) => ProjectMembersBloc(FirebaseProjectRepository())..add(SetMembers(users)),
+        create: (BuildContext context) => ProjectMembersBloc(FirebaseProjectMembersRepository())..add(SetMembers(users)),
         child: BlocBuilder<ProjectMembersBloc, ProjectMembersState>(
           buildWhen: (ProjectMembersState previous, ProjectMembersState current) {
             return previous.users != current.users;

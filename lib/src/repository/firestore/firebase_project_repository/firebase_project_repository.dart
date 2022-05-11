@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:union_app/src/models/likes/project_like.dart';
 import 'package:union_app/src/models/models.dart';
 
 import '../firestore.dart';
@@ -10,9 +9,6 @@ class FirebaseProjectRepository {
 
   final CollectionReference<Map<String, dynamic>> firestoreProjectsCollection =
       FirebaseFirestore.instance.collection('projects');
-
-  final CollectionReference<Map<String, dynamic>> firestoreProjectsLikesCollection =
-      FirebaseFirestore.instance.collection('projects_likes');
 
   final FirebaseProjectOpenRoleRepository _firebaseProjectOpenRoleRepository = FirebaseProjectOpenRoleRepository();
 
@@ -83,7 +79,8 @@ class FirebaseProjectRepository {
   }
 
   Future<List<Project>> getJoinedProjectsByUid(String uid) async {
-    final QuerySnapshot<Map<String, dynamic>> query = await firestoreProjectsCollection.where('members_uid', arrayContains: uid).where('owner_id', isNotEqualTo: uid).get();
+    final QuerySnapshot<Map<String, dynamic>> query =
+        await firestoreProjectsCollection.where('members_uid', arrayContains: uid).where('owner_id', isNotEqualTo: uid).get();
     return _userProjectFromQuery(query);
   }
 
@@ -134,80 +131,6 @@ class FirebaseProjectRepository {
         .map((QueryDocumentSnapshot<Map<String, dynamic>> projectJson) => Project.fromJson(projectJson.data()))
         .toList();
     return projects;
-  }
-
-  void deleteMemberFromProject(String userId, String projectId) {
-    firestoreProjectsCollection.doc(projectId).update({
-      'members_uid': FieldValue.arrayRemove(<String>[userId])
-    });
-  }
-
-  Future<List<FullUser>> getMembers(String projectId) async {
-    final List<FullUser> users = List<FullUser>.empty(growable: true);
-    final Map<String, dynamic>? projectData;
-    final List<String> usersIds;
-    try {
-      projectData = (await firestoreProjectsCollection.doc(projectId).get()).data();
-
-      usersIds = (projectData!['members_uid'] as List<dynamic>).map((el) => el as String).toList();
-
-      for (final String id in usersIds) {
-        final FullUser user = await userRepository.getFullUserByUid(id);
-        if (user != null) {
-          users.add(user);
-        }
-      }
-    } catch (e) {
-      print('getMembers $e');
-    }
-    return users;
-  }
-
-  Future<bool> verifyIfUserLiked(String projectId, String uid) async {
-    try {
-      final int like =
-          (await firestoreProjectsLikesCollection.where('project_id', isEqualTo: projectId).where('uid', isEqualTo: uid).get())
-              .size;
-      return like != 0;
-    } catch (e) {
-      print('verifyIfUserLiked $e');
-    }
-    return false;
-  }
-
-  Future<void> removeLikeFromProject(String projectId, String uid) async {
-    try {
-      await firestoreProjectsLikesCollection.where('project_id', isEqualTo: projectId).where('uid', isEqualTo: uid).get().then(
-            (QuerySnapshot<Map<String, dynamic>> value) => value.docs.forEach(
-              (QueryDocumentSnapshot<Map<String, dynamic>> element) {
-                firestoreProjectsLikesCollection.doc(element.id).delete();
-              },
-            ),
-          );
-    } catch (e) {
-      print('removeLikeFromProject $e');
-    }
-  }
-
-  Future<int> getLikesNumber(String projectId) async {
-    try {
-      final int likes = (await firestoreProjectsLikesCollection.where('project_id', isEqualTo: projectId).get()).size;
-      return likes;
-    } catch (e) {
-      print('getLikesNumber $e');
-      return 0;
-    }
-  }
-
-  Future<void> addLikeToProject(String projectId, String uid) async {
-    try {
-      final String id = firestoreProjectsLikesCollection.doc().id;
-      final int timestamp = DateTime.now().microsecondsSinceEpoch;
-      final ProjectLike projectLike = ProjectLike(uid, id, projectId, timestamp);
-      firestoreProjectsLikesCollection.doc(id).set(projectLike.toJson());
-    } catch (e) {
-      print('addLikeToProject $e');
-    }
   }
 
   Future<List<Project>> getProjectsByIds(List<String> ids) async {

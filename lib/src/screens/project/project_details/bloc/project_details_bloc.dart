@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
+import 'package:union_app/src/repository/firestore/firebase_project_repository/firebase_project_members_repository.dart';
 import 'package:union_app/src/repository/firestore/firestore.dart';
 
 part 'project_details_event.dart';
@@ -11,13 +12,13 @@ part 'project_details_event.dart';
 part 'project_details_state.dart';
 
 class ProjectDetailsBloc extends Bloc<ProjectDetailsEvent, ProjectDetailsState> {
-  ProjectDetailsBloc(this._openRoleRepository, this._projectRepository) : super(const ProjectDetailsState()) {
+  ProjectDetailsBloc(this._openRoleRepository, this._projectMembersRepository) : super(const ProjectDetailsState()) {
     on<GetOpenRoles>(_getOpenRoles);
     on<GetMembers>(_getMembers);
   }
 
   final FirebaseProjectOpenRoleRepository _openRoleRepository;
-  final FirebaseProjectRepository _projectRepository;
+  final FirebaseProjectMembersRepository _projectMembersRepository;
 
   Future<void> _getOpenRoles(GetOpenRoles event, Emitter<ProjectDetailsState> emit) async {
     try {
@@ -33,7 +34,7 @@ class ProjectDetailsBloc extends Bloc<ProjectDetailsEvent, ProjectDetailsState> 
   Future<FutureOr<void>> _getMembers(GetMembers event, Emitter<ProjectDetailsState> emit) async {
     try {
       final List<FullUser> membersList;
-      membersList = await _projectRepository.getMembers(event.projectId);
+      membersList = await _projectMembersRepository.getMembers(event.projectId);
 
       emit(state.copyWith(membersList: membersList));
     } catch (e) {
