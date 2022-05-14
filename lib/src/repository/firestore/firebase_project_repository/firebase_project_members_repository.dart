@@ -14,7 +14,7 @@ class FirebaseProjectMembersRepository {
   final CollectionReference<Map<String, dynamic>> _firestoreProjectsCollection =
       FirebaseFirestore.instance.collection('projects');
 
-  FirebaseUserRepository _userRepository = FirebaseUserRepository();
+  final FirebaseUserRepository _userRepository = FirebaseUserRepository();
 
   void addMemberToProject(String uid, String projectId) {
     _firestoreProjectsCollection.doc(projectId).update({

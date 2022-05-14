@@ -14,10 +14,6 @@ class FirebaseArticleRepository {
   void createArticle(Article article, {String projectId = ''}) {
     try {
       final Article articleToSave = article.copyWith(id: firestoreArticleDocument.id);
-      firestoreUserInstance.doc(article.ownerId).update({
-        'articles_ids': FieldValue.arrayUnion([articleToSave.id])
-      });
-
       if (!article.isPublic)
         _addArticleToProject(firestoreArticleDocument.id, projectId);
 
@@ -39,7 +35,6 @@ class FirebaseArticleRepository {
 
       final String ownerName = data!['displayName'] != null ? data['displayName'] as String : '';
       final String ownerPhoto = data['photo'] != null ? data['photo'] as String : '';
-      print('Ownername $ownerName');
       return <String, String>{'owner_name': ownerName, 'owner_photo': ownerPhoto};
     } catch (e) {
       print('getArticleUserDetails $e');
@@ -60,8 +55,8 @@ class FirebaseArticleRepository {
 
   Future<List<Article>> getQueryArticlesByUid(String uid, bool isPublic) async {
     final Query<Map<String, dynamic>> query = firestoreArticleCollection.where('owner_id', isEqualTo: uid);
-      final QuerySnapshot<Map<String, dynamic>> finalQuery =
-          isPublic == true ? await query.where('is_public', isEqualTo: true).get() : await query.get();
+    final QuerySnapshot<Map<String, dynamic>> finalQuery =
+        isPublic == true ? await query.where('is_public', isEqualTo: true).get() : await query.get();
     return _userArticlesFromQuery(finalQuery);
   }
 
