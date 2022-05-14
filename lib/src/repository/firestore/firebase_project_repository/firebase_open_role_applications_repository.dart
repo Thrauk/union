@@ -2,22 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:union_app/src/models/models.dart';
 
 class FirebaseOpenRoleApplicationsRepository {
-  final CollectionReference<Map<String, dynamic>> firestoreProjectsApplicationsCollection =
+  final CollectionReference<Map<String, dynamic>> _firestoreProjectsApplicationsCollection =
       FirebaseFirestore.instance.collection('projects_applications');
 
-  final CollectionReference<Map<String, dynamic>> firestoreProjectsOpenRolesCollection =
+  final CollectionReference<Map<String, dynamic>> _firestoreProjectsOpenRolesCollection =
       FirebaseFirestore.instance.collection('projects_open_roles');
 
   Future<List<ProjectOpenRole>> getUserApplications(String uid) async {
     try {
       final QuerySnapshot<Map<String, dynamic>> query =
-          await firestoreProjectsApplicationsCollection.where('uid', isEqualTo: uid).get();
+          await _firestoreProjectsApplicationsCollection.where('uid', isEqualTo: uid).get();
 
       final List<ProjectOpenRoleApplication> applications = _applicationsFromQuery(query);
       final List<String> openRolesIds = applications.map((ProjectOpenRoleApplication e) => e.openRoleId).toList();
 
       final QuerySnapshot<Map<String, dynamic>> openRolesQuery =
-          await firestoreProjectsOpenRolesCollection.where('id', whereIn: openRolesIds).get();
+          await _firestoreProjectsOpenRolesCollection.where('id', whereIn: openRolesIds).get();
 
       return _projectOpenRoleFromQuery(openRolesQuery);
     } catch (e) {

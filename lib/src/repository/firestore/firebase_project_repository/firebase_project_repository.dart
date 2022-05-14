@@ -1,42 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:union_app/src/models/models.dart';
 
-import '../firestore.dart';
-
 class FirebaseProjectRepository {
-  final DocumentReference<Map<String, dynamic>> firestoreProjectsDocument =
+  final DocumentReference<Map<String, dynamic>> _firestoreProjectsDocument =
       FirebaseFirestore.instance.collection('projects').doc();
 
-  final CollectionReference<Map<String, dynamic>> firestoreProjectsCollection =
+  final CollectionReference<Map<String, dynamic>> _firestoreProjectsCollection =
       FirebaseFirestore.instance.collection('projects');
 
-  final FirebaseProjectOpenRoleRepository _firebaseProjectOpenRoleRepository = FirebaseProjectOpenRoleRepository();
-
-  final CollectionReference<Map<String, dynamic>> firestoreUserInstance = FirebaseFirestore.instance.collection('users');
-
-  FirebaseUserRepository userRepository = FirebaseUserRepository();
-  FirebaseArticleRepository articleRepository = FirebaseArticleRepository();
+  final CollectionReference<Map<String, dynamic>> _firestoreUserInstance = FirebaseFirestore.instance.collection('users');
 
   void createProject(Project project) {
-    final Project projectToSave = project.copyWith(id: firestoreProjectsDocument.id);
-    firestoreProjectsDocument.set(projectToSave.toJson());
+    final Project projectToSave = project.copyWith(id: _firestoreProjectsDocument.id);
+    _firestoreProjectsDocument.set(projectToSave.toJson());
   }
 
   void updateProject(Project project) {
-    firestoreProjectsCollection.doc(project.id).update(project.toJson());
+    _firestoreProjectsCollection.doc(project.id).update(project.toJson());
   }
 
   void deleteProject(Project project) {
     try {
-      firestoreProjectsCollection.doc(project.id).delete();
-      for (final dynamic openRoleId in project.openRoles ?? <dynamic>[]) {
-        final String id = openRoleId as String;
-        _firebaseProjectOpenRoleRepository.deleteOpenRole(ProjectOpenRole(id: id));
-      }
-
-      for (final dynamic articleId in project.articlesId ?? <dynamic>[]) {
-        articleRepository.deleteArticle(articleId as String);
-      }
+      // TODO(Theodor): cloud function for deleting invites, articles, open roles & likes
+      _firestoreProjectsCollection.doc(project.id).delete();
     } catch (e) {
       print('deleteProject $e');
     }
@@ -44,7 +30,7 @@ class FirebaseProjectRepository {
 
   Future<Map<String, String>?> getProjectUserDetails(String ownerId) async {
     try {
-      final Map<String, dynamic>? data = (await firestoreUserInstance.doc(ownerId).get()).data();
+      final Map<String, dynamic>? data = (await _firestoreUserInstance.doc(ownerId).get()).data();
 
       final String ownerName = data!['displayName'] != null ? data['displayName'] as String : '';
       final String ownerPhoto = data['photo'] != null ? data['photo'] as String : '';
@@ -57,7 +43,7 @@ class FirebaseProjectRepository {
 
   Future<Project> getProjectById(String id) async {
     try {
-      final DocumentSnapshot<Map<String, dynamic>> json = await firestoreProjectsCollection.doc(id).get();
+      final DocumentSnapshot<Map<String, dynamic>> json = await _firestoreProjectsCollection.doc(id).get();
       final Project project = Project.fromJson(json.data()!);
       return project;
     } catch (e) {
@@ -67,13 +53,13 @@ class FirebaseProjectRepository {
   }
 
   Future<List<Project>> getOwnedProjectsByUid(String uid) async {
-    final QuerySnapshot<Map<String, dynamic>> query = await firestoreProjectsCollection.where('owner_id', isEqualTo: uid).get();
+    final QuerySnapshot<Map<String, dynamic>> query = await _firestoreProjectsCollection.where('owner_id', isEqualTo: uid).get();
     return _userProjectFromQuery(query);
   }
 
   Future<List<Project>> getJoinedProjectsByUid(String uid) async {
     final QuerySnapshot<Map<String, dynamic>> query =
-        await firestoreProjectsCollection.where('members_uid', arrayContains: uid).where('owner_id', isNotEqualTo: uid).get();
+        await _firestoreProjectsCollection.where('members_uid', arrayContains: uid).where('owner_id', isNotEqualTo: uid).get();
     return _userProjectFromQuery(query);
   }
 
@@ -92,7 +78,7 @@ class FirebaseProjectRepository {
   Future<List<Project>> getProjects(int limit) async {
     try {
       final List<Project> projects =
-          (await firestoreProjectsCollection.orderBy('timestamp', descending: true).limit(limit).get())
+          (await _firestoreProjectsCollection.orderBy('timestamp', descending: true).limit(limit).get())
               .docs
               .map((QueryDocumentSnapshot<Map<String, dynamic>> e) => Project.fromJson(e.data()))
               .toList();
@@ -106,7 +92,7 @@ class FirebaseProjectRepository {
   Future<List<Project>> getProjectsOrganization(int limit, String organizationId) async {
     try {
       final List<Project> projects =
-          (await firestoreProjectsCollection.where('organization_id', isEqualTo: organizationId).get())
+          (await _firestoreProjectsCollection.where('organization_id', isEqualTo: organizationId).get())
               .docs
               .map((QueryDocumentSnapshot<Map<String, dynamic>> e) => Project.fromJson(e.data()))
               .toList();
@@ -119,7 +105,7 @@ class FirebaseProjectRepository {
 
   // DEMO FUNCTION, SHOULD NOT BE USED OTHERWISE
   Future<List<Project>> getAllProjects() async {
-    final List<Project> projects = (await firestoreProjectsCollection.get())
+    final List<Project> projects = (await _firestoreProjectsCollection.get())
         .docs
         .map((QueryDocumentSnapshot<Map<String, dynamic>> projectJson) => Project.fromJson(projectJson.data()))
         .toList();
@@ -130,7 +116,7 @@ class FirebaseProjectRepository {
     if (ids.isEmpty) {
       return <Project>[];
     }
-    final QuerySnapshot<Map<String, dynamic>> projectsQuery = await firestoreProjectsCollection.where('id', whereIn: ids).get();
+    final QuerySnapshot<Map<String, dynamic>> projectsQuery = await _firestoreProjectsCollection.where('id', whereIn: ids).get();
     return _projectFromQuery(projectsQuery);
   }
 

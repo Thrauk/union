@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:union_app/src/models/likes/project_like.dart';
 
 class FirebaseProjectLikesRepository{
-  final CollectionReference<Map<String, dynamic>> firestoreProjectsLikesCollection =
+  final CollectionReference<Map<String, dynamic>> _firestoreProjectsLikesCollection =
       FirebaseFirestore.instance.collection('projects_likes');
 
   Future<bool> verifyIfUserLiked(String projectId, String uid) async {
     try {
       final int like =
-          (await firestoreProjectsLikesCollection.where('project_id', isEqualTo: projectId).where('uid', isEqualTo: uid).get())
+          (await _firestoreProjectsLikesCollection.where('project_id', isEqualTo: projectId).where('uid', isEqualTo: uid).get())
               .size;
       return like != 0;
     } catch (e) {
@@ -19,10 +19,10 @@ class FirebaseProjectLikesRepository{
 
   Future<void> removeLikeFromProject(String projectId, String uid) async {
     try {
-      await firestoreProjectsLikesCollection.where('project_id', isEqualTo: projectId).where('uid', isEqualTo: uid).get().then(
+      await _firestoreProjectsLikesCollection.where('project_id', isEqualTo: projectId).where('uid', isEqualTo: uid).get().then(
             (QuerySnapshot<Map<String, dynamic>> value) => value.docs.forEach(
               (QueryDocumentSnapshot<Map<String, dynamic>> element) {
-                firestoreProjectsLikesCollection.doc(element.id).delete();
+                _firestoreProjectsLikesCollection.doc(element.id).delete();
               },
             ),
           );
@@ -33,7 +33,7 @@ class FirebaseProjectLikesRepository{
 
   Future<int> getLikesNumber(String projectId) async {
     try {
-      final int likes = (await firestoreProjectsLikesCollection.where('project_id', isEqualTo: projectId).get()).size;
+      final int likes = (await _firestoreProjectsLikesCollection.where('project_id', isEqualTo: projectId).get()).size;
       return likes;
     } catch (e) {
       print('getLikesNumber $e');
@@ -43,10 +43,10 @@ class FirebaseProjectLikesRepository{
 
   Future<void> addLikeToProject(String projectId, String uid) async {
     try {
-      final String id = firestoreProjectsLikesCollection.doc().id;
+      final String id = _firestoreProjectsLikesCollection.doc().id;
       final int timestamp = DateTime.now().microsecondsSinceEpoch;
       final ProjectLike projectLike = ProjectLike(uid, id, projectId, timestamp);
-      firestoreProjectsLikesCollection.doc(id).set(projectLike.toJson());
+      _firestoreProjectsLikesCollection.doc(id).set(projectLike.toJson());
     } catch (e) {
       print('addLikeToProject $e');
     }

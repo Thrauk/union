@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,70 +7,53 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:union_app/src/models/models.dart';
 
 class FirebaseProjectOpenRoleRepository {
-  final CollectionReference<Map<String, dynamic>> firestoreProjectsCollection =
+  final CollectionReference<Map<String, dynamic>> _firestoreProjectsCollection =
       FirebaseFirestore.instance.collection('projects');
 
-  final DocumentReference<Map<String, dynamic>> firestoreProjectsOpenRolesDocument =
+  final DocumentReference<Map<String, dynamic>> _firestoreProjectsOpenRolesDocument =
       FirebaseFirestore.instance.collection('projects_open_roles').doc();
 
-  final CollectionReference<Map<String, dynamic>> firestoreProjectsOpenRolesCollection =
+  final CollectionReference<Map<String, dynamic>> _firestoreProjectsOpenRolesCollection =
       FirebaseFirestore.instance.collection('projects_open_roles');
 
-  final CollectionReference<Map<String, dynamic>> firestoreProjectsApplicationsCollection =
+  final CollectionReference<Map<String, dynamic>> _firestoreProjectsApplicationsCollection =
       FirebaseFirestore.instance.collection('projects_applications');
 
-  final CollectionReference<Map<String, dynamic>> firestoreUsersCollection = FirebaseFirestore.instance.collection('users');
+  final CollectionReference<Map<String, dynamic>> _firestoreUsersCollection = FirebaseFirestore.instance.collection('users');
 
   final CollectionReference<Map<String, dynamic>> _firestoreUserFilesCollection =
       FirebaseFirestore.instance.collection('user_files');
 
   void createProjectOpenRole(ProjectOpenRole projectOpenRole) {
     try {
-      final ProjectOpenRole openRoleToSave = projectOpenRole.copyWith(id: firestoreProjectsOpenRolesDocument.id);
-      print('project open role ${openRoleToSave.toJson()}');
-      firestoreProjectsOpenRolesDocument.set(openRoleToSave.toJson());
-      firestoreProjectsCollection.doc(projectOpenRole.projectId).update({
-        'open_roles': FieldValue.arrayUnion([firestoreProjectsOpenRolesDocument.id])
-      });
+      final ProjectOpenRole openRoleToSave = projectOpenRole.copyWith(id: _firestoreProjectsOpenRolesDocument.id);
+      _firestoreProjectsOpenRolesDocument.set(openRoleToSave.toJson());
     } catch (e) {
       print('createProjectOpenRole $e');
     }
   }
 
   Future<List<ProjectOpenRole>> getOpenRolesByProjectId(String projectId) async {
-    final List<ProjectOpenRole> openRoles = List<ProjectOpenRole>.empty(growable: true);
-    final Map<String, dynamic>? openRolesData;
-    final List<String> openRolesIds;
-    try {
-      openRolesData = (await firestoreProjectsCollection.doc(projectId).get()).data();
-      openRolesIds = (openRolesData!['open_roles'] as List<dynamic>).map((el) => el as String).toList();
-      for (final String id in openRolesIds) {
-        final ProjectOpenRole? openRole = await _getOpenRoleById(id);
-        if (openRole != null) {
-          openRoles.add(openRole);
-        }
-      }
-    } catch (e) {
-      print('getOpenRolesByProjectId $e');
-    }
-    return openRoles;
+    final QuerySnapshot<Map<String, dynamic>> query =
+        await _firestoreProjectsOpenRolesCollection.where('project_id', isEqualTo: projectId).get();
+    return _getOpenRolesFromQuery(query);
   }
 
-  Future<ProjectOpenRole?> _getOpenRoleById(String id) async {
-    try {
-      final DocumentSnapshot<Map<String, dynamic>> json = await firestoreProjectsOpenRolesCollection.doc(id).get();
-      final ProjectOpenRole openRole = ProjectOpenRole.fromJson(json.data()!);
-      return openRole;
-    } catch (e) {
-      print('getOpenRoleById $e');
-    }
-    return null;
+  List<ProjectOpenRole> _getOpenRolesFromQuery(QuerySnapshot<Map<String, dynamic>> query) {
+    return query.docs.toList().map((QueryDocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
+      final Map<String, dynamic> json = documentSnapshot.data();
+      if (json != null) {
+        return ProjectOpenRole.fromJson(json);
+      } else {
+        return ProjectOpenRole.empty;
+      }
+    }).toList();
   }
 
   Future<void> addUidToOpenRole(ProjectOpenRoleApplication roleApplication, String openRoleId,
       {FilePickerResult? filePickerResult, String? userCVPath}) async {
     try {
-      final DocumentReference<Map<String, dynamic>> applicationDoc = firestoreProjectsApplicationsCollection.doc();
+      final DocumentReference<Map<String, dynamic>> applicationDoc = _firestoreProjectsApplicationsCollection.doc();
 
       ProjectOpenRoleApplication applicationToSave = roleApplication.copyWith(openRoleId: openRoleId, id: applicationDoc.id);
       if (filePickerResult != null) {
@@ -80,6 +64,7 @@ class FirebaseProjectOpenRoleRepository {
       } else if (userCVPath != null && userCVPath.isNotEmpty) {
         copyCvFromUserToApplication(userCVPath, applicationDoc.id);
         applicationToSave = applicationToSave.copyWith(cvUrl: userCVPath);
+
         applicationDoc.set(applicationToSave.toJson());
       }
       applicationDoc.set(applicationToSave.toJson());
@@ -91,7 +76,7 @@ class FirebaseProjectOpenRoleRepository {
   Future<void> deleteUidFromOpenRole(String openRoleId, ProjectOpenRoleApplication roleApplication) async {
     try {
       final List<QueryDocumentSnapshot<Map<String, dynamic>>> maybeApplicationQuery =
-          (await firestoreProjectsApplicationsCollection
+          (await _firestoreProjectsApplicationsCollection
                   .where('open_role_id', isEqualTo: openRoleId)
                   .where('uid', isEqualTo: roleApplication.uid)
                   .get())
@@ -99,7 +84,7 @@ class FirebaseProjectOpenRoleRepository {
 
       if (maybeApplicationQuery.isNotEmpty) {
         for (final QueryDocumentSnapshot<Map<String, dynamic>> element in maybeApplicationQuery) {
-          firestoreProjectsApplicationsCollection.doc(element.id).delete();
+          _firestoreProjectsApplicationsCollection.doc(element.id).delete();
           if (roleApplication.cvUrl.isNotEmpty) deleteCVFileFromApplication(element.id);
         }
       }
@@ -111,7 +96,7 @@ class FirebaseProjectOpenRoleRepository {
   Future<List<ProjectOpenRoleApplication>> _getProjectApplications(String openRoleId) async {
     try {
       final Query<Map<String, dynamic>> reference =
-          firestoreProjectsApplicationsCollection.where('open_role_id', isEqualTo: openRoleId);
+          _firestoreProjectsApplicationsCollection.where('open_role_id', isEqualTo: openRoleId);
 
       final List<QueryDocumentSnapshot<Map<String, dynamic>>> applicationsListQuery = (await reference.get()).docs.toList();
 
@@ -135,10 +120,11 @@ class FirebaseProjectOpenRoleRepository {
       final List<ProjectOpenRoleApplication> applicationsList = await _getProjectApplications(openRoleId);
 
       for (final ProjectOpenRoleApplication application in applicationsList) {
-        final Map<String, dynamic>? userJson = (await firestoreUsersCollection.doc(application.uid).get()).data();
+        final Map<String, dynamic>? userJson = (await _firestoreUsersCollection.doc(application.uid).get()).data();
         if (userJson != null) {
           final FullUser user = FullUser.fromJson(userJson);
-          applicationsListItems.add(ProjectOpenRoleApplicationItem(application.notice, user, application.id, cvUrl: application.cvUrl));
+          applicationsListItems
+              .add(ProjectOpenRoleApplicationItem(application.notice, user, application.id, cvUrl: application.cvUrl));
         }
       }
       return applicationsListItems;
@@ -151,7 +137,7 @@ class FirebaseProjectOpenRoleRepository {
   Future<bool?> isUidAlreadyAdded(String uid, String openRoleId) async {
     try {
       final List<QueryDocumentSnapshot<Map<String, dynamic>>> maybeApplicationQuery =
-          (await firestoreProjectsApplicationsCollection
+          (await _firestoreProjectsApplicationsCollection
                   .where('uid', isEqualTo: uid)
                   .where('open_role_id', isEqualTo: openRoleId)
                   .get())
@@ -222,15 +208,15 @@ class FirebaseProjectOpenRoleRepository {
   }
 
   Future<void> deleteOpenRole(ProjectOpenRole openRole) async {
-    firestoreProjectsOpenRolesCollection.doc(openRole.id).delete();
+    _firestoreProjectsOpenRolesCollection.doc(openRole.id).delete();
     final QuerySnapshot<Map<String, dynamic>> applicationsSnapshot =
-        await (firestoreProjectsApplicationsCollection.where('open_role_id', isEqualTo: openRole.id)).get();
+        await (_firestoreProjectsApplicationsCollection.where('open_role_id', isEqualTo: openRole.id)).get();
     applicationsSnapshot.docs.clear();
   }
 
   void acceptApplication(ProjectOpenRole openRole, ProjectOpenRoleApplicationItem application) {
     try {
-      firestoreProjectsCollection.doc(openRole.projectId).update({
+      _firestoreProjectsCollection.doc(openRole.projectId).update({
         'members_uid': FieldValue.arrayUnion([application.user.id])
       });
       _deleteApplication(application);
@@ -240,6 +226,6 @@ class FirebaseProjectOpenRoleRepository {
   }
 
   void _deleteApplication(ProjectOpenRoleApplicationItem application) {
-    firestoreProjectsApplicationsCollection.doc(application.id).delete();
+    _firestoreProjectsApplicationsCollection.doc(application.id).delete();
   }
 }

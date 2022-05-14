@@ -2,36 +2,37 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:union_app/src/models/article/article.dart';
 
 class FirebaseArticleRepository {
-  final DocumentReference<Map<String, dynamic>> firestoreArticleDocument =
+  final DocumentReference<Map<String, dynamic>> _firestoreArticleDocument =
       FirebaseFirestore.instance.collection('articles').doc();
 
-  final CollectionReference<Map<String, dynamic>> firestoreArticleCollection =
+  final CollectionReference<Map<String, dynamic>> _firestoreArticleCollection =
       FirebaseFirestore.instance.collection('articles');
 
-  final CollectionReference<Map<String, dynamic>> firestoreUserInstance = FirebaseFirestore.instance.collection('users');
-  final CollectionReference<Map<String, dynamic>> firestoreProjectInstance = FirebaseFirestore.instance.collection('projects');
+  final CollectionReference<Map<String, dynamic>> _firestoreUserInstance = FirebaseFirestore.instance.collection('users');
+
+  final CollectionReference<Map<String, dynamic>> _firestoreProjectInstance = FirebaseFirestore.instance.collection('projects');
 
   void createArticle(Article article, {String projectId = ''}) {
     try {
-      final Article articleToSave = article.copyWith(id: firestoreArticleDocument.id);
+      final Article articleToSave = article.copyWith(id: _firestoreArticleDocument.id);
       if (!article.isPublic)
-        _addArticleToProject(firestoreArticleDocument.id, projectId);
+        _addArticleToProject(_firestoreArticleDocument.id, projectId);
 
-      firestoreArticleDocument.set(articleToSave.toJson());
+      _firestoreArticleDocument.set(articleToSave.toJson());
     } catch (e) {
       print('createArticle $e');
     }
   }
 
   void _addArticleToProject(String articleId, String projectId) {
-    firestoreProjectInstance.doc(projectId).update({
+    _firestoreProjectInstance.doc(projectId).update({
       'articles_id': FieldValue.arrayUnion(<String>[articleId])
     });
   }
 
   Future<Map<String, String>?> getArticleUserDetails(String ownerId) async {
     try {
-      final Map<String, dynamic>? data = (await firestoreUserInstance.doc(ownerId).get()).data();
+      final Map<String, dynamic>? data = (await _firestoreUserInstance.doc(ownerId).get()).data();
 
       final String ownerName = data!['displayName'] != null ? data['displayName'] as String : '';
       final String ownerPhoto = data['photo'] != null ? data['photo'] as String : '';
@@ -44,7 +45,7 @@ class FirebaseArticleRepository {
 
   Future<Article?> getArticleById(String id) async {
     try {
-      final DocumentSnapshot<Map<String, dynamic>> json = await firestoreArticleCollection.doc(id).get();
+      final DocumentSnapshot<Map<String, dynamic>> json = await _firestoreArticleCollection.doc(id).get();
       final Article article = Article.fromJson(json.data()!);
       return article;
     } catch (e) {
@@ -54,7 +55,7 @@ class FirebaseArticleRepository {
   }
 
   Future<List<Article>> getQueryArticlesByUid(String uid, bool isPublic) async {
-    final Query<Map<String, dynamic>> query = firestoreArticleCollection.where('owner_id', isEqualTo: uid);
+    final Query<Map<String, dynamic>> query = _firestoreArticleCollection.where('owner_id', isEqualTo: uid);
     final QuerySnapshot<Map<String, dynamic>> finalQuery =
         isPublic == true ? await query.where('is_public', isEqualTo: true).get() : await query.get();
     return _userArticlesFromQuery(finalQuery);
@@ -74,18 +75,18 @@ class FirebaseArticleRepository {
 
   void deleteArticle(String articleId) {
     try {
-      firestoreArticleCollection.doc(articleId).delete();
+      _firestoreArticleCollection.doc(articleId).delete();
     } catch (e) {
       print('deleteArticle $e');
     }
   }
 
   void updateArticle(Article article) {
-    firestoreArticleCollection.doc(article.id).update(article.toJson());
+    _firestoreArticleCollection.doc(article.id).update(article.toJson());
   }
 
   Future<List<Article>> getPublicArticles(int limit) async {
-    final List<Article> articles = (await firestoreArticleCollection
+    final List<Article> articles = (await _firestoreArticleCollection
             .where('is_public', isEqualTo: true)
             .orderBy('date', descending: true)
             .limit(limit)
@@ -98,7 +99,7 @@ class FirebaseArticleRepository {
 
   // DEMO FUNCTION, SHOULD NOT BE USED OTHERWISE
   Future<List<Article>> getAllArticles() async {
-    final List<Article> articles = (await firestoreArticleCollection.get())
+    final List<Article> articles = (await _firestoreArticleCollection.get())
         .docs
         .map((QueryDocumentSnapshot<Map<String, dynamic>> articleJson) => Article.fromJson(articleJson.data()))
         .toList();

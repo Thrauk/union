@@ -63,6 +63,8 @@ class ProjectOpenRole {
     );
   }
 
+  static const ProjectOpenRole empty = ProjectOpenRole();
+
   final String projectId;
   final String id;
   final String ownerId;
