@@ -39,7 +39,6 @@ class _HomePage extends StatelessWidget {
       builder: (BuildContext context, HomePagePostsState state) {
         return Scaffold(
           drawer: const AppDrawer(),
-          bottomNavigationBar: const CustomNavBar(),
           appBar: const AppBarWithSearchBar(),
           body: Column(
             mainAxisSize: MainAxisSize.min,

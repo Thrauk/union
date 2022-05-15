@@ -6,7 +6,6 @@ import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/user_profile/profile/widgets/posts/profile_posts_widget.dart';
 import 'package:union_app/src/screens/user_profile/profile/widgets/profile_description_widget.dart';
 import 'package:union_app/src/screens/widgets/app_bar/app_bar_with_search_bar.dart';
-import 'package:union_app/src/screens/widgets/app_bottom_nav_bar/view/custom_nav_bar.dart';
 import 'package:union_app/src/screens/widgets/app_drawer.dart';
 
 import '../profile.dart';
@@ -26,16 +25,14 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final String _loggedUid = context.select((AppBloc bloc) => bloc.state.user.id);
     return Scaffold(
-      // floatingActionButton: const PlusButton(),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
-      bottomNavigationBar: const CustomNavBar(),
       drawer: _loggedUid == uid ? const AppDrawer() : null,
       appBar: const AppBarWithSearchBar(),
       body: BlocProvider<ProfileBloc>(
         create: (_) => ProfileBloc(
-            uid: uid,
-            userRepository: FirebaseUserRepository(),
-            firebaseAuthRepository: context.read<AuthenticationRepository>()),
+          uid: uid,
+          userRepository: FirebaseUserRepository(),
+          firebaseAuthRepository: context.read<AuthenticationRepository>(),
+        ),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -43,7 +40,6 @@ class ProfilePage extends StatelessWidget {
               ProfileDetailsWidget(),
               ProfileStatisticsWidget(),
               ProfileDescriptionWidget(),
-              //InteractionMenuWidget(),
               ProfilePostsWidget(),
             ],
           ),

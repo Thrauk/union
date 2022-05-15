@@ -3,21 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/organization/view_organization/bloc/view_organization_bloc.dart';
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
-import 'package:union_app/src/screens/widgets/app_bottom_nav_bar/app_bottom_nav_bar.dart';
 import 'package:union_app/src/theme.dart';
 
 import 'components/view_organization_details.dart';
-
 
 class ViewOrganizationPage extends StatelessWidget {
   const ViewOrganizationPage({Key? key, required this.organizationId}) : super(key: key);
 
   static Route<void> route(String organizationId) {
     return MaterialPageRoute<void>(
-      builder: (_) =>
-          ViewOrganizationPage(
-            organizationId: organizationId,
-          ),
+      builder: (_) => ViewOrganizationPage(
+        organizationId: organizationId,
+      ),
     );
   }
 
@@ -27,18 +24,15 @@ class ViewOrganizationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final String uid = context.select((AppBloc bloc) => bloc.state.user.id);
     return Scaffold(
-      bottomNavigationBar: const CustomNavBar(),
       appBar: const SimpleAppBar(title: 'Organization'),
       body: BlocProvider<ViewOrganizationBloc>(
-        create: (_) =>
-        ViewOrganizationBloc(
+        create: (_) => ViewOrganizationBloc(
           uid: uid,
           organizationId: organizationId,
-        )
-          ..add(LoadData()),
+        )..add(LoadData()),
         child: BlocListener<ViewOrganizationBloc, ViewOrganizationState>(
           listener: (BuildContext context, ViewOrganizationState state) {
-            if(state.isDeleted) {
+            if (state.isDeleted) {
               Navigator.of(context).pop();
             }
           },

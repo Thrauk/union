@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/organization/joined_organizations/bloc/joined_organizations_bloc.dart';
 import 'package:union_app/src/screens/organization/joined_organizations/view/widgets/organizations_list_view.dart';
-import 'package:union_app/src/screens/widgets/app_bottom_nav_bar/app_bottom_nav_bar.dart';
 import 'package:union_app/src/theme.dart';
 
 
@@ -18,7 +17,6 @@ class JoinedOrganizationsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final String uid = context.select((AppBloc bloc) => bloc.state.user.id);
     return Scaffold(
-      bottomNavigationBar: const CustomNavBar(),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
