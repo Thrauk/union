@@ -33,7 +33,8 @@ class _ProjectsInvitesPage extends StatelessWidget {
       },
       builder: (BuildContext context, UserProjectsInvitesState state) {
         if (state.pageStatus == PageStatus.INITIAL) {
-          return const Expanded(
+          return const Padding(
+            padding: EdgeInsets.all(16.0),
             child: Center(
               child: CircularProgressIndicator(
                 color: AppColors.primaryColor,
