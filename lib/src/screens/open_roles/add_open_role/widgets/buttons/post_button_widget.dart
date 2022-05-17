@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:provider/src/provider.dart';
 import 'package:union_app/src/screens/app/app.dart';
-import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/screens/main/view/main_screen.dart';
 import 'package:union_app/src/screens/open_roles/add_open_role/bloc/add_open_role_bloc.dart';
 import 'package:union_app/src/theme.dart';
 
@@ -18,7 +18,7 @@ class PostButtonWidget extends StatelessWidget {
     return BlocConsumer<AddOpenRoleBloc, AddOpenRoleState>(
       listener: (BuildContext context, AddOpenRoleState state) {
         if (state.status.isSubmissionSuccess) {
-          Navigator.of(context).push(HomePage.route());
+          Navigator.of(context).push(MainPage.route());
         }
       },
       builder: (BuildContext context, AddOpenRoleState state) {

@@ -13,6 +13,10 @@ class MainPage extends StatelessWidget {
 
   static Page<void> page() => const MaterialPage<void>(child: MainPage());
 
+  static Route<void> route() {
+    return MaterialPageRoute<void>(builder: (_) => const MainPage());
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<MainNavigationCubit>(

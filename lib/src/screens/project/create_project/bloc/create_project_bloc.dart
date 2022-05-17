@@ -72,6 +72,7 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
           shortDescription: state.shortDescription.value,
           details: state.details.value,
           tags: tags,
+          membersUid: [event.ownerId],
           ownerId: event.ownerId,
           timestamp: DateTime.now().microsecondsSinceEpoch,
         );
@@ -95,6 +96,7 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
           details: state.details.value,
           tags: tags,
           ownerId: event.ownerId,
+          membersUid: [event.ownerId],
           organizationId: event.organizationId,
           timestamp: DateTime.now().microsecondsSinceEpoch,
         );

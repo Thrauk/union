@@ -5,7 +5,7 @@ import 'package:formz/formz.dart';
 import 'package:provider/src/provider.dart';
 import 'package:union_app/src/models/authentication/app_user.dart';
 import 'package:union_app/src/screens/app/app.dart';
-import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/screens/main/view/main_screen.dart';
 import 'package:union_app/src/screens/project/create_project/bloc/bloc.dart';
 import 'package:union_app/src/theme.dart';
 
@@ -20,7 +20,7 @@ class CreateButtonWidget extends StatelessWidget {
     return BlocConsumer<CreateProjectBloc, CreateProjectState>(
       listener: (BuildContext context, CreateProjectState state) {
         if (state.status.isSubmissionSuccess) {
-          Navigator.of(context).push(HomePage.route());
+          Navigator.of(context).push(MainPage.route());
         }
       },
       builder: (BuildContext context, CreateProjectState state) {

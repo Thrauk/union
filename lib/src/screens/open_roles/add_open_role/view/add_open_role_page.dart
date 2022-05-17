@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/repository/firestore/firestore.dart';
-import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/screens/main/view/main_screen.dart';
 import 'package:union_app/src/screens/open_roles/add_open_role/bloc/add_open_role_bloc.dart';
 import 'package:union_app/src/screens/open_roles/add_open_role/widgets/dropdown/experience_level_dropdown_widget.dart';
 import 'package:union_app/src/screens/open_roles/add_open_role/widgets/widgets.dart';
@@ -65,7 +65,8 @@ class AddOpenRolePage extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: GestureDetector(
-                        onTap: () => Navigator.of(context).push(HomePage.route()),
+                        // TODO(amalia): go back to project page
+                        onTap: () => Navigator.of(context).push(MainPage.route()),
                         child: const Center(
                           child: Text(
                             'Cancel',

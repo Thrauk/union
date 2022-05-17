@@ -6,6 +6,7 @@ import 'package:union_app/src/repository/firestore/firebase_project_repository/f
 import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/screens/main/view/main_screen.dart';
 import 'package:union_app/src/screens/open_roles/add_open_role/view/add_open_role_page.dart';
 import 'package:union_app/src/screens/project/edit_project/edit_project.dart';
 import 'package:union_app/src/screens/project/invite_users/view/invite_users_to_project_page.dart';
@@ -29,9 +30,10 @@ class ProjectDetailsPage extends StatelessWidget {
     final bool isMember = project.membersUid?.contains(_loggedUserId) ?? false;
 
     return BlocProvider<ProjectDetailsBloc>(
-      create: (BuildContext context) => ProjectDetailsBloc(FirebaseProjectOpenRoleRepository(), FirebaseProjectMembersRepository())
-        ..add(GetOpenRoles(project.id))
-        ..add(GetMembers(project.id)),
+      create: (BuildContext context) =>
+          ProjectDetailsBloc(FirebaseProjectOpenRoleRepository(), FirebaseProjectMembersRepository())
+            ..add(GetOpenRoles(project.id))
+            ..add(GetMembers(project.id)),
       child: Scaffold(
         body: DefaultTabController(
           length: isMember == true ? 3 : 2,
@@ -104,7 +106,7 @@ void manageChoices(String choice, BuildContext context, Project project) {
           optionOneFunction: () {
             try {
               FirebaseProjectRepository().deleteProject(project);
-              Navigator.of(context).pushAndRemoveUntil(HomePage.route(), (Route<dynamic> route) => false);
+              Navigator.of(context).pushAndRemoveUntil(MainPage.route(), (Route<dynamic> route) => false);
             } catch (e) {
               print(e);
             }

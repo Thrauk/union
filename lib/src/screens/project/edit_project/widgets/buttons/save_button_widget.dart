@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:provider/src/provider.dart';
-import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/screens/main/view/main_screen.dart';
 import 'package:union_app/src/screens/project/edit_project/bloc/edit_project_bloc.dart';
 import 'package:union_app/src/theme.dart';
 
@@ -15,7 +15,7 @@ class SaveButtonWidget extends StatelessWidget {
     return BlocConsumer<EditProjectBloc, EditProjectState>(
       listener: (BuildContext context, EditProjectState state) {
         if (state.status.isSubmissionSuccess) {
-          Navigator.of(context).push(HomePage.route());
+          Navigator.of(context).push(MainPage.route());
         }
       },
       builder: (BuildContext context, EditProjectState state) {
