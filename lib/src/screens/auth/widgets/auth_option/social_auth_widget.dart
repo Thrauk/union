@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/screens/auth/login/cubit/login_cubit.dart';
 import 'package:union_app/src/screens/auth/sign_up/cubit/sign_up_cubit.dart';
+import 'package:union_app/src/screens/widgets/widgets.dart';
 
 enum SocialAuthType { SignUp, Login }
 
@@ -30,9 +31,10 @@ class SocialAuthWidget extends StatelessWidget {
         const SizedBox(
           width: 20,
         ),
-        const Image(
-          image: AssetImage('assets/icons/facebook_icon.png'),
-        ),
+        const GithubLoginWidget(),
+        // const Image(
+        //   image: AssetImage('assets/icons/facebook_icon.png'),
+        // ),
       ],
     );
   }
