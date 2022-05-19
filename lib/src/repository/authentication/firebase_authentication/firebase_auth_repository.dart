@@ -9,6 +9,8 @@ import 'package:http/http.dart' as http;
 import 'package:union_app/src/app_data/app_data.dart';
 import 'package:union_app/src/models/github/github_login_request.dart';
 import 'package:union_app/src/models/github/github_login_response.dart';
+import 'package:union_app/src/models/github/github_mail.dart';
+import 'package:union_app/src/models/github/github_profile.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/authentication/auth.dart';
 import 'package:union_app/src/repository/firestore/firestore.dart';
@@ -120,36 +122,62 @@ class FirebaseAuthRepository implements AuthenticationRepository {
 
   @override
   Future<void> logInWithGithub({required String code}) async {
-    final http.Response response = await http.post(
-      Uri.parse('https://github.com/login/oauth/access_token'),
-      headers: <String, String>{'Content-Type': 'application/json', 'Accept': 'application/json'},
-      body: jsonEncode(GithubLoginRequest(
-        clientId: AppData.GithubClientId,
-        clientSecret: AppData.GithubClientSecret,
-        code: code,
-      ).toJson(),)
-    );
-    print('param code $code');
+    final http.Response response = await http.post(Uri.parse('https://github.com/login/oauth/access_token'),
+        headers: <String, String>{'Content-Type': 'application/json', 'Accept': 'application/json'},
+        body: jsonEncode(
+          GithubLoginRequest(
+            clientId: AppData.GithubClientId,
+            clientSecret: AppData.GithubClientSecret,
+            code: code,
+          ).toJson(),
+        ));
+    // print('param code $code');
 
     final GithubLoginResponse loginResponse = GithubLoginResponse.fromJson(json.decode(response.body) as Map<String, dynamic>);
 
-    print('login response code  ${loginResponse.accessToken}');
+    // print('login response code  ${loginResponse.accessToken}');
 
     final AuthCredential credential = firebase_auth.GithubAuthProvider.credential(loginResponse.accessToken);
 
     final firebase_auth.UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
 
-
-    print(userCredential.user!.email);
+    // print(userCredential.user!.email);
     print(userCredential);
 
+    firebase_auth.AdditionalUserInfo additionalUserInfo = userCredential.additionalUserInfo!;
+    Map<String,dynamic> profileInfo = additionalUserInfo.profile!;
+
+    GithubProfile githubProfile = GithubProfile.fromJson(profileInfo);
+
     final http.Response emailResponse = await http.get(
-        Uri.parse('https://api.github.com/user/emails'),
-        headers: <String, String>{'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization' : 'token ${loginResponse.accessToken}'},
+      Uri.parse('https://api.github.com/user/emails'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'token ${loginResponse.accessToken}'
+      },
     );
 
     print(jsonDecode(emailResponse.body));
 
+
+    final List<GithubMail> mailAddress = (jsonDecode(emailResponse.body) as List<dynamic>)
+        .map((dynamic email) => GithubMail.fromJson(email as Map<String,dynamic>))
+        .toList();
+
+    final GithubMail primaryAddress = mailAddress.firstWhere((GithubMail element) => element.primary == true);
+
+    print(primaryAddress.email);
+
+    final AppUser appUser = AppUser(
+      id: userCredential.user!.uid,
+      email: primaryAddress.email,
+      displayName: githubProfile.name,
+    );
+
+    _storageRepository.userService.saveUserAuthDetails(appUser);
+
+    // print(jsonDecode(emailResponse.body));
   }
 
 /*

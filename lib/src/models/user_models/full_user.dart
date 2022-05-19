@@ -25,7 +25,7 @@ class FullUser extends Equatable {
         projectsIds = json['projects_ids'] as List<dynamic>?,
         followers = json['followers'] as List<dynamic>?,
         following = json['following'] as List<dynamic>?,
-        isOpenForCollaborations = json['is_open_for_collaborations'] as bool;
+        isOpenForCollaborations = json['is_open_for_collaborations'] != null ? (json['is_open_for_collaborations'] as bool) : false;
 
   Map<String, dynamic> toJson() => {
         'id': id,
