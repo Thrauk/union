@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/firestore/firebase_project_repository/firebase_project_members_repository.dart';
 import 'package:union_app/src/repository/firestore/firestore.dart';
+import 'package:union_app/src/repository/github/github_repository.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/home/home.dart';
 import 'package:union_app/src/screens/main/view/main_screen.dart';
@@ -31,9 +32,10 @@ class ProjectDetailsPage extends StatelessWidget {
 
     return BlocProvider<ProjectDetailsBloc>(
       create: (BuildContext context) =>
-          ProjectDetailsBloc(FirebaseProjectOpenRoleRepository(), FirebaseProjectMembersRepository())
+          ProjectDetailsBloc(FirebaseProjectOpenRoleRepository(), FirebaseProjectMembersRepository(), GithubRepository())
             ..add(GetOpenRoles(project.id))
-            ..add(GetMembers(project.id)),
+            ..add(GetMembers(project.id))
+            ..add(GetLinkedRepository(project.githubRepositoryName)),
       child: Scaffold(
         body: DefaultTabController(
           length: isMember == true ? 3 : 2,

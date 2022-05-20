@@ -5,7 +5,7 @@ import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/article/edit_article/view/edit_article_page.dart';
-import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/screens/main/view/main_screen.dart';
 import 'package:union_app/src/screens/widgets/chips/chip_with_text.dart';
 import 'package:union_app/src/theme.dart';
 
@@ -119,7 +119,7 @@ void showDeleteDialog(BuildContext context, Article article) {
             onPressed: () {
               try {
                 FirebaseArticleRepository().deleteArticle(article.id);
-                Navigator.of(context).pushAndRemoveUntil(HomePage.route(), (Route<dynamic> route) => false);
+                Navigator.of(context).pushAndRemoveUntil(MainPage.route(), (Route<dynamic> route) => false);
               } catch (e) {
                 print('showDeleteDialog $e');
               }

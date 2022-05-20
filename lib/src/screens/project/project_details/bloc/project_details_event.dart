@@ -15,3 +15,9 @@ class GetMembers extends ProjectDetailsEvent {
 
   final String projectId;
 }
+
+class GetLinkedRepository extends ProjectDetailsEvent {
+  GetLinkedRepository(this.repositoryName);
+
+  final String repositoryName;
+}

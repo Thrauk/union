@@ -51,7 +51,7 @@ class Project extends Equatable {
   final List<dynamic>? tags;
   final List<dynamic>? membersUid;
   final List<dynamic>? articlesId;
-  final String? githubRepositoryName;
+  final String githubRepositoryName;
 
   static const Project empty = Project();
 
