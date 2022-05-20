@@ -11,6 +11,7 @@ class Project extends Equatable {
       this.membersUid = const <String>[],
       this.articlesId = const <String>[],
       this.id = '',
+      this.githubRepositoryName = '',
       this.organizationId = ''});
 
   Project.fromJson(Map<String, dynamic> json)
@@ -23,6 +24,7 @@ class Project extends Equatable {
         articlesId = json['articles_id'] as List<dynamic>,
         timestamp = json['timestamp'] as int,
         title = json['title'] as String,
+        githubRepositoryName = json['github_repository_name'] != null ? json['github_repository_name'] as String : '',
         organizationId = (json['organization_id'] ?? '') as String;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -36,6 +38,7 @@ class Project extends Equatable {
         'organization_id': organizationId,
         'members_uid': membersUid,
         'articles_id': articlesId,
+        'github_repository_name': githubRepositoryName,
       };
 
   final String? title;
@@ -48,6 +51,7 @@ class Project extends Equatable {
   final List<dynamic>? tags;
   final List<dynamic>? membersUid;
   final List<dynamic>? articlesId;
+  final String? githubRepositoryName;
 
   static const Project empty = Project();
 
@@ -64,6 +68,7 @@ class Project extends Equatable {
     List<String>? membersUid,
     List<String>? articlesId,
     String? organizationId,
+    String? githubRepositoryName,
   }) {
     return Project(
       id: id ?? this.id,
@@ -76,10 +81,21 @@ class Project extends Equatable {
       organizationId: organizationId ?? this.organizationId,
       membersUid: membersUid ?? this.membersUid,
       articlesId: articlesId ?? this.articlesId,
+      githubRepositoryName: githubRepositoryName ?? this.githubRepositoryName,
     );
   }
 
   @override
-  List<Object?> get props =>
-      <Object?>[title, shortDescription, details, tags, ownerId, id, organizationId, membersUid, articlesId];
+  List<Object?> get props => <Object?>[
+        title,
+        shortDescription,
+        details,
+        tags,
+        ownerId,
+        id,
+        organizationId,
+        membersUid,
+        articlesId,
+        githubRepositoryName
+      ];
 }

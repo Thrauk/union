@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
@@ -5,6 +7,7 @@ import 'package:meta/meta.dart';
 import 'package:union_app/src/models/form_inputs/project_body.dart';
 import 'package:union_app/src/models/form_inputs/project_title.dart';
 import 'package:union_app/src/models/form_inputs/tag_name.dart';
+import 'package:union_app/src/models/github/github_repository_item.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/firestore/firestore.dart';
 
@@ -21,6 +24,8 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
     on<RemoveTagButtonPressed>(_removeTagPressed);
     on<CreateButtonPressed>(_createButtonPressed);
     on<CreateButtonPressedOrganization>(_createButtonPressedOrganization);
+    on<RepositoryChosed>(_repositoryChosed);
+    on<RepositoryRemoved>(_repositoryRemoved);
   }
 
   final FirebaseProjectRepository _projectRepository;
@@ -51,12 +56,6 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
     }
   }
 
-  // void _tagChanged(TagChanged event, Emitter<CreateProjectState> emit) {
-  //   final TagName tag = TagName.dirty(event.value);
-  //   // tag.list = state.tagItems;
-  //   emit(state.copyWith(tag: tag, status: Formz.validate([tag])));
-  // }
-
   void _removeTagPressed(RemoveTagButtonPressed event, Emitter<CreateProjectState> emit) {
     final List<TagName> tagList = List.from(state.tagItems);
     tagList.removeWhere((TagName element) => element.value == event.value);
@@ -74,11 +73,11 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
           tags: tags,
           membersUid: [event.ownerId],
           ownerId: event.ownerId,
+          githubRepositoryName: state.githubRepository.fullName,
           timestamp: DateTime.now().microsecondsSinceEpoch,
         );
         _projectRepository.createProject(project);
         emit(state.copyWith(status: FormzStatus.submissionSuccess));
-        print(state.status);
       } catch (_) {
         print(_);
         emit(state.copyWith(status: FormzStatus.submissionFailure));
@@ -99,6 +98,7 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
           membersUid: [event.ownerId],
           organizationId: event.organizationId,
           timestamp: DateTime.now().microsecondsSinceEpoch,
+          githubRepositoryName: state.githubRepository.fullName
         );
         _projectRepository.createProject(project);
         emit(state.copyWith(status: FormzStatus.submissionSuccess));
@@ -108,5 +108,14 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }
     }
+  }
+
+  FutureOr<void> _repositoryChosed(RepositoryChosed event, Emitter<CreateProjectState> emit) {
+    emit(state.copyWith(githubRepository: event.githubRepository));
+  }
+
+  FutureOr<void> _repositoryRemoved(RepositoryRemoved event, Emitter<CreateProjectState> emit) {
+    emit(state.copyWith(githubRepository: GithubRepositoryItem.empty));
+
   }
 }

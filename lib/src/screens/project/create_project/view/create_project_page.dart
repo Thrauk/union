@@ -9,7 +9,10 @@ class CreateProjectPage extends StatelessWidget {
   const CreateProjectPage({Key? key, this.organizationId = ''}) : super(key: key);
 
   static Route<void> route({String? organizationId}) {
-    return MaterialPageRoute<void>(builder: (_) => CreateProjectPage(organizationId: organizationId ?? '',));
+    return MaterialPageRoute<void>(
+        builder: (_) => CreateProjectPage(
+              organizationId: organizationId ?? '',
+            ));
   }
 
   final String organizationId;
@@ -17,8 +20,7 @@ class CreateProjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CreateProjectBloc>(
-      create: (BuildContext context) =>
-          CreateProjectBloc(FirebaseProjectRepository()),
+      create: (BuildContext context) => CreateProjectBloc(FirebaseProjectRepository()),
       child: Scaffold(
         appBar: const SimpleAppBar(title: 'Create project'),
         body: Padding(
@@ -26,18 +28,19 @@ class CreateProjectPage extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                SizedBox(height: 16),
-                GithubButtonWidget(),
-                SizedBox(height: 24),
-                TitleInputWidget(),
-                SizedBox(height: 16),
-                ShortDescriptionInputWidget(),
-                SizedBox(height: 16),
-                DetailsInputWidget(),
-                SizedBox(height: 16),
-                TagsContainer(),
-                SizedBox(height: 16),
-                CreateButtonWidget(organizationId: organizationId,),
+                const GithubButtonWidget(),
+                const SizedBox(height: 16),
+                const TitleInputWidget(),
+                const SizedBox(height: 16),
+                const ShortDescriptionInputWidget(),
+                const SizedBox(height: 16),
+                const DetailsInputWidget(),
+                const SizedBox(height: 16),
+                const TagsContainer(),
+                const SizedBox(height: 16),
+                CreateButtonWidget(
+                  organizationId: organizationId,
+                ),
               ],
             ),
           ),
