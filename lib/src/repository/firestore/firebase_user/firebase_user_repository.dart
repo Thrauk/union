@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:union_app/src/models/authentication/app_user.dart';
 import 'package:union_app/src/models/models.dart';
+import 'package:union_app/src/models/user_models/user_github_data.dart';
 
 import '../firestore.dart';
 
@@ -19,6 +20,7 @@ class FirebaseUserRepository {
   late final FollowService followService = FollowService();
 
   final CollectionReference<Map<String, dynamic>> firestoreInstance = FirebaseFirestore.instance.collection('users');
+  final CollectionReference<Map<String, dynamic>> firestoreGithubInstance = FirebaseFirestore.instance.collection('github_user_data');
 
   final Reference storageReference = FirebaseStorage.instance.ref().child('users');
 
@@ -89,6 +91,20 @@ class FirebaseUserRepository {
         return FullUser.empty;
       }
     }).toList();
+
+
+
+  }
+
+
+  Future<void> saveGithubUserData(UserGithubData userGithubData) async {
+    firestoreGithubInstance.doc(userGithubData.uid).set(userGithubData.toJson());
+  }
+
+  Future<UserGithubData> getGithubUserDataByUid(String uid) async {
+    final Map<String, dynamic> json = (await firestoreGithubInstance.doc(uid).get()).data()!;
+
+    return UserGithubData.fromJson(json);
   }
 
   // DEMO FUNCTION, SHOULD NOT BE USED OTHERWISE
