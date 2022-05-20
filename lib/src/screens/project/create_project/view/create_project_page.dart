@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/repository/firestore/firestore.dart';
+import 'package:union_app/src/repository/github/github_repository.dart';
+import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/project/create_project/create_project.dart';
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
 
@@ -10,9 +12,10 @@ class CreateProjectPage extends StatelessWidget {
 
   static Route<void> route({String? organizationId}) {
     return MaterialPageRoute<void>(
-        builder: (_) => CreateProjectPage(
-              organizationId: organizationId ?? '',
-            ));
+      builder: (_) => CreateProjectPage(
+        organizationId: organizationId ?? '',
+      ),
+    );
   }
 
   final String organizationId;
@@ -20,7 +23,8 @@ class CreateProjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CreateProjectBloc>(
-      create: (BuildContext context) => CreateProjectBloc(FirebaseProjectRepository()),
+      create: (BuildContext context) => CreateProjectBloc(FirebaseProjectRepository(), GithubRepository())
+        ..add(IsGithubLinked(context.read<AppBloc>().state.user.id)),
       child: Scaffold(
         appBar: const SimpleAppBar(title: 'Create project'),
         body: Padding(

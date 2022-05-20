@@ -16,7 +16,7 @@ class GithubRepository {
   static final GithubRepository _singleton = GithubRepository._internal();
 
   final CollectionReference<Map<String, dynamic>> _firestoreGithubCollection =
-  FirebaseFirestore.instance.collection('github_user_data');
+      FirebaseFirestore.instance.collection('github_user_data');
 
   Future<void> queryOauthAuthorize() async {
     const String baseUrl = 'www.github.com';
@@ -42,8 +42,7 @@ class GithubRepository {
     final String token = await getUserGithubToken(uid);
     final Uri baseUrl = Uri.parse('https://api.github.com/user/repos');
 
-    final http.Response response =
-        await http.get(baseUrl, headers: {'Authorization': ' Bearer $token'});
+    final http.Response response = await http.get(baseUrl, headers: {'Authorization': ' Bearer $token'});
 
     if (response.body != null) {
       final List jsonList = jsonDecode(response.body) as List;
@@ -52,9 +51,12 @@ class GithubRepository {
     return repositories;
   }
 
-  Future<String> getUserGithubToken(String uid) async{
+  Future<String> getUserGithubToken(String uid) async {
     final DocumentSnapshot<Map<String, dynamic>> json = await _firestoreGithubCollection.doc(uid).get();
-    return json['oauth_token'] as String;
+    if (json['oauth_token'] != null)
+      return json['oauth_token'] as String;
+    else
+      return '';
   }
 
 // Future<GithubRepositoryItem> getGithubRepository(String name) {

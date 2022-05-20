@@ -10,13 +10,14 @@ import 'package:union_app/src/models/form_inputs/tag_name.dart';
 import 'package:union_app/src/models/github/github_repository_item.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/repository/firestore/firestore.dart';
+import 'package:union_app/src/repository/github/github_repository.dart';
 
 part 'create_project_event.dart';
 
 part 'create_project_state.dart';
 
 class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
-  CreateProjectBloc(this._projectRepository) : super(const CreateProjectState()) {
+  CreateProjectBloc(this._projectRepository, this._githubRepository) : super(const CreateProjectState()) {
     on<TitleChanged>(_titleChanged);
     on<DetailsChanged>(_detailsChanged);
     on<ShortDescriptionChanged>(_shortDescriptionChanged);
@@ -26,9 +27,11 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
     on<CreateButtonPressedOrganization>(_createButtonPressedOrganization);
     on<RepositoryChosed>(_repositoryChosed);
     on<RepositoryRemoved>(_repositoryRemoved);
+    on<IsGithubLinked>(_isGithubLinked);
   }
 
   final FirebaseProjectRepository _projectRepository;
+  final GithubRepository _githubRepository;
 
   void _titleChanged(TitleChanged event, Emitter<CreateProjectState> emit) {
     final ProjectTitle title = ProjectTitle.dirty(event.value);
@@ -95,7 +98,7 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
           details: state.details.value,
           tags: tags,
           ownerId: event.ownerId,
-          membersUid: [event.ownerId],
+          membersUid: <String>[event.ownerId],
           organizationId: event.organizationId,
           timestamp: DateTime.now().microsecondsSinceEpoch,
           githubRepositoryName: state.githubRepository.fullName
@@ -117,5 +120,14 @@ class CreateProjectBloc extends Bloc<CreateProjectEvent, CreateProjectState> {
   FutureOr<void> _repositoryRemoved(RepositoryRemoved event, Emitter<CreateProjectState> emit) {
     emit(state.copyWith(githubRepository: GithubRepositoryItem.empty));
 
+  }
+
+  Future<FutureOr<void>> _isGithubLinked(IsGithubLinked event, Emitter<CreateProjectState> emit) async {
+    final String token = await _githubRepository.getUserGithubToken(event.uid);
+    if(token != '') {
+      emit(state.copyWith(isGithubAccountLinked: true));
+    } else {
+      emit(state.copyWith(isGithubAccountLinked: false));
+    }
   }
 }

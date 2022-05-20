@@ -9,6 +9,7 @@ class CreateProjectState extends Equatable {
     this.tagItems = const <TagName>[],
     this.status = FormzStatus.pure,
     this.githubRepository = GithubRepositoryItem.empty,
+    this.isGithubAccountLinked = false,
   });
 
   final ProjectTitle title;
@@ -18,6 +19,7 @@ class CreateProjectState extends Equatable {
   final FormzStatus status;
   final TagName tag;
   final GithubRepositoryItem githubRepository;
+  final bool isGithubAccountLinked;
 
   CreateProjectState copyWith(
       {ProjectTitle? title,
@@ -26,6 +28,7 @@ class CreateProjectState extends Equatable {
       FormzStatus? status,
       List<TagName>? tagItems,
       GithubRepositoryItem? githubRepository,
+      bool? isGithubAccountLinked,
       TagName? tag}) {
     return CreateProjectState(
       title: title ?? this.title,
@@ -35,9 +38,11 @@ class CreateProjectState extends Equatable {
       tag: tag ?? this.tag,
       tagItems: tagItems ?? this.tagItems,
       githubRepository: githubRepository ?? this.githubRepository,
+      isGithubAccountLinked: isGithubAccountLinked ?? this.isGithubAccountLinked,
     );
   }
 
   @override
-  List<Object?> get props => <Object?>[title, shortDescription, details, tagItems, tag, status, githubRepository];
+  List<Object?> get props =>
+      <Object?>[title, shortDescription, details, tagItems, tag, status, githubRepository, isGithubAccountLinked];
 }
