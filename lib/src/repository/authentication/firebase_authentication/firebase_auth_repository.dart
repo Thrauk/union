@@ -151,6 +151,7 @@ class FirebaseAuthRepository implements AuthenticationRepository {
       },
     );
 
+    print(jsonDecode(emailResponse.body));
 
     final List<GithubMail> mailAddress = (jsonDecode(emailResponse.body) as List<dynamic>)
         .map((dynamic email) => GithubMail.fromJson(email as Map<String, dynamic>))
@@ -167,6 +168,39 @@ class FirebaseAuthRepository implements AuthenticationRepository {
     );
 
     _storageRepository.userService.saveUserAuthDetails(appUser);
+
+    final UserGithubData userGithubData = UserGithubData(
+      uid: userCredential.user!.uid,
+      githubUsername: githubProfile.username,
+      oAuthToken: loginResponse.accessToken,
+    );
+
+    _storageRepository.userService.saveGithubUserData(userGithubData);
+
+  }
+
+  @override
+  Future<void> linkWithGithub({required String code}) async {
+    final http.Response response = await http.post(Uri.parse('https://github.com/login/oauth/access_token'),
+        headers: <String, String>{'Content-Type': 'application/json', 'Accept': 'application/json'},
+        body: jsonEncode(
+          GithubLoginRequest(
+            clientId: AppData.GithubClientId,
+            clientSecret: AppData.GithubClientSecret,
+            code: code,
+          ).toJson(),
+        ));
+
+    final GithubLoginResponse loginResponse = GithubLoginResponse.fromJson(json.decode(response.body) as Map<String, dynamic>);
+
+    final AuthCredential credential = firebase_auth.GithubAuthProvider.credential(loginResponse.accessToken);
+
+    final firebase_auth.UserCredential userCredential = await _firebaseAuth.currentUser!.linkWithCredential(credential);
+
+    final firebase_auth.AdditionalUserInfo additionalUserInfo = userCredential.additionalUserInfo!;
+    final Map<String, dynamic> profileInfo = additionalUserInfo.profile!;
+
+    final GithubProfile githubProfile = GithubProfile.fromJson(profileInfo);
 
     final UserGithubData userGithubData = UserGithubData(
       uid: userCredential.user!.uid,

@@ -15,5 +15,7 @@ abstract class AuthenticationRepository {
 
   Future<void> logInWithGithub({required String code});
 
+  Future<void> linkWithGithub({required String code});
+
   Future<void> logOut();
 }

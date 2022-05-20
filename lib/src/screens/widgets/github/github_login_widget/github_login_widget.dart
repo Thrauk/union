@@ -31,9 +31,8 @@ class _GithubLoginWidget extends StatelessWidget {
           onTap: () {
             context.read<GithubLoginWidgetBloc>().add(LoginPressed());
           },
-          child: const Icon(
-            Icons.category,
-            color: Colors.white,
+          child: const Image(
+            image: AssetImage('assets/icons/github_icon.png'),
           ),
         );
       },

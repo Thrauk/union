@@ -6,6 +6,7 @@ import 'package:union_app/src/screens/app/bloc/app_bloc.dart';
 import 'package:union_app/src/screens/user_profile/edit_profile/edit_profile.dart';
 import 'package:union_app/src/screens/user_profile/edit_profile/widgets/toggle/open_for_collaboration_switch.dart';
 import 'package:union_app/src/screens/widgets/app_bar/simple_app_bar.dart';
+import 'package:union_app/src/screens/widgets/github/github_link_widget/github_link_widget.dart';
 import 'package:union_app/src/theme.dart';
 
 
@@ -80,6 +81,9 @@ class _EditProfilePage extends StatelessWidget {
                       const Align(alignment: Alignment.centerLeft, child: Text('Resume', style: AppStyles.textStyleHeading1)),
                       FileUploader(userId: state.fullUser.id),
                       const SizedBox(height: 15),
+                      const GithubLinkWidget(),
+                      const SizedBox(height: 15),
+
                       const SubmitButtonWidget(),
                     ],
                   )
