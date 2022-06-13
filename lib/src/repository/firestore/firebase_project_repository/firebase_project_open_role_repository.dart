@@ -50,22 +50,20 @@ class FirebaseProjectOpenRoleRepository {
     }).toList();
   }
 
-  Future<void> addUidToOpenRole(ProjectOpenRoleApplication roleApplication, String openRoleId,
+  Future<void> createApplication(ProjectOpenRoleApplication roleApplication, String openRoleId,
       {FilePickerResult? filePickerResult, String? userCVPath}) async {
     try {
       final DocumentReference<Map<String, dynamic>> applicationDoc = _firestoreProjectsApplicationsCollection.doc();
 
       ProjectOpenRoleApplication applicationToSave = roleApplication.copyWith(openRoleId: openRoleId, id: applicationDoc.id);
+
       if (filePickerResult != null) {
         final String? fileUrl = await saveCVFileToApplication(filePickerResult, applicationDoc.id);
-        if (fileUrl != null) applicationToSave = applicationToSave.copyWith(cvUrl: fileUrl);
-        applicationDoc.set(applicationToSave.toJson());
-        return;
+        if (fileUrl != null)
+          applicationToSave = applicationToSave.copyWith(cvUrl: fileUrl);
       } else if (userCVPath != null && userCVPath.isNotEmpty) {
         copyCvFromUserToApplication(userCVPath, applicationDoc.id);
         applicationToSave = applicationToSave.copyWith(cvUrl: userCVPath);
-
-        applicationDoc.set(applicationToSave.toJson());
       }
       applicationDoc.set(applicationToSave.toJson());
     } catch (e) {
@@ -168,6 +166,7 @@ class FirebaseProjectOpenRoleRepository {
       print('saveCVFileToApplication $e');
       throw e;
     }
+    return null;
   }
 
   Future<String?> getUserCvIfPresent(String ownerId) async {

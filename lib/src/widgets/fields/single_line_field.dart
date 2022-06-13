@@ -20,7 +20,6 @@ class SingleLineField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       initialValue: initialText,
-      //keyboardType: TextInputType.multiline,
       style: AppStyles.textStyleBody,
       onChanged: onChanged,
       cursorColor: AppColors.primaryColor,

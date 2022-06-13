@@ -25,14 +25,5 @@ class TagName extends FormzInput<String, TagNameValidationError> {
     return _nameRegExp.hasMatch(value ?? '')
         ? (value!.length < 20 ? null : TagNameValidationError.invalid)
         : TagNameValidationError.invalid;
-    // if (_nameRegExp.hasMatch(value ?? '')) {
-    //   if (value!.length < 20) {
-    //     if (list.isNotEmpty) {
-    //       return list.contains(TagName.dirty(value))
-    //           ? TagNameValidationError.invalid
-    //           : null;
-    //     }
-    //   }
-    // }
   }
 }

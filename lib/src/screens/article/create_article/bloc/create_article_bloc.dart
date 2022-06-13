@@ -56,7 +56,6 @@ class CreateArticleBloc extends Bloc<CreateArticleEvent, CreateArticleState> {
         _articleRepository.createArticle(article, projectId: event.projectId);
         emit(state.copyWith(status: FormzStatus.submissionSuccess));
       } catch (_) {
-        // TODO display on screen it's submission failure
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }
     }

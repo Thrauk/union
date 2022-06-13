@@ -31,7 +31,8 @@ class SocialAuthWidget extends StatelessWidget {
         const SizedBox(
           width: 20,
         ),
-        const GithubLoginWidget(),
+        SizedBox(
+            width:45,child: const GithubLoginWidget()),
         // const Image(
         //   image: AssetImage('assets/icons/facebook_icon.png'),
         // ),

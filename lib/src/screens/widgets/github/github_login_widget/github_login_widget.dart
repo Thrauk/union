@@ -33,6 +33,7 @@ class _GithubLoginWidget extends StatelessWidget {
           },
           child: const Image(
             image: AssetImage('assets/icons/github_icon.png'),
+            fit: BoxFit.fill,
           ),
         );
       },

@@ -212,20 +212,6 @@ class FirebaseAuthRepository implements AuthenticationRepository {
 
   }
 
-/*
-  void Test() async {
-    String emailError;
-    final FirebaseAuthFailure<String>? failure = await signUpWithEmailAndPassword(email: "mailu Meu", password: "1234");
-    if(failure != null) {
-      failure.map(serverFailure: (ServerFailure<String> error) { emailError = error.failedValue; }
-
-      );
-    }
-
-
-    errorText: state.email.errorText ?? state.email.errorText : null,
-  } */
-
   @override
   Stream<AppUser> get user {
     return _firebaseAuth.authStateChanges().map((firebase_auth.User? firebaseUser) {

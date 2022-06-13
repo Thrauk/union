@@ -24,7 +24,7 @@ class ApplyToOpenRoleBloc extends Bloc<ApplyToOpenRoleEvent, ApplyToOpenRoleStat
 
   Future<FutureOr<void>> _applyButtonPressed(ApplyButtonPressed event, Emitter<ApplyToOpenRoleState> emit) async {
     try {
-      await _firebaseProjectOpenRoleRepository.addUidToOpenRole(
+      await _firebaseProjectOpenRoleRepository.createApplication(
           ProjectOpenRoleApplication(uid: event.uid, notice: state.notice), event.openRoleId,
           filePickerResult: state.filePickerResult, userCVPath: state.cvUrl);
       emit(state.copyWith(status: FormzStatus.submissionSuccess));

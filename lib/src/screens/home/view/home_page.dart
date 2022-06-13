@@ -44,8 +44,6 @@ class _HomePage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               const ChoosePostTypeWidget(),
-              // if(state.postType == PostType.PROJECT)
-              //         Container(height: 100,child: PopularProjectsListWidget()),
               Expanded(
                 child: ListView.builder(
                   itemCount: state.posts.length,
