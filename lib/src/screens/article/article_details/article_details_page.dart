@@ -2,16 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/article/edit_article/view/edit_article_page.dart';
-import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/screens/main/view/main_screen.dart';
+import 'package:union_app/src/screens/widgets/chips/chip_with_text.dart';
 import 'package:union_app/src/theme.dart';
 
 class ArticleDetailsPage extends StatelessWidget {
-  ArticleDetailsPage({Key? key, required this.article}) : super(key: key);
+  const ArticleDetailsPage({Key? key, required this.article}) : super(key: key);
 
-  Article article;
+  final Article article;
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +72,7 @@ class _ArticleDetailsPage extends StatelessWidget {
                 spacing: 4,
                 children: article.tags!
                     .map(
-                      (dynamic tag) => TagWidget(label: tag as String),
+                      (dynamic tag) => ChipWithText(label: tag as String),
                     )
                     .toList()
                     .cast<Widget>(),
@@ -103,24 +104,6 @@ void manageChoices(String choice, BuildContext context, Article article) {
   }
 }
 
-class TagWidget extends StatelessWidget {
-  const TagWidget({Key? key, required this.label}) : super(key: key);
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Chip(
-      label: Text(
-        label,
-        style: const TextStyle(color: AppColors.backgroundDark, fontWeight: FontWeight.w600),
-      ),
-      labelPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
-      backgroundColor: AppColors.primaryColor,
-    );
-  }
-}
-
 void showDeleteDialog(BuildContext context, Article article) {
   showDialog(
     context: context,
@@ -135,8 +118,8 @@ void showDeleteDialog(BuildContext context, Article article) {
             ),
             onPressed: () {
               try {
-                FirebaseArticleRepository().deleteArticle(article);
-                Navigator.of(context).pushAndRemoveUntil(HomePage.route(), (Route<dynamic> route) => false);
+                FirebaseArticleRepository().deleteArticle(article.id);
+                Navigator.of(context).pushAndRemoveUntil(MainPage.route(), (Route<dynamic> route) => false);
               } catch (e) {
                 print('showDeleteDialog $e');
               }

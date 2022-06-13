@@ -68,6 +68,42 @@ class AppStyles {
     fontSize: 16,
   );
 
+  static const TextStyle textStyleBodyError = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.normal,
+    color: Colors.red,
+    fontSize: 16,
+  );
+
+  static const TextStyle textStyleBodyPrimary = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.normal,
+    color: AppColors.primaryColor,
+    fontSize: 16,
+  );
+
+  static const TextStyle textStyleBodyPrimarySmall = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.normal,
+    color: AppColors.primaryColor,
+    fontSize: 14,
+  );
+
+  static const TextStyle textStyleBodyRed = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.normal,
+    color: AppColors.redLight,
+    fontSize: 16,
+  );
+
+
+  static const TextStyle textStyleBodySmallW08 = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.normal,
+    color: AppColors.white08,
+    fontSize: 14,
+  );
+
   static const TextStyle textStyleBodyDark = TextStyle(
     fontFamily: 'Lato',
     fontWeight: FontWeight.normal,
@@ -88,6 +124,12 @@ class AppStyles {
     color: AppColors.white05,
     fontSize: 14,
   );
+  static const TextStyle textStyleBodySmallError = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.normal,
+    color: Colors.red,
+    fontSize: 14,
+  );
 
   static const TextStyle textStyleBodySmallDark = TextStyle(
     fontFamily: 'Lato',
@@ -103,11 +145,25 @@ class AppStyles {
     fontSize: 18,
   );
 
+  static const TextStyle buttonTextStyleSmall = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.w700,
+    color: AppColors.backgroundLight,
+    fontSize: 16,
+  );
+
   static const TextStyle buttonTextStylePrimaryColor = TextStyle(
     fontFamily: 'Lato',
     fontWeight: FontWeight.normal,
     color: AppColors.primaryColor,
     fontSize: 18,
+  );
+
+  static const TextStyle buttonTextStylePrimaryColorSmall = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.normal,
+    color: AppColors.primaryColor,
+    fontSize: 16,
   );
 
 }

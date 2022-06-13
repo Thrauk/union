@@ -35,7 +35,6 @@ class SignUpCubit extends Cubit<SignUpState> {
       state.copyWith(
         name: name,
         status: Formz.validate(
-          // ignore: always_specify_types
           [
             state.email,
             name,

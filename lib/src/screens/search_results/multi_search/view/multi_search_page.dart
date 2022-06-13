@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
+import 'package:union_app/src/models/organization/organization.dart';
+import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/article/article_details/article_details_page.dart';
 import 'package:union_app/src/screens/home/home.dart';
-import 'package:union_app/src/screens/profile/profile.dart';
+import 'package:union_app/src/screens/organization/joined_organizations/view/widgets/organizations_list_view_element.dart';
 import 'package:union_app/src/screens/project/project_details/view/project_details_page.dart';
 import 'package:union_app/src/screens/search_results/multi_search/bloc/multi_search_page_bloc.dart';
-import 'package:union_app/src/screens/widgets/app_bottom_nav_bar/app_bottom_nav_bar.dart';
-import 'package:union_app/src/util/date_format_utils.dart';
-
-import '../../../../theme.dart';
+import 'package:union_app/src/screens/user_profile/profile/profile.dart';
+import 'package:union_app/src/theme.dart';
+import 'package:union_app/src/utils/date_format_utils.dart';
 
 class MultiSearchPage extends StatelessWidget {
   const MultiSearchPage({Key? key}) : super(key: key);
@@ -21,7 +22,6 @@ class MultiSearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: const CustomNavBar(),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
@@ -35,7 +35,7 @@ class MultiSearchPage extends StatelessWidget {
             children: <Widget>[
               _SearchBarWidget(),
               _SearchTypeChips(),
-              _ResultListView(),
+              Flexible(child: _ResultListView()),
             ],
           ),
         ),
@@ -82,18 +82,21 @@ class _SearchBarWidget extends StatelessWidget {
 class _ResultListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final String uid = context.select((AppBloc bloc) => bloc.state.user.id);
     return BlocBuilder<MultiSearchPageBloc, MultiSearchPageState>(
       builder: (BuildContext context, MultiSearchPageState state) {
         return ListView.builder(
             itemCount: state.resultList.length,
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              if(state.searchType == SearchType.user) {
+              if (state.searchType == SearchType.user) {
                 return _UserListElement(element: state.resultList[index]);
-              } else if(state.searchType == SearchType.project) {
+              } else if (state.searchType == SearchType.project) {
                 return _ProjectListElement(element: state.resultList[index]);
+              } else if (state.searchType == SearchType.article) {
+                return _ArticleListElement(element: state.resultList[index]);
               }
-              return _ArticleListElement(element: state.resultList[index]);
+              return OrganizationListViewElement(organization: state.resultList[index] as Organization, loggedUid: uid);
             });
       },
     );
@@ -147,7 +150,6 @@ class _UserListElement extends StatelessWidget {
   }
 }
 
-
 class _ProjectListElement extends StatelessWidget {
   const _ProjectListElement({required dynamic element}) : project = element as Project;
 
@@ -176,7 +178,10 @@ class _ProjectListElement extends StatelessWidget {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  const Icon(Icons.analytics, color: AppColors.primaryColor,),
+                  const Icon(
+                    Icons.analytics,
+                    color: AppColors.primaryColor,
+                  ),
                   const SizedBox(width: 6),
                   Text(project.title!, overflow: TextOverflow.ellipsis, style: AppStyles.buttonTextStylePrimaryColor),
                 ],
@@ -222,7 +227,6 @@ class _ProjectListElement extends StatelessWidget {
     );
   }
 }
-
 
 class _ArticleListElement extends StatelessWidget {
   const _ArticleListElement({required dynamic element}) : article = element as Article;
@@ -343,10 +347,28 @@ class _SearchTypeChips extends StatelessWidget {
                 backgroundColor: state.searchType == SearchType.article ? AppColors.backgroundLight : null,
               ),
             ),
+            const SizedBox(width: 8),
+            GestureDetector(
+              onTap: () {
+                if (state.searchType != SearchType.organization) {
+                  context.read<MultiSearchPageBloc>().add(const SearchTypeChanged(searchType: SearchType.organization));
+                }
+              },
+              child: Chip(
+                label: Text(
+                  'Organizations',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'Lato',
+                      color: state.searchType == SearchType.organization ? AppColors.primaryColor : AppColors.white07),
+                ),
+                labelPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+                backgroundColor: state.searchType == SearchType.organization ? AppColors.backgroundLight : null,
+              ),
+            ),
           ],
         );
       },
     );
   }
-
 }

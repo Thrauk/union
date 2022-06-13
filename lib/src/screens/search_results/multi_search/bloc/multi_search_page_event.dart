@@ -33,6 +33,8 @@ class SearchPositionPressed extends MultiSearchPageEvent {}
 
 class SearchArticlePressed extends MultiSearchPageEvent {}
 
+class SearchOrganizationPressed extends MultiSearchPageEvent {}
+
 class SearchPressed extends MultiSearchPageEvent {}
 
 

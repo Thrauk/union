@@ -1,11 +1,10 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:union_app/src/models/article.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:union_app/src/models/article/article.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
-import 'package:union_app/src/repository/storage/firebase_project_repository/firebase_project_repository.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 
 part 'home_page_posts_event.dart';
 
@@ -23,7 +22,7 @@ class HomePagePostsBloc extends Bloc<HomePagePostsEvent, HomePagePostsState> {
 
   Future<FutureOr<void>> _getArticles(GetArticles event, Emitter<HomePagePostsState> emit) async {
     try {
-      final List<Article> articles = await _articleRepository.getArticles(20);
+      final List<Article> articles = await _articleRepository.getPublicArticles(20);
         emit(state.copyWith(postType: PostType.ARTICLE, posts: articles));
     } catch (e) {
       print('_getArticles $e');
@@ -33,6 +32,7 @@ class HomePagePostsBloc extends Bloc<HomePagePostsEvent, HomePagePostsState> {
   Future<FutureOr<void>> _getProjects(GetProjects event, Emitter<HomePagePostsState> emit) async {
     try {
       final List<Project> projects = await _projectRepository.getProjects(20);
+      projects.removeWhere((Project project) => project.organizationId != '');
       emit(state.copyWith(postType: PostType.PROJECT, posts: projects));
     } catch (e) {
       print('_getProjects $e');

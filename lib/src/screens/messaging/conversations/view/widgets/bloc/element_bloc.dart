@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/storage/firebase_user/firebase_user.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 
 part 'element_event.dart';
 

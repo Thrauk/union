@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:union_app/src/models/models.dart';
-import 'package:union_app/src/repository/storage/firebase_article_repository/firebase_article_reposiory.dart';
+import 'package:union_app/src/repository/firestore/firestore.dart';
 import 'package:union_app/src/screens/article/edit_article/bloc/edit_article_bloc.dart';
 import 'package:union_app/src/screens/article/edit_article/widgets/buttons/save_button_widget.dart';
 import 'package:union_app/src/screens/article/edit_article/widgets/containers/tags_container.dart';
 import 'package:union_app/src/screens/article/edit_article/widgets/form_fields/body_input_widget.dart';
-import 'package:union_app/src/screens/home/home.dart';
+import 'package:union_app/src/screens/main/view/main_screen.dart';
 import 'package:union_app/src/screens/widgets/widgets.dart';
 import 'package:union_app/src/theme.dart';
 
@@ -37,7 +37,7 @@ class EditArticlePage extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: GestureDetector(
-                      onTap: () => Navigator.of(context).push(HomePage.route()),
+                      onTap: () => Navigator.of(context).push(MainPage.route()),
                       child: const Center(
                         child: Text(
                           'Cancel',

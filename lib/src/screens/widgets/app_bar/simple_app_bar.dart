@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:union_app/src/theme.dart';
 
 class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
-   const SimpleAppBar({Key? key, this.title = ''}) : super(key: key);
+  const SimpleAppBar({Key? key, this.title = ''}) : super(key: key);
 
   final String title;
 
@@ -13,10 +13,13 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title, style: const TextStyle(
-        fontFamily: 'Lato',
-        fontWeight: FontWeight.w500,
-      ),),
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontFamily: 'Lato',
+          fontWeight: FontWeight.w500,
+        ),
+      ),
       backgroundColor: AppColors.backgroundLight,
       elevation: 8,
     );

@@ -45,3 +45,29 @@ class CreateButtonPressed extends CreateProjectEvent {
   final String ownerId;
   final String ownerDisplayName;
 }
+
+class CreateButtonPressedOrganization extends CreateProjectEvent {
+  CreateButtonPressedOrganization(
+    this.ownerId,
+    this.ownerDisplayName,
+    this.organizationId,
+  );
+
+  final String ownerId;
+  final String ownerDisplayName;
+  final String organizationId;
+}
+
+class RepositoryChosed extends CreateProjectEvent {
+  RepositoryChosed(this.githubRepository);
+
+  final GithubRepositoryItem githubRepository;
+}
+
+class RepositoryRemoved extends CreateProjectEvent {}
+
+class IsGithubLinked extends CreateProjectEvent {
+  IsGithubLinked(this.uid);
+
+  final String uid;
+}

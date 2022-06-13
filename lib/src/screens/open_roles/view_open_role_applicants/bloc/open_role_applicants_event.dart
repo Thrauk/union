@@ -9,3 +9,12 @@ class GetApplicantsList extends OpenRoleApplicantsEvent{
 
   final String openRoleId;
 }
+
+class AcceptApplicationPressed extends OpenRoleApplicantsEvent{
+  AcceptApplicationPressed(this.openRole, this.application);
+
+  final ProjectOpenRole openRole;
+  final ProjectOpenRoleApplicationItem application;
+}
+
+

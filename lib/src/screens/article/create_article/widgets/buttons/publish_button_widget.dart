@@ -6,12 +6,13 @@ import 'package:provider/src/provider.dart';
 import 'package:union_app/src/models/authentication/app_user.dart';
 import 'package:union_app/src/screens/app/app.dart';
 import 'package:union_app/src/screens/article/create_article/bloc/bloc.dart';
-import 'package:union_app/src/screens/home/home.dart';
-import 'package:union_app/src/screens/profile/profile.dart';
+import 'package:union_app/src/screens/main/view/main_screen.dart';
 import 'package:union_app/src/theme.dart';
 
 class PublishButtonWidget extends StatelessWidget {
-  const PublishButtonWidget({Key? key}) : super(key: key);
+  const PublishButtonWidget({Key? key, this.projectId = ''}) : super(key: key);
+
+  final String projectId;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class PublishButtonWidget extends StatelessWidget {
     return BlocConsumer<CreateArticleBloc, CreateArticleState>(
       listener: (BuildContext context, CreateArticleState state) {
         if (state.status.isSubmissionSuccess) {
-          Navigator.of(context).push(HomePage.route());
+          Navigator.of(context).push(MainPage.route());
         }
       },
       builder: (BuildContext context, CreateArticleState state) {
@@ -27,7 +28,7 @@ class PublishButtonWidget extends StatelessWidget {
           onPressed: () {
             context
                 .read<CreateArticleBloc>()
-                .add(PublishButtonPressed(user.id));
+                .add(PublishButtonPressed( ownerId: user.id, projectId: projectId));
           },
           style: ElevatedButton.styleFrom(
             primary: AppColors.primaryColor,

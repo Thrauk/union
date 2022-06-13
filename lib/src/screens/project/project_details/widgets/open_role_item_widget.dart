@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 import 'package:union_app/src/models/models.dart';
 import 'package:union_app/src/screens/open_roles/open_role_details/view/open_role_details_page.dart';
+import 'package:union_app/src/screens/project/project_details/bloc/project_details_bloc.dart';
 import 'package:union_app/src/theme.dart';
-import 'package:union_app/src/util/date_format_utils.dart';
+import 'package:union_app/src/utils/date_format_utils.dart';
 
 class OpenRoleItemWidget extends StatelessWidget {
-  const OpenRoleItemWidget(
-      {Key? key, required this.projectOpenRole, required this.showApplyButton})
-      : super(key: key);
+  const OpenRoleItemWidget({Key? key, required this.projectOpenRole, required this.showApplyButton}) : super(key: key);
 
   final ProjectOpenRole projectOpenRole;
   final bool showApplyButton;
@@ -17,7 +17,12 @@ class OpenRoleItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, OpenRolesDetailsPage.route(projectOpenRole));
+        final future = Navigator.push(context, OpenRolesDetailsPage.route(projectOpenRole));
+        future.then((value) {
+          if ((value as dynamic) != null && (value as bool) == true) {
+            context.read<ProjectDetailsBloc>().add(GetOpenRoles(projectOpenRole.projectId));
+          }
+        });
       },
       child: Card(
         color: AppColors.backgroundLight,
@@ -76,8 +81,7 @@ class OpenRoleItemWidget extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    labelPadding:
-                        EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+                    labelPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 4),
                     backgroundColor: AppColors.primaryColor,
                   ),
                 )

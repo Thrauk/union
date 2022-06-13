@@ -13,5 +13,9 @@ abstract class AuthenticationRepository {
   Future<void> logInWithEmailAndPassword(
       {required String email, required String password});
 
+  Future<void> logInWithGithub({required String code});
+
+  Future<void> linkWithGithub({required String code});
+
   Future<void> logOut();
 }

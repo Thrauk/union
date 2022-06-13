@@ -10,7 +10,7 @@ class IntroPage extends StatelessWidget {
   static const List<String> descriptionList = <String>[
     'Find a team and start working\ntogether',
     'Write or discover thousands of\narticles',
-    'Find tech events happening\nnear you'
+    'Group up with other people\n into awesome organizations'
   ];
   static const int maxPageNumber = 3;
 

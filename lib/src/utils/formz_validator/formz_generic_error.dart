@@ -1,0 +1,1 @@
+enum FormzGenericFieldError { invalid }

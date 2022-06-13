@@ -9,3 +9,15 @@ class GetOpenRoles extends ProjectDetailsEvent {
 
   final String projectId;
 }
+
+class GetMembers extends ProjectDetailsEvent {
+  GetMembers(this.projectId);
+
+  final String projectId;
+}
+
+class GetLinkedRepository extends ProjectDetailsEvent {
+  GetLinkedRepository(this.repositoryName);
+
+  final String repositoryName;
+}
